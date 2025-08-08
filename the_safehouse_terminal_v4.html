@@ -1,0 +1,170 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Safehouse Terminal</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: black;
+      color: #00ff00;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 16px;
+      overflow-x: hidden;
+    }
+    header {
+      width: 100%;
+      background: black;
+      color: #00ff00;
+      font-size: 24px;
+      font-weight: bold;
+      text-align: center;
+      padding: 10px 0 0;
+      border-bottom: 1px solid #00ff00;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    .subheader {
+      font-size: 14px;
+      font-weight: normal;
+      margin-top: 4px;
+      margin-bottom: 10px;
+    }
+    #terminal {
+      padding: 20px;
+      white-space: pre-wrap;
+    }
+    .blink {
+      animation: blink 1s step-start 0s infinite;
+    }
+    @keyframes blink {
+      50% { opacity: 0; }
+    }
+    input.cmd {
+      background: black;
+      color: #00ff00;
+      border: none;
+      font: inherit;
+      outline: none;
+      width: 80%;
+    }
+    .line {
+      display: flex;
+      align-items: center;
+    }
+    .prompt {
+      margin-right: 5px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    THE SAFEHOUSE
+    <div class="subheader">Cocktail Bar and Shelter · Interface OS v1.3</div>
+  </header>
+  <div id="terminal"></div>
+
+  <script>
+    const terminal = document.getElementById("terminal");
+    const boot1 = [
+      "> POWERING UP TERMINAL...",
+      "> LOADING BIOS... OK",
+      "> SAFEHOUSE SYSTEM INTERFACE v1.3",
+      "> SCANNING MEMORY... OK",
+      "> LOADING MODULES... OK",
+      "> WELCOME, USER.",
+      "  THE SAFEHOUSE",
+      "  ----------------",
+      "  PUBLIC ACCESS TERMINAL",
+      "> PRESS ANY KEY TO CONTINUE"
+    ];
+
+    const boot2 = [
+      "> ACCESS GRANTED.",
+      "> INITIALIZING TERMINAL...",
+      "> CONNECTION ESTABLISHED.",
+      "> TYPE 'HELP' FOR AVAILABLE COMMANDS",
+      ">"
+    ];
+
+    const commands = {
+      "HELP": [
+        "1. HOME        [The Safehouse introduction]",
+        "2. CONTACT     [Social frequencies / secure lines]",
+        "3. LOCATION    [Map & coordinates]",
+        "4. HOURS       [Operation cycle]",
+        "5. MAP         [open Google Maps link]",
+        "6. CLEAR       [wipe screen]"
+      ],
+      "CLEAR": [],
+      "1": ["Welcome to The Safehouse. Your shelter from the wasteland."],
+      "2": ["Contact us on Instagram and Twitter @SafehouseBar"],
+      "3": ["Sapporo, Susukino district. Japan Wasteland Coordinates: 43.05, 141.35"],
+      "4": ["Operation cycle: Tue–Sun, 18:00–02:00"],
+      "5": ["https://maps.google.com"]
+    };
+
+    let bootIndex = 0;
+
+    function typeLines(lines, cb, delay = 100) {
+      if (bootIndex < lines.length) {
+        terminal.innerHTML += lines[bootIndex++] + "\n";
+        setTimeout(() => typeLines(lines, cb, delay), delay);
+      } else {
+        cb();
+      }
+    }
+
+    function waitForKey(cb) {
+      document.addEventListener("keydown", function once() {
+        document.removeEventListener("keydown", once);
+        cb();
+      });
+    }
+
+    function setupTerminal() {
+      const prompt = document.createElement("div");
+      prompt.className = "line";
+      const symbol = document.createElement("span");
+      symbol.className = "prompt";
+      symbol.textContent = ">";
+      const input = document.createElement("input");
+      input.className = "cmd";
+      input.autofocus = true;
+      prompt.appendChild(symbol);
+      prompt.appendChild(input);
+      terminal.appendChild(prompt);
+      input.focus();
+
+      input.addEventListener("keydown", function(e) {
+        if (e.key === "Enter") {
+          const value = input.value.trim().toUpperCase();
+          terminal.removeChild(prompt);
+          terminal.innerHTML += `> ${value}\n`;
+          if (value === "CLEAR" || value === "6") {
+            terminal.innerHTML = "> TYPE 'HELP' FOR AVAILABLE COMMANDS\n";
+          } else if (commands[value]) {
+            terminal.innerHTML += commands[value].join("\n") + "\n";
+          } else {
+            terminal.innerHTML += `UNKNOWN COMMAND: ${value}\n`;
+          }
+          bootIndex = 0;
+          setupTerminal();
+        }
+      });
+    }
+
+    typeLines(boot1, () => {
+      waitForKey(() => {
+        terminal.innerHTML = "";
+        bootIndex = 0;
+        typeLines(boot2, () => setupTerminal());
+      });
+    });
+  </script>
+</body>
+</html>
