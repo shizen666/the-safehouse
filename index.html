@@ -1,170 +1,192 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>The Safehouse Terminal</title>
-  <style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Safehouse Terminal</title>
+<style>
+    /* SETTINGS */
+    :root {
+        --title: "THE SAFEHOUSE";
+        --subtitle: "Cocktail Bar and Shelter · Interface OS v1.3";
+        --accent: #33ff66;
+        --bg: #060806;
+    }
+
+    html, body { height: 100%; }
     body {
-      margin: 0;
-      padding: 0;
-      background: black;
-      color: #00ff00;
-      font-family: 'Courier New', Courier, monospace;
-      font-size: 16px;
-      overflow-x: hidden;
+        margin: 0;
+        color: var(--accent);
+        background: var(--bg);
+        font-family: "VT323", ui-monospace, Menlo, Consolas, monospace;
+        font-size: clamp(14px, 2.2vw, 22px);
+        line-height: 1.25;
+        overflow: hidden;
+        -webkit-user-select: none; user-select: none;
     }
-    header {
-      width: 100%;
-      background: black;
-      color: #00ff00;
-      font-size: 24px;
-      font-weight: bold;
-      text-align: center;
-      padding: 10px 0 0;
-      border-bottom: 1px solid #00ff00;
-      position: sticky;
-      top: 0;
-      z-index: 10;
+
+    /* Fixed header always visible */
+    .header {
+        position: fixed; inset: 0 0 auto 0; height: 64px;
+        display: grid; place-items: center;
+        color: var(--accent); background: rgba(0,0,0,0.65);
+        border-bottom: 1px solid rgba(51,255,102,.35);
+        z-index: 20; text-align: center;
     }
-    .subheader {
-      font-size: 14px;
-      font-weight: normal;
-      margin-top: 4px;
-      margin-bottom: 10px;
+    .header .t { font-size: clamp(18px,3.4vw,36px); letter-spacing:.06em; }
+    .header .s { font-size: clamp(10px,2.2vw,16px); opacity:.85; margin-top:.15rem; }
+
+    /* CRT screen */
+    .screen { position: absolute; inset: 64px 0 0 0; padding: 1rem 1.25rem; }
+    .tube {
+        height: 100svh; /* mobile friendly viewport height */
+        width: 100vw; position: relative; overflow: hidden;
+        background: radial-gradient(120% 90% at 50% 50%, #0a140a 0%, #050805 70%, #020402 100%);
+        box-shadow: inset 0 0 18px #0b3; border-top:1px solid #0b3;
     }
-    #terminal {
-      padding: 20px;
-      white-space: pre-wrap;
+    .tube::before { /* scanlines */
+        content:""; position:absolute; inset:0; pointer-events:none; z-index:2;
+        background: repeating-linear-gradient(to bottom, transparent 0 2px, rgba(0,0,0,.22) 3px, transparent 4px);
+        opacity:.6;
     }
-    .blink {
-      animation: blink 1s step-start 0s infinite;
+
+    /* Terminal body */
+    #terminal { position:absolute; inset:0; padding: 1rem 1.25rem 5.5rem; overflow:auto; z-index:1; white-space:pre-wrap; }
+
+    /* Prompt (mobile-safe) */
+    .promptBar {
+        position: fixed; left:0; right:0; bottom:0; height: 64px; z-index: 25;
+        display:flex; align-items:center; gap:.5rem; padding:.75rem 1rem;
+        background:rgba(0,0,0,.8); border-top:1px solid rgba(51,255,102,.35);
     }
-    @keyframes blink {
-      50% { opacity: 0; }
-    }
-    input.cmd {
-      background: black;
-      color: #00ff00;
-      border: none;
-      font: inherit;
-      outline: none;
-      width: 80%;
-    }
-    .line {
-      display: flex;
-      align-items: center;
-    }
-    .prompt {
-      margin-right: 5px;
-    }
-  </style>
+    .caret { animation: blink 1.1s steps(2,start) infinite; }
+    @keyframes blink { 50% { opacity:0 } }
+
+    .visibleInput { flex:1; min-height:1.2em }
+    #realInput { position:absolute; opacity:0; left:-9999px; }
+
+    /* On‑screen quick keys after HELP */
+    .keys { display:flex; gap:.5rem; overflow-x:auto; padding:.4rem 1rem; }
+    .key { border:1px solid rgba(51,255,102,.4); padding:.35rem .6rem; border-radius:6px; background:rgba(0,0,0,.35); }
+    .key:active{ transform:scale(.98) }
+
+    /* Touch helpers */
+    .tap { color:var(--accent); opacity:.9; }
+</style>
 </head>
 <body>
-  <header>
-    THE SAFEHOUSE
-    <div class="subheader">Cocktail Bar and Shelter · Interface OS v1.3</div>
-  </header>
-  <div id="terminal"></div>
+  <div class="header">
+    <div>
+      <div class="t">THE SAFEHOUSE</div>
+      <div class="s">Cocktail Bar and Shelter · Interface OS v1.3</div>
+    </div>
+  </div>
+
+  <div class="screen">
+    <div class="tube">
+      <div id="terminal"></div>
+    </div>
+  </div>
+
+  <div class="promptBar" id="promptBar" style="display:none">
+    <span>&gt;</span>
+    <span class="visibleInput" id="visibleText"></span>
+    <span class="caret">_</span>
+    <input id="realInput" type="text" inputmode="text" autocomplete="off" autocapitalize="none" autocorrect="off" />
+  </div>
+  <div class="keys" id="keys" style="display:none"></div>
 
   <script>
-    const terminal = document.getElementById("terminal");
-    const boot1 = [
-      "> POWERING UP TERMINAL...",
-      "> LOADING BIOS... OK",
-      "> SAFEHOUSE SYSTEM INTERFACE v1.3",
-      "> SCANNING MEMORY... OK",
-      "> LOADING MODULES... OK",
-      "> WELCOME, USER.",
-      "  THE SAFEHOUSE",
-      "  ----------------",
-      "  PUBLIC ACCESS TERMINAL",
-      "> PRESS ANY KEY TO CONTINUE"
+    const term = document.getElementById('terminal');
+    const real = document.getElementById('realInput');
+    const vis = document.getElementById('visibleText');
+    const bar = document.getElementById('promptBar');
+    const keys = document.getElementById('keys');
+
+    const BOOT1 = [
+      '> POWERING UP TERMINAL...',
+      '> LOADING BIOS... OK',
+      '> SAFEHOUSE SYSTEM INTERFACE v1.3',
+      '> SCANNING MEMORY... OK',
+      '> LOADING MODULES... OK',
+      '> WELCOME, USER.',
+      '  THE SAFEHOUSE',
+      '  ------------------------------',
+      '  PUBLIC ACCESS TERMINAL',
+      '',
+      '  PRESS ANY KEY OR TAP TO CONTINUE'
     ];
 
-    const boot2 = [
-      "> ACCESS GRANTED.",
-      "> INITIALIZING TERMINAL...",
-      "> CONNECTION ESTABLISHED.",
-      "> TYPE 'HELP' FOR AVAILABLE COMMANDS",
-      ">"
+    const BOOT2 = [
+      '> ACCESS GRANTED.',
+      '> INITIALIZING TERMINAL...',
+      '> CONNECTION ESTABLISHED.',
+      "> TYPE 'HELP' FOR AVAILABLE COMMANDS"
     ];
 
-    const commands = {
-      "HELP": [
-        "1. HOME        [The Safehouse introduction]",
-        "2. CONTACT     [Social frequencies / secure lines]",
-        "3. LOCATION    [Map & coordinates]",
-        "4. HOURS       [Operation cycle]",
-        "5. MAP         [open Google Maps link]",
-        "6. CLEAR       [wipe screen]"
-      ],
-      "CLEAR": [],
-      "1": ["Welcome to The Safehouse. Your shelter from the wasteland."],
-      "2": ["Contact us on Instagram and Twitter @SafehouseBar"],
-      "3": ["Sapporo, Susukino district. Japan Wasteland Coordinates: 43.05, 141.35"],
-      "4": ["Operation cycle: Tue–Sun, 18:00–02:00"],
-      "5": ["https://maps.google.com"]
+    const COMMANDS = {
+      'HELP': () => {
+        const list = [
+          '1. HOME        [intro]',
+          '2. CONTACT     [social / lines]',
+          '3. LOCATION    [map & coords]',
+          '4. HOURS       [schedule]',
+          '5. MAP         [open Google Maps]',
+          '6. CLEAR       [wipe screen]' 
+        ];
+        showKeys(['1','2','3','4','5','6']);
+        return list.join('
+');
+      },
+      '1': ()=>'Welcome to THE SAFEHOUSE. A bunker bar for the wasteland.',
+      'HOME': ()=>'Welcome to THE SAFEHOUSE. A bunker bar for the wasteland.',
+      '2': ()=>'Instagram: @thesafehouse — contact@safehouse.example',
+      'CONTACT': ()=>'Instagram: @thesafehouse — contact@safehouse.example',
+      '3': ()=>'Sapporo — Susukino Sector. Coords: 43.0556, 141.3537',
+      'LOCATION': ()=>'Sapporo — Susukino Sector. Coords: 43.0556, 141.3537',
+      '4': ()=>'Mon–Thu 18:00–01:00 | Fri–Sat 18:00–03:00 | Sun Closed',
+      'HOURS': ()=>'Mon–Thu 18:00–01:00 | Fri–Sat 18:00–03:00 | Sun Closed',
+      '5': ()=>{ window.open('https://maps.google.com/?q=43.0556,141.3537','_blank'); return 'Opening map...'; },
+      'MAP': ()=>COMMANDS['5'](),
+      '6': ()=>{ clearTerm(); return "> TYPE 'HELP' FOR AVAILABLE COMMANDS"; },
+      'CLEAR': ()=>COMMANDS['6']()
     };
 
-    let bootIndex = 0;
+    function println(t=''){ term.textContent += t + '
+'; term.scrollTop = term.scrollHeight; }
 
-    function typeLines(lines, cb, delay = 100) {
-      if (bootIndex < lines.length) {
-        terminal.innerHTML += lines[bootIndex++] + "\n";
-        setTimeout(() => typeLines(lines, cb, delay), delay);
-      } else {
-        cb();
-      }
+    function typeLines(lines, i=0, delay=160, done){
+      if(i>=lines.length){ done&&done(); return; }
+      println(lines[i]); setTimeout(()=>typeLines(lines,i+1,delay,done), delay);
     }
 
-    function waitForKey(cb) {
-      document.addEventListener("keydown", function once() {
-        document.removeEventListener("keydown", once);
-        cb();
-      });
+    function start(){ typeLines(BOOT1,0,180, ()=> waitKey(() => secondBoot())); }
+
+    function waitKey(cb){
+      const once = ()=>{ window.removeEventListener('keydown',once); window.removeEventListener('pointerdown',once); cb(); };
+      window.addEventListener('keydown', once, {once:true});
+      window.addEventListener('pointerdown', once, {once:true});
     }
+    function secondBoot(){ term.textContent=''; typeLines(BOOT2,0,160, ()=>{ showPrompt(); println(''); }); }
 
-    function setupTerminal() {
-      const prompt = document.createElement("div");
-      prompt.className = "line";
-      const symbol = document.createElement("span");
-      symbol.className = "prompt";
-      symbol.textContent = ">";
-      const input = document.createElement("input");
-      input.className = "cmd";
-      input.autofocus = true;
-      prompt.appendChild(symbol);
-      prompt.appendChild(input);
-      terminal.appendChild(prompt);
-      input.focus();
+    function showPrompt(){ bar.style.display='flex'; focusInput(); }
+    function focusInput(){ real.value=''; vis.textContent=''; real.style.left='0'; real.focus(); setTimeout(()=>{ if(document.activeElement!==real) real.focus(); }, 60); }
 
-      input.addEventListener("keydown", function(e) {
-        if (e.key === "Enter") {
-          const value = input.value.trim().toUpperCase();
-          terminal.removeChild(prompt);
-          terminal.innerHTML += `> ${value}\n`;
-          if (value === "CLEAR" || value === "6") {
-            terminal.innerHTML = "> TYPE 'HELP' FOR AVAILABLE COMMANDS\n";
-          } else if (commands[value]) {
-            terminal.innerHTML += commands[value].join("\n") + "\n";
-          } else {
-            terminal.innerHTML += `UNKNOWN COMMAND: ${value}\n`;
-          }
-          bootIndex = 0;
-          setupTerminal();
-        }
-      });
+    real.addEventListener('input', ()=> vis.textContent = real.value);
+    real.addEventListener('keydown', (e)=>{ if(e.key==='Enter'){ e.preventDefault(); submit(real.value); }});
+
+    function submit(raw){ const shown = raw; const cmd = (raw||'').trim().toUpperCase(); println('> ' + shown); real.value=''; vis.textContent=''; hideKeys();
+      if(!cmd) return; const fn = COMMANDS[cmd]; if(fn){ const out = fn(); if(out) println(out); } else { println("UNKNOWN COMMAND. TYPE 'HELP'"); } }
+
+    function clearTerm(){ const preserve = term; term.textContent=''; hideKeys(); }
+
+    function showKeys(nums){ keys.style.display='flex'; keys.innerHTML = nums.map(n=>`<button class="key" data-k="${n}">${n}</button>`).join('');
+      keys.querySelectorAll('.key').forEach(btn=>btn.addEventListener('click',()=>{ submit(btn.dataset.k); focusInput(); }));
     }
+    function hideKeys(){ keys.style.display='none'; keys.innerHTML=''; }
 
-    typeLines(boot1, () => {
-      waitForKey(() => {
-        terminal.innerHTML = "";
-        bootIndex = 0;
-        typeLines(boot2, () => setupTerminal());
-      });
-    });
+    // Start
+    start();
   </script>
 </body>
 </html>
