@@ -15,13 +15,15 @@
     display: none;
     padding: 20px;
     white-space: pre-wrap;
-    min-height: calc(100vh - 50px);
+    min-height: calc(100vh - 72px);
   }
   .promptBar {
     display: flex;
     padding: 10px;
     background: #000;
     border-top: 1px solid #00ff66;
+    position: sticky;
+    bottom: 0;
   }
   #realInput {
     flex: 1;
@@ -43,21 +45,31 @@
   h1 {
     text-align: center;
     font-size: 2rem;
+    margin: .5rem 0 0;
   }
   h2 {
     text-align: center;
     font-size: 1rem;
-    margin-top: -10px;
+    margin: .25rem 0 1rem;
     color: #0f0;
   }
+  /* Big, tappable continue button for mobile */
+  .continue {
+    display: inline-block;
+    margin: 1rem auto 0; padding: .6rem 1rem;
+    border: 1px solid #00ff66; background: #000; color: #00ff66;
+    font-family: inherit; font-size: 1rem; cursor: pointer;
+  }
+  #homeScreen { cursor: pointer; }
 </style>
 </head>
 <body>
 <div id="bootScreen"></div>
-<div id="homeScreen">
+<div id="homeScreen" tabindex="0" role="button" aria-label="Press to continue">
   <h1>THE SAFEHOUSE</h1>
   <h2>Cocktail Bar and Shelter - v3.2 BIOS</h2>
   <p style="text-align:center">Press any key or tap to continue...</p>
+  <p style="text-align:center"><button id="continueBtn" class="continue">CONTINUE ▸</button></p>
 </div>
 <div id="terminalScreen">
   <div id="terminal"></div>
@@ -96,7 +108,31 @@
   function startHome() {
     boot.style.display = 'none';
     home.style.display = 'block';
-    window.addEventListener('pointerdown', startTerminalBoot, { once: true });
+
+    // Robust mobile tap/keydown handling (iOS/Android/desktop)
+    let fired = false;
+    const fire = () => { if (fired) return; fired = true; cleanup(); startTerminalBoot(); };
+
+    const keyHandler = (e) => { fire(); };
+    const ptrHandler = (e) => { fire(); };
+    const clickHandler = (e) => { fire(); };
+
+    function cleanup(){
+      window.removeEventListener('keydown', keyHandler);
+      home.removeEventListener('pointerdown', ptrHandler);
+      home.removeEventListener('touchstart', ptrHandler);
+      home.removeEventListener('click', clickHandler);
+      const btn = document.getElementById('continueBtn');
+      if (btn) btn.removeEventListener('click', fire);
+    }
+
+    window.addEventListener('keydown', keyHandler, { passive: true });
+    home.addEventListener('pointerdown', ptrHandler, { passive: true });
+    home.addEventListener('touchstart', ptrHandler, { passive: true });
+    home.addEventListener('click', clickHandler, { passive: true });
+    const btn = document.getElementById('continueBtn');
+    if (btn) btn.addEventListener('click', fire, { passive: true });
+  });
     window.addEventListener('keydown', startTerminalBoot, { once: true });
   }
 
