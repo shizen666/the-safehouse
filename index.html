@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>The Safehouse Terminal</title>
 <style>
   body {
@@ -53,7 +53,6 @@
     margin: .25rem 0 1rem;
     color: #0f0;
   }
-  /* Big, tappable continue button for mobile */
   .continue {
     display: inline-block;
     margin: 1rem auto 0; padding: .6rem 1rem;
@@ -64,20 +63,23 @@
 </style>
 </head>
 <body>
-<div id="bootScreen"></div>
-<div id="homeScreen" tabindex="0" role="button" aria-label="Press to continue">
-  <h1>THE SAFEHOUSE</h1>
-  <h2>Cocktail Bar and Shelter - v3.2 BIOS</h2>
-  <p style="text-align:center">Press any key or tap to continue...</p>
-  <p style="text-align:center"><button id="continueBtn" class="continue">CONTINUE ▸</button></p>
-</div>
-<div id="terminalScreen">
-  <div id="terminal"></div>
-  <form id="promptForm" class="promptBar">
-    <input id="realInput" type="text" enterkeyhint="send" inputmode="text" autocomplete="off">
-    <button id="sendBtn" type="submit">↵</button>
-  </form>
-</div>
+  <div id="bootScreen"></div>
+
+  <div id="homeScreen" tabindex="0" role="button" aria-label="Press to continue">
+    <h1>THE SAFEHOUSE</h1>
+    <h2>Cocktail Bar and Shelter - v3.2 BIOS</h2>
+    <p style="text-align:center">Press any key or tap to continue...</p>
+    <p style="text-align:center"><button id="continueBtn" class="continue">CONTINUE ▸</button></p>
+  </div>
+
+  <div id="terminalScreen">
+    <div id="terminal"></div>
+    <form id="promptForm" class="promptBar">
+      <input id="realInput" type="text" enterkeyhint="send" inputmode="text" autocomplete="off" />
+      <button id="sendBtn" type="submit">↵</button>
+    </form>
+  </div>
+
 <script>
 (function(){
   'use strict';
@@ -88,10 +90,14 @@
   const form = document.getElementById('promptForm');
   const input = document.getElementById('realInput');
 
-  function println(text="") { term.textContent += text + "\n"; }
+  function println(text="") {
+    term.textContent += text + "\n";
+    term.scrollTop = term.scrollHeight;
+  }
 
   function bootSequence(lines, callback) {
     let i = 0;
+    boot.style.display = 'block';
     function next() {
       if (i < lines.length) {
         boot.textContent += lines[i] + "\n";
@@ -101,7 +107,6 @@
         callback();
       }
     }
-    boot.style.display = 'block';
     next();
   }
 
@@ -109,13 +114,13 @@
     boot.style.display = 'none';
     home.style.display = 'block';
 
-    // Robust mobile tap/keydown handling (iOS/Android/desktop)
+    // Robust mobile/desktop start handlers
     let fired = false;
     const fire = () => { if (fired) return; fired = true; cleanup(); startTerminalBoot(); };
 
-    const keyHandler = (e) => { fire(); };
-    const ptrHandler = (e) => { fire(); };
-    const clickHandler = (e) => { fire(); };
+    const keyHandler   = () => fire();
+    const ptrHandler   = () => fire();
+    const clickHandler = () => fire();
 
     function cleanup(){
       window.removeEventListener('keydown', keyHandler);
@@ -132,8 +137,6 @@
     home.addEventListener('click', clickHandler, { passive: true });
     const btn = document.getElementById('continueBtn');
     if (btn) btn.addEventListener('click', fire, { passive: true });
-  });
-    window.addEventListener('keydown', startTerminalBoot, { once: true });
   }
 
   function startTerminalBoot() {
@@ -161,28 +164,33 @@
     const c = cmd.trim().toLowerCase();
     println("> " + cmd);
     if(c === 'help') {
-      println("1) HOME\n2) CONTACTS\n3) LOCATION\n4) HOURS\n5) CLEAR");
+      println("1) HOME\n2) CONTACTS\n3) LOCATION\n4) HOURS\n5) MAP\n6) CLEAR");
     } else if(c === '1' || c === 'home') {
       println("Safehouse main page placeholder.");
-    } else if(c === '2' || c === 'contacts') {
+    } else if(c === '2' || c === 'contacts' || c === 'contact') {
       println("Instagram: @safehouse | Email: info@safehouse.com");
     } else if(c === '3' || c === 'location') {
       println("Sapporo, Japan - Opening soon.");
     } else if(c === '4' || c === 'hours') {
       println("Mon-Sun: 18:00 - 02:00");
-    } else if(c === '5' || c === 'clear') {
+    } else if(c === '5' || c === 'map') {
+      println("Opening map...");
+      try { window.open('https://maps.google.com/?q=43.0556,141.3537','_blank'); } catch(e) {}
+    } else if(c === '6' || c === 'clear') {
       term.textContent = "> TYPE 'HELP' FOR AVAILABLE COMMANDS\n";
     } else {
       println("Unknown command");
     }
     input.value = '';
+    input.focus();
   }
 
-  form.addEventListener('submit', e => {
+  form.addEventListener('submit', (e) => {
     e.preventDefault();
     submitCommand(input.value);
   });
 
+  // Initial boot
   bootSequence([
     'THE SAFEHOUSE BIOS v3.2',
     'Checking system memory...',
