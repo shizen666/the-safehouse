@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Safehouse Terminal</title>
+<link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
 <style>
     /* SETTINGS */
     :root {
@@ -25,7 +26,6 @@
         -webkit-user-select: none; user-select: none;
     }
 
-    /* Fixed header always visible */
     .header {
         position: fixed; inset: 0 0 auto 0; height: 64px;
         display: grid; place-items: center;
@@ -36,24 +36,20 @@
     .header .t { font-size: clamp(18px,3.4vw,36px); letter-spacing:.06em; }
     .header .s { font-size: clamp(10px,2.2vw,16px); opacity:.85; margin-top:.15rem; }
 
-    /* CRT screen */
     .screen { position: absolute; inset: 64px 0 0 0; padding: 1rem 1.25rem; }
     .tube {
-        height: 100svh; /* mobile friendly viewport height */
-        width: 100vw; position: relative; overflow: hidden;
+        height: 100svh; width: 100vw; position: relative; overflow: hidden;
         background: radial-gradient(120% 90% at 50% 50%, #0a140a 0%, #050805 70%, #020402 100%);
         box-shadow: inset 0 0 18px #0b3; border-top:1px solid #0b3;
     }
-    .tube::before { /* scanlines */
+    .tube::before {
         content:""; position:absolute; inset:0; pointer-events:none; z-index:2;
         background: repeating-linear-gradient(to bottom, transparent 0 2px, rgba(0,0,0,.22) 3px, transparent 4px);
         opacity:.6;
     }
 
-    /* Terminal body */
     #terminal { position:absolute; inset:0; padding: 1rem 1.25rem 5.5rem; overflow:auto; z-index:1; white-space:pre-wrap; }
 
-    /* Prompt (mobile-safe) */
     .promptBar {
         position: fixed; left:0; right:0; bottom:0; height: 64px; z-index: 25;
         display:flex; align-items:center; gap:.5rem; padding:.75rem 1rem;
@@ -65,13 +61,9 @@
     .visibleInput { flex:1; min-height:1.2em }
     #realInput { position:absolute; opacity:0; left:-9999px; }
 
-    /* On‑screen quick keys after HELP */
     .keys { display:flex; gap:.5rem; overflow-x:auto; padding:.4rem 1rem; }
     .key { border:1px solid rgba(51,255,102,.4); padding:.35rem .6rem; border-radius:6px; background:rgba(0,0,0,.35); }
     .key:active{ transform:scale(.98) }
-
-    /* Touch helpers */
-    .tap { color:var(--accent); opacity:.9; }
 </style>
 </head>
 <body>
@@ -99,7 +91,7 @@
   <script>
     const term = document.getElementById('terminal');
     const real = document.getElementById('realInput');
-    const vis = document.getElementById('visibleText');
+    const visibleText = document.getElementById('visibleText');
     const bar = document.getElementById('promptBar');
     const keys = document.getElementById('keys');
 
@@ -132,11 +124,10 @@
           '3. LOCATION    [map & coords]',
           '4. HOURS       [schedule]',
           '5. MAP         [open Google Maps]',
-          '6. CLEAR       [wipe screen]' 
+          '6. CLEAR       [wipe screen]'
         ];
         showKeys(['1','2','3','4','5','6']);
-        return list.join('
-');
+        return list.join('\n');
       },
       '1': ()=>'Welcome to THE SAFEHOUSE. A bunker bar for the wasteland.',
       'HOME': ()=>'Welcome to THE SAFEHOUSE. A bunker bar for the wasteland.',
@@ -152,40 +143,45 @@
       'CLEAR': ()=>COMMANDS['6']()
     };
 
-    function println(t=''){ term.textContent += t + '
-'; term.scrollTop = term.scrollHeight; }
-
+    function println(t=''){ term.textContent += t + '\n'; term.scrollTop = term.scrollHeight; }
     function typeLines(lines, i=0, delay=160, done){
       if(i>=lines.length){ done&&done(); return; }
       println(lines[i]); setTimeout(()=>typeLines(lines,i+1,delay,done), delay);
     }
-
     function start(){ typeLines(BOOT1,0,180, ()=> waitKey(() => secondBoot())); }
-
     function waitKey(cb){
       const once = ()=>{ window.removeEventListener('keydown',once); window.removeEventListener('pointerdown',once); cb(); };
       window.addEventListener('keydown', once, {once:true});
       window.addEventListener('pointerdown', once, {once:true});
     }
     function secondBoot(){ term.textContent=''; typeLines(BOOT2,0,160, ()=>{ showPrompt(); println(''); }); }
-
     function showPrompt(){ bar.style.display='flex'; focusInput(); }
-    function focusInput(){ real.value=''; vis.textContent=''; real.style.left='0'; real.focus(); setTimeout(()=>{ if(document.activeElement!==real) real.focus(); }, 60); }
+    function focusInput(){ real.value=''; visibleText.textContent=''; real.style.left='0'; real.focus(); setTimeout(()=>{ if(document.activeElement!==real) real.focus(); }, 60); }
 
-    real.addEventListener('input', ()=> vis.textContent = real.value);
+    real.addEventListener('input', ()=> visibleText.textContent = real.value);
     real.addEventListener('keydown', (e)=>{ if(e.key==='Enter'){ e.preventDefault(); submit(real.value); }});
 
-    function submit(raw){ const shown = raw; const cmd = (raw||'').trim().toUpperCase(); println('> ' + shown); real.value=''; vis.textContent=''; hideKeys();
-      if(!cmd) return; const fn = COMMANDS[cmd]; if(fn){ const out = fn(); if(out) println(out); } else { println("UNKNOWN COMMAND. TYPE 'HELP'"); } }
+    function submit(raw){
+      const shown = raw; const cmd = (raw||'').trim().toUpperCase();
+      println('> ' + shown); real.value=''; visibleText.textContent=''; hideKeys();
+      if(!cmd) return; const fn = COMMANDS[cmd]; if(fn){ const out = fn(); if(out) println(out); } else { println("UNKNOWN COMMAND. TYPE 'HELP'"); }
+    }
 
-    function clearTerm(){ const preserve = term; term.textContent=''; hideKeys(); }
-
+    function clearTerm(){ term.textContent=''; hideKeys(); }
     function showKeys(nums){ keys.style.display='flex'; keys.innerHTML = nums.map(n=>`<button class="key" data-k="${n}">${n}</button>`).join('');
       keys.querySelectorAll('.key').forEach(btn=>btn.addEventListener('click',()=>{ submit(btn.dataset.k); focusInput(); }));
     }
     function hideKeys(){ keys.style.display='none'; keys.innerHTML=''; }
 
-    // Start
+    (function __tests__(){
+      try {
+        const j = ['A','B'].join('\n');
+        console.assert(j === 'A\nB', 'join\\n failed');
+        const before = term.textContent.length; println('TEST');
+        console.assert(term.textContent.length === before + 5, 'println newline failed');
+      } catch(e) { console.warn('Self-tests failed:', e); }
+    })();
+
     start();
   </script>
 </body>
