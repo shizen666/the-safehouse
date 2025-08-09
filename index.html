@@ -96,8 +96,8 @@
   function startHome() {
     boot.style.display = 'none';
     home.style.display = 'block';
-    window.addEventListener('keydown', () => startTerminalBoot(), { once: true });
-    window.addEventListener('click', () => startTerminalBoot(), { once: true });
+    window.addEventListener('pointerdown', startTerminalBoot, { once: true });
+    window.addEventListener('keydown', startTerminalBoot, { once: true });
   }
 
   function startTerminalBoot() {
