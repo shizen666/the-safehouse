@@ -122,10 +122,19 @@
 
   function submitCommand(cmd) {
     if(!cmd.trim()) return;
+    const c = cmd.trim().toLowerCase();
     println("> " + cmd);
-    if(cmd.toLowerCase() === 'help') {
+    if(c === 'help') {
       println("1) HOME\n2) CONTACTS\n3) LOCATION\n4) HOURS\n5) CLEAR");
-    } else if(cmd === '5' || cmd.toLowerCase() === 'clear') {
+    } else if(c === '1' || c === 'home') {
+      println("Safehouse main page placeholder.");
+    } else if(c === '2' || c === 'contacts') {
+      println("Instagram: @safehouse | Email: info@safehouse.com");
+    } else if(c === '3' || c === 'location') {
+      println("Sapporo, Japan - Opening soon.");
+    } else if(c === '4' || c === 'hours') {
+      println("Mon-Sun: 18:00 - 02:00");
+    } else if(c === '5' || c === 'clear') {
       term.textContent = "> TYPE 'HELP' FOR AVAILABLE COMMANDS\n";
     } else {
       println("Unknown command");
