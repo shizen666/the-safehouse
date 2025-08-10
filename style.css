@@ -1,0 +1,9 @@
+:root{--bg:#050a07;--ph:#afffd1;--dim:#7ecaa5;--warn:#ff9a5c;--err:#ff5c5c}
+html,body{height:100%;margin:0;background:#050a07;color:var(--ph);font:16px/1.5 ui-monospace,Consolas,monospace}
+#crt{max-width:980px;margin:24px auto;padding:16px;border:1px solid rgba(227,183,107,.25);border-radius:14px;background:#07100c;box-shadow:0 18px 70px rgba(0,0,0,.6)}
+#boot,#screen{min-height:64vh;white-space:pre-wrap}
+#prompt{display:flex;gap:.6rem;align-items:center;margin-top:10px}
+#ps1{color:var(--dim)}
+#cmd{flex:1;background:#09150f;border:1px solid rgba(175,255,209,.25);color:var(--ph);padding:.45rem .6rem;border-radius:8px}
+.ok{color:#7fffb2}.warn{color:var(--warn)}.err{color:var(--err)}.muted{color:#7ecaa5}.small{font-size:0.9em;color:#9ddbb8}
+.lockdown{animation:flash .9s linear infinite}@keyframes flash{0%,100%{opacity:.3}50%{opacity:1}}
