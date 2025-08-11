@@ -11,6 +11,9 @@
 })();
 
 function initSafehouse(){
+  const IS_MOBILE=(window.matchMedia && window.matchMedia('(max-width: 767px)').matches)||('ontouchstart' in window);
+  if(IS_MOBILE){ const m=document.getElementById('mobile'); if(m) m.hidden=false; const c=document.getElementById('crt'); if(c) c.hidden=true; renderMobileUI({}, FS); return; }
+
   const $=(s,c=document)=>c.querySelector(s);
   const boot=$('#boot'), screen=$('#screen'), prompt=$('#prompt'), input=$('#cmd'), ps1=$('#ps1');
   if(!boot||!screen||!prompt||!input) throw new Error('DOM not ready');
@@ -456,7 +459,7 @@ CLOSING CHECK
   function startStaffLogin(fromSudo){
     banner(fromSudo ? "SUDO PLEASE → STAFF LOGIN" : "STAFF LOGIN");
     ask("USER", user=> ask("ACCESS CODE", code=>{
-      const valid=["admin","user","hack","bypass","staff","letmein"];
+      const valid=["admin","0000","1234","staff","letmein","password","safehouse","user","hack","bypass"];
       if(valid.indexOf((code||"").toLowerCase())===-1){
         tries++; err("access denied");
         if(tries>=3){ const lk=document.createElement('div'); lk.className='lockdown'; lk.textContent='** LOCKDOWN **'; screen.appendChild(lk); setTimeout(()=>lk.remove(),2000); }
@@ -677,4 +680,54 @@ CLOSING CHECK
   }
   input.onkeydown=keyHandler;
   updatePS1();
+}
+
+function renderMobileUI(_, FS){
+  const root=document.getElementById('mobile'); root.innerHTML='';
+  const css=document.createElement('style'); css.textContent=`
+    .mobile-shell{max-width:980px;margin:24px auto;padding:16px;border:1px solid rgba(227,183,107,.25);border-radius:14px;background:#07100c;box-shadow:0 18px 70px rgba(0,0,0,.6);color:var(--ph)}
+    .m-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+    .m-brand{color:var(--dim);font-size:14px}
+    .m-section{margin:10px 0}
+    .m-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+    .m-card{border:1px solid rgba(175,255,209,.25);background:#09150f;border-radius:10px;padding:10px}
+    .m-card h3{margin:0 0 6px 0;font-size:14px;color:#afffd1}
+    .m-btn{display:inline-block;border:1px solid rgba(175,255,209,.25);padding:8px 10px;border-radius:10px;color:#afffd1;background:#0b1b0b}
+    .m-list{border:1px solid rgba(175,255,209,.25);background:#09150f;border-radius:10px;overflow:hidden}
+    .m-row{display:flex;gap:8px;align-items:center;padding:10px;border-bottom:1px solid rgba(175,255,209,.18)}
+    .m-row:last-child{border-bottom:none}
+    .m-breadcrumb{color:var(--dim);font-size:12px;margin-top:4px}
+    .m-pre{white-space:pre-wrap;border:1px solid rgba(175,255,209,.25);background:#081408;border-radius:10px;padding:10px}
+  `; document.head.appendChild(css);
+  const shell=document.createElement('div'); shell.className='mobile-shell'; root.appendChild(shell);
+  const header=document.createElement('div'); header.className='m-header'; shell.appendChild(header);
+  const brand=document.createElement('div'); brand.className='m-brand'; brand.textContent='SAFEHOUSE-OS v6.4 — Mobile'; header.appendChild(brand);
+  const staffBtn=document.createElement('button'); staffBtn.className='m-btn'; staffBtn.textContent='Staff'; header.appendChild(staffBtn);
+  const main=document.createElement('div'); shell.appendChild(main);
+
+  function card(title, on){ const c=document.createElement('div'); c.className='m-card'; const h=document.createElement('h3'); h.textContent=title; c.appendChild(h); const b=document.createElement('button'); b.className='m-btn'; b.textContent='OPEN'; b.onclick=on; c.appendChild(b); return c; }
+  function guest(){ main.innerHTML=''; const grid=document.createElement('div'); grid.className='m-grid';
+    grid.appendChild(card('About',()=>show(FS['/home/guest/about.txt'])));
+    grid.appendChild(card('Hours',()=>show('Tue–Sun 18:00–01:00\nMon closed\nLast call 00:30')));
+    grid.appendChild(card('Map',()=>show(FS['/home/guest/map.txt'])));
+    grid.appendChild(card('Contacts',()=>show('Phone: +81 (0)11‑SAFE‑BAR\nMail: contact@safehouse.bar\nIG: @safehouse.bar')));
+    grid.appendChild(card('Staff Login', ()=>login()));
+    main.appendChild(grid);
+  }
+  function show(text){ main.innerHTML=''; const pre=document.createElement('pre'); pre.className='m-pre'; pre.textContent=text||'[no content]'; main.appendChild(pre); const back=document.createElement('button'); back.className='m-btn'; back.textContent='BACK'; back.onclick=guest; main.appendChild(back); }
+  function login(){ main.innerHTML=''; const wrap=document.createElement('div'); wrap.className='m-card'; const u=document.createElement('input'); u.placeholder='USER'; u.className='m-btn'; u.style.width='100%'; u.style.background='#09150f'; const p=document.createElement('input'); p.placeholder='ACCESS CODE'; p.type='password'; p.className='m-btn'; p.style.width='100%'; p.style.background='#09150f'; const ok=document.createElement('button'); ok.className='m-btn'; ok.textContent='LOGIN'; const back=document.createElement('button'); back.className='m-btn'; back.textContent='CANCEL'; const info=document.createElement('div'); info.className='m-breadcrumb'; info.textContent='Codes: admin, 0000, 1234, staff, letmein, password, safehouse, user, hack, bypass'; wrap.appendChild(u); wrap.appendChild(document.createElement('div')).style.height='6px'; wrap.appendChild(p); wrap.appendChild(document.createElement('div')).style.height='8px'; const row=document.createElement('div'); row.appendChild(ok); row.appendChild(back); wrap.appendChild(row); wrap.appendChild(info); main.appendChild(wrap); back.onclick=guest; ok.onclick=()=>{ const code=(p.value||'').toLowerCase().trim(); const valid=['admin','0000','1234','staff','letmein','password','safehouse','user','hack','bypass']; if(!valid.includes(code)){ info.textContent='Access denied'; info.style.color='#ff9a5c'; return; } staffHome(u.value||'staff'); }; }
+  function staffHome(user){ main.innerHTML=''; const bc=document.createElement('div'); bc.className='m-breadcrumb'; bc.textContent='Hello '+user+' — STAFF+'; main.appendChild(bc); const grid=document.createElement('div'); grid.className='m-grid'; grid.appendChild(card('Files', ()=>files('/'))); grid.appendChild(card('Logs', ()=>logs())); grid.appendChild(card('Diagnostics', ()=>diag())); grid.appendChild(card('Pressurize', ()=>press())); main.appendChild(grid); const out=document.createElement('button'); out.className='m-btn'; out.textContent='LOGOUT'; out.onclick=guest; main.appendChild(out); }
+  function isDir(p){ return Array.isArray(FS[p]); } function isFile(p){ return typeof FS[p]==='string'; } function norm(p){ p=p.replace(/\/+/g,'/'); if(p.length>1&&p.endsWith('/')) p=p.slice(0,-1); return p; }
+  function files(start){ main.innerHTML=''; const title=document.createElement('h3'); title.textContent='Files'; main.appendChild(title); list(start||'/'); const back=document.createElement('button'); back.className='m-btn'; back.textContent='BACK'; back.onclick=()=>staffHome('staff'); main.appendChild(back); }
+  function list(p){ const bc=document.createElement('div'); bc.className='m-breadcrumb'; bc.textContent='Path: '+p; main.appendChild(bc); const box=document.createElement('div'); box.className='m-list'; main.appendChild(box);
+    if(p!=='/'){ const row=document.createElement('div'); row.className='m-row'; row.textContent='◀ ..'; row.onclick=()=>{ const parts=p.split('/'); parts.pop(); const up=parts.join('/')||'/'; main.innerHTML=''; files(up); }; box.appendChild(row); }
+    (FS[p]||[]).forEach(name=>{ const full=norm((p==='/'?'':p)+'/'+name); const row=document.createElement('div'); row.className='m-row'; if(isDir(full)){ row.textContent='📁 '+name; row.onclick=()=>{ main.innerHTML=''; files(full); }; } else if(isFile(full)){ row.textContent='📄 '+name; row.onclick=()=>open(full); } box.appendChild(row); });
+  }
+  function open(path){ main.innerHTML=''; const pre=document.createElement('pre'); pre.className='m-pre'; pre.textContent=FS[path]||'[missing]'; main.appendChild(pre); const back=document.createElement('button'); back.className='m-btn'; back.textContent='BACK'; back.onclick=()=>{ const folder=path.substring(0,path.lastIndexOf('/'))||'/'; main.innerHTML=''; files(folder); }; main.appendChild(back); }
+  function logs(){ main.innerHTML=''; const pre=document.createElement('pre'); pre.className='m-pre'; pre.textContent='[logs]\n'+(FS['/var/log/staff.log']||''); main.appendChild(pre); }
+  function diag(){ main.innerHTML=''; const pre=document.createElement('pre'); pre.className='m-pre'; pre.textContent='Diagnostics:\n'; main.appendChild(pre); const steps=['POWER RAILS +5V +12V','AIRLOCK SENSORS','MOTOR DRIVE','CRT EMISSION','AUDIO BUS','NET LINK (OFFLINE EXPECTED)']; let i=0; const id=setInterval(()=>{ pre.textContent+=steps[i]+': OK\n'; i++; if(i>=steps.length) clearInterval(id); }, 400); const back=document.createElement('button'); back.className='m-btn'; back.textContent='BACK'; back.onclick=()=>staffHome('staff'); main.appendChild(back); }
+  function press(){ main.innerHTML=''; const pre=document.createElement('pre'); pre.className='m-pre'; pre.textContent='Pressurize:\n[                    ] 0%'; main.appendChild(pre); let n=0; const id=setInterval(()=>{ n=Math.min(100,n+6+Math.floor(Math.random()*5)); const bars=Math.floor(n/5); pre.textContent='Pressurize:\n['+'█'.repeat(bars).padEnd(20,'░')+'] '+n+'%'; if(n>=100){ clearInterval(id); pre.textContent+='\nOK'; } }, 200); const back=document.createElement('button'); back.className='m-btn'; back.textContent='BACK'; back.onclick=()=>staffHome('staff'); main.appendChild(back); }
+  // start
+  const shellEl = document.querySelector('.mobile-shell') || root; shellEl.appendChild(header); shellEl.appendChild(main);
+  guest();
 }
