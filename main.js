@@ -11,8 +11,8 @@
 })();
 
 function initSafehouse(){
-  const IS_MOBILE=(window.matchMedia && window.matchMedia('(max-width: 767px)').matches)||('ontouchstart' in window);
-  if(IS_MOBILE){ const m=document.getElementById('mobile'); if(m) m.hidden=false; const c=document.getElementById('crt'); if(c) c.hidden=true; renderMobileUI({}, FS); return; }
+  const __MOBILE__=(window.matchMedia && window.matchMedia('(max-width: 767px)').matches)||('ontouchstart' in window);
+  if(__MOBILE__){ const m=document.getElementById('mobile'); if(m) m.hidden=false; const c=document.getElementById('crt'); if(c) c.hidden=true; /* wait to render until FS exists */ }
 
   const $=(s,c=document)=>c.querySelector(s);
   const boot=$('#boot'), screen=$('#screen'), prompt=$('#prompt'), input=$('#cmd'), ps1=$('#ps1');
@@ -354,7 +354,11 @@ CLOSING CHECK
     "/var/log/shift-notes-extended.log":
 `— Remember: story first, recipe second.
 — If a guest brings a coin with a hole, give it back. Politely.`
-  };
+  }
+
+  // Mobile: now FS exists, render and exit
+  if (typeof __MOBILE__ !== 'undefined' && __MOBILE__) { renderMobileUI({}, FS); return; }
+;
 
   function isDir(p){ return Array.isArray(FS[p]); }
   function isFile(p){ return typeof FS[p]==='string'; }
