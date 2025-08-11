@@ -578,7 +578,31 @@ CLOSING CHECK
     },
     // Lock & Emerg
     lock(sub, rotor, val){
-      if(!this._lock){ this._lock={A:50,B:50,C:50}; }
+      if(!this._lock){ this._lock={A:50,B:50,C:50
+    ,
+    // ---- Added interactive commands (desktop) ----
+    rad(sub){
+      if(sub==='start'){ if(running) clearInterval(running); ok('RAD start'); running=setInterval(()=>{ const r=(Math.random()*0.35+0.06).toFixed(2); print('[RAD] '+r+' µSv/h'); }, 600); }
+      else if(sub==='stop'){ if(running){ clearInterval(running); running=null; ok('RAD stop'); } else warn('RAD not running'); }
+      else if(sub==='reset'){ ok('Baseline reset'); }
+      else if(sub==='spike'){ print('[RAD] '+(0.45+Math.random()*0.15).toFixed(2)+' µSv/h','warn'); }
+      else warn('usage: rad start|stop|reset|spike');
+    },
+    lockdown(sub){
+      if(sub==='set'){ print('** LOCKDOWN ACTIVE **','err'); }
+      else if(sub==='clear'){ ok('Lockdown cleared'); }
+      else warn('usage: lockdown set|clear');
+    },
+    vent(sub){
+      if(sub==='start'){ ok('Ventilation: purifying...'); let p=0; const id=setInterval(()=>{ p+=10; print('Purifying '+p+'%'); if(p>=100){ clearInterval(id); ok('Air filtration engaged — contaminants <0.03%'); } }, 200); }
+      else if(sub==='stop'){ ok('Ventilation stopped'); }
+      else warn('usage: vent start|stop');
+    },
+    power(sub){
+      if(!sub){ banner('POWER REROUTE'); print('[A]───┐      \n     ├─[C]──[D]\n[B]───┘      \n'); ok('Sequence OK — POWER STABLE'); }
+      else warn('usage: power');
+    }
+}; }
       if(sub==="set"){
         if(!rotor||val===undefined) return warn("usage: lock set A|B|C <00-99>");
         const v=parseInt(val,10), target=this._lock[rotor.toUpperCase()], diff=Math.abs(v-target);
@@ -720,7 +744,7 @@ function renderMobileUI(_, FS){
   }
   function show(text){ main.innerHTML=''; const pre=document.createElement('pre'); pre.className='m-pre'; pre.textContent=text||'[no content]'; main.appendChild(pre); const back=document.createElement('button'); back.className='m-btn'; back.textContent='BACK'; back.onclick=guest; main.appendChild(back); }
   function login(){ main.innerHTML=''; const wrap=document.createElement('div'); wrap.className='m-card'; const u=document.createElement('input'); u.placeholder='USER'; u.className='m-btn'; u.style.width='100%'; u.style.background='#09150f'; const p=document.createElement('input'); p.placeholder='ACCESS CODE'; p.type='password'; p.className='m-btn'; p.style.width='100%'; p.style.background='#09150f'; const ok=document.createElement('button'); ok.className='m-btn'; ok.textContent='LOGIN'; const back=document.createElement('button'); back.className='m-btn'; back.textContent='CANCEL'; const info=document.createElement('div'); info.className='m-breadcrumb'; info.textContent='Codes: admin, 0000, 1234, staff, letmein, password, safehouse, user, hack, bypass'; wrap.appendChild(u); wrap.appendChild(document.createElement('div')).style.height='6px'; wrap.appendChild(p); wrap.appendChild(document.createElement('div')).style.height='8px'; const row=document.createElement('div'); row.appendChild(ok); row.appendChild(back); wrap.appendChild(row); wrap.appendChild(info); main.appendChild(wrap); back.onclick=guest; ok.onclick=()=>{ const code=(p.value||'').toLowerCase().trim(); const valid=['admin','0000','1234','staff','letmein','password','safehouse','user','hack','bypass']; if(!valid.includes(code)){ info.textContent='Access denied'; info.style.color='#ff9a5c'; return; } staffHome(u.value||'staff'); }; }
-  function staffHome(user){ main.innerHTML=''; const bc=document.createElement('div'); bc.className='m-breadcrumb'; bc.textContent='Hello '+user+' — STAFF+'; main.appendChild(bc); const grid=document.createElement('div'); grid.className='m-grid'; grid.appendChild(card('Files', ()=>files('/'))); grid.appendChild(card('Logs', ()=>logs())); grid.appendChild(card('Diagnostics', ()=>diag())); grid.appendChild(card('Pressurize', ()=>press())); main.appendChild(grid); const out=document.createElement('button'); out.className='m-btn'; out.textContent='LOGOUT'; out.onclick=guest; main.appendChild(out); }
+  function staffHome(user){ main.innerHTML=''; const bc=document.createElement('div'); bc.className='m-breadcrumb'; bc.textContent='Hello '+user+' — STAFF+'; main.appendChild(bc); const grid=document.createElement('div'); grid.className='m-grid'; grid.appendChild(card('Files', ()=>files('/'))); grid.appendChild(card('Logs', ()=>logs())); grid.appendChild(card('Radiation', ()=>geigerView())); grid.appendChild(card('Lockdown', ()=>lockdownView())); grid.appendChild(card('Ventilation', ()=>ventView())); grid.appendChild(card('Power', ()=>powerView())); grid.appendChild(card('Diagnostics', ()=>diag())); grid.appendChild(card('Pressurize', ()=>press())); main.appendChild(grid); const out=document.createElement('button'); out.className='m-btn'; out.textContent='LOGOUT'; out.onclick=guest; main.appendChild(out); }
   function isDir(p){ return Array.isArray(FS[p]); } function isFile(p){ return typeof FS[p]==='string'; } function norm(p){ p=p.replace(/\/+/g,'/'); if(p.length>1&&p.endsWith('/')) p=p.slice(0,-1); return p; }
   function files(start){ main.innerHTML=''; const title=document.createElement('h3'); title.textContent='Files'; main.appendChild(title); list(start||'/'); const back=document.createElement('button'); back.className='m-btn'; back.textContent='BACK'; back.onclick=()=>staffHome('staff'); main.appendChild(back); }
   function list(p){ const bc=document.createElement('div'); bc.className='m-breadcrumb'; bc.textContent='Path: '+p; main.appendChild(bc); const box=document.createElement('div'); box.className='m-list'; main.appendChild(box);
@@ -728,10 +752,130 @@ function renderMobileUI(_, FS){
     (FS[p]||[]).forEach(name=>{ const full=norm((p==='/'?'':p)+'/'+name); const row=document.createElement('div'); row.className='m-row'; if(isDir(full)){ row.textContent='📁 '+name; row.onclick=()=>{ main.innerHTML=''; files(full); }; } else if(isFile(full)){ row.textContent='📄 '+name; row.onclick=()=>open(full); } box.appendChild(row); });
   }
   function open(path){ main.innerHTML=''; const pre=document.createElement('pre'); pre.className='m-pre'; pre.textContent=FS[path]||'[missing]'; main.appendChild(pre); const back=document.createElement('button'); back.className='m-btn'; back.textContent='BACK'; back.onclick=()=>{ const folder=path.substring(0,path.lastIndexOf('/'))||'/'; main.innerHTML=''; files(folder); }; main.appendChild(back); }
-  function logs(){ main.innerHTML=''; const pre=document.createElement('pre'); pre.className='m-pre'; pre.textContent='[logs]\n'+(FS['/var/log/staff.log']||''); main.appendChild(pre); }
-  function diag(){ main.innerHTML=''; const pre=document.createElement('pre'); pre.className='m-pre'; pre.textContent='Diagnostics:\n'; main.appendChild(pre); const steps=['POWER RAILS +5V +12V','AIRLOCK SENSORS','MOTOR DRIVE','CRT EMISSION','AUDIO BUS','NET LINK (OFFLINE EXPECTED)']; let i=0; const id=setInterval(()=>{ pre.textContent+=steps[i]+': OK\n'; i++; if(i>=steps.length) clearInterval(id); }, 400); const back=document.createElement('button'); back.className='m-btn'; back.textContent='BACK'; back.onclick=()=>staffHome('staff'); main.appendChild(back); }
-  function press(){ main.innerHTML=''; const pre=document.createElement('pre'); pre.className='m-pre'; pre.textContent='Pressurize:\n[                    ] 0%'; main.appendChild(pre); let n=0; const id=setInterval(()=>{ n=Math.min(100,n+6+Math.floor(Math.random()*5)); const bars=Math.floor(n/5); pre.textContent='Pressurize:\n['+'█'.repeat(bars).padEnd(20,'░')+'] '+n+'%'; if(n>=100){ clearInterval(id); pre.textContent+='\nOK'; } }, 200); const back=document.createElement('button'); back.className='m-btn'; back.textContent='BACK'; back.onclick=()=>staffHome('staff'); main.appendChild(back); }
-  // start
-  const shellEl = document.querySelector('.mobile-shell') || root; shellEl.appendChild(header); shellEl.appendChild(main);
-  guest();
+  function logs(){
+    main.innerHTML='';
+    let storeKey='mobile_staff_logs';
+    let items=[]; try{ items=JSON.parse(localStorage.getItem(storeKey))||[]; }catch(e){ items=[]; }
+    const box=document.createElement('div'); box.className='m-list'; box.style.maxHeight='50vh'; box.style.overflow='auto'; main.appendChild(box);
+    const renderList=()=>{
+      box.innerHTML='';
+      if(items.length===0){
+        const row=document.createElement('div'); row.className='m-row'; row.textContent='(no logs yet)'; box.appendChild(row);
+      } else {
+        items.slice(-300).forEach(({t,u,m})=>{
+          const row=document.createElement('div'); row.className='m-row';
+          const head=document.createElement('div'); head.className='m-flex';
+          const name=document.createElement('span'); name.className='m-badge'; name.textContent=(u||'Staff');
+          const time=document.createElement('span'); time.className='m-breadcrumb'; time.style.marginLeft='6px'; time.textContent=t;
+          head.appendChild(name); head.appendChild(time);
+          const msg=document.createElement('div'); msg.style.whiteSpace='pre-wrap'; msg.style.marginTop='4px'; msg.textContent=m;
+          const col=document.createElement('div'); col.style.display='flex'; col.style.flexDirection='column';
+          col.appendChild(head); col.appendChild(msg);
+          row.appendChild(col); box.appendChild(row);
+        });
+        box.scrollTop=box.scrollHeight;
+      }
+    };
+    renderList();
+    const form=document.createElement('div'); form.className='m-flex'; form.style.marginTop='8px';
+    const uIn=document.createElement('input'); uIn.placeholder='user'; uIn.className='m-btn'; uIn.style.flex='0.6'; uIn.style.background='#09150f';
+    const mIn=document.createElement('input'); mIn.placeholder='message'; mIn.className='m-btn'; mIn.style.flex='1'; mIn.style.background='#09150f';
+    const send=document.createElement('button'); send.className='m-btn'; send.textContent='SEND';
+    form.appendChild(uIn); form.appendChild(mIn); form.appendChild(send); main.appendChild(form);
+    function nowISO(){ return new Date().toISOString().replace('T',' ').split('.')[0]; }
+    send.addEventListener('click',()=>{
+      const u=(uIn.value||'Staff').trim();
+      const m=(mIn.value||'').trim();
+      if(!m) return;
+      items.push({t:nowISO(),u,m}); try{ localStorage.setItem(storeKey, JSON.stringify(items)); }catch(e){}
+      mIn.value=''; renderList();
+    });
+    const back=document.createElement('button'); back.className='m-btn'; back.textContent='BACK';
+    back.addEventListener('click',()=>renderStaff('staff'));
+    main.appendChild(back);
+
 }
+
+  // ===== Mobile interactive actions =====
+  function geigerView(){
+    main.innerHTML='';
+    const wrap=document.createElement('div'); wrap.className='m-card'; main.appendChild(wrap);
+    const val=document.createElement('div'); val.style.fontSize='20px'; val.style.marginBottom='6px'; wrap.appendChild(val);
+    const bar=document.createElement('div'); bar.className='m-list'; bar.style.height='10px'; bar.style.padding='0'; wrap.appendChild(bar);
+    const fill=document.createElement('div'); fill.style.height='10px'; fill.style.width='0%'; fill.style.background='#7fffb2'; bar.appendChild(fill);
+    const controls=document.createElement('div'); controls.className='m-flex'; controls.style.marginTop='8px'; wrap.appendChild(controls);
+    const startB=btn('Start'), stopB=btn('Stop'), resetB=btn('Reset baseline'), spikeB=btn('Spike test');
+    controls.appendChild(startB); controls.appendChild(stopB); controls.appendChild(resetB); controls.appendChild(spikeB);
+    const back=document.createElement('button'); back.className='m-btn'; back.textContent='BACK'; back.addEventListener('click',()=>renderStaff('staff')); main.appendChild(back);
+    let running=null, x=0.12, baseline=0.12;
+    function color(v){ return v>0.35?'#ff5c5c':(v>=0.20?'#ff9a5c':'#7fffb2'); }
+    function tick(){
+      const drift=(Math.random()-0.5)*0.02;
+      x = Math.max(0.04, x + drift);
+      x = x*0.85 + baseline*0.15; // ease to baseline
+      update(x);
+    }
+    function update(v){
+      val.textContent=v.toFixed(2)+' µSv/h';
+      fill.style.width=Math.min(100,(v/0.5)*100)+'%';
+      fill.style.background=color(v);
+      if(v>0.35){
+        if(!document.getElementById('radalert')){
+          const al=document.createElement('div'); al.id='radalert'; al.className='m-breadcrumb'; al.style.color='#ff5c5c'; al.textContent='SEEK SHELTER'; main.insertBefore(al, wrap);
+        }
+      } else {
+        const al=document.getElementById('radalert'); if(al) al.remove();
+      }
+    }
+    function btn(t){ const b=document.createElement('button'); b.className='m-btn'; b.textContent=t; return b; }
+    startB.addEventListener('click',()=>{ if(running) return; running=setInterval(tick,150); });
+    stopB.addEventListener('click',()=>{ if(running){ clearInterval(running); running=null; } });
+    resetB.addEventListener('click',()=>{ baseline = x; });
+    spikeB.addEventListener('click',()=>{ x = 0.45 + Math.random()*0.15; update(x); });
+    update(x);
+  }
+
+  function lockdownView(){
+    main.innerHTML='';
+    const card=document.createElement('div'); card.className='m-card'; main.appendChild(card);
+    const h=document.createElement('h3'); h.textContent='Lockdown Control'; card.appendChild(h);
+    const pre=document.createElement('pre'); pre.className='m-pre'; pre.textContent='Ready.'; main.appendChild(pre);
+    const go=document.createElement('button'); go.className='m-btn m-danger'; go.textContent='ENGAGE LOCKDOWN'; main.appendChild(go);
+    const clear=document.createElement('button'); clear.className='m-btn'; clear.textContent='CLEAR'; main.appendChild(clear);
+    const back=document.createElement('button'); back.className='m-btn'; back.textContent='BACK'; back.addEventListener('click',()=>renderStaff('staff')); main.appendChild(back);
+    let active=false, t=10, timer=null;
+    go.addEventListener('click',()=>{
+      if(active) return; active=true; t=10; pre.textContent='Lockdown in: '+t; timer=setInterval(()=>{ t--; pre.textContent='Lockdown in: '+t; if(t<=0){ clearInterval(timer); pre.textContent='** LOCKDOWN ACTIVE **'; } },1000);
+    });
+    clear.addEventListener('click',()=>{ active=false; if(timer){ clearInterval(timer); timer=null; } pre.textContent='Lockdown cleared.'; });
+  }
+
+  function ventView(){
+    main.innerHTML='';
+    const card=document.createElement('div'); card.className='m-card'; main.appendChild(card);
+    const h=document.createElement('h3'); h.textContent='Ventilation Override'; card.appendChild(h);
+    const pre=document.createElement('pre'); pre.className='m-pre'; pre.textContent='Filters idle.'; main.appendChild(pre);
+    const run=document.createElement('button'); run.className='m-btn'; run.textContent='START'; main.appendChild(run);
+    const stop=document.createElement('button'); stop.className='m-btn'; stop.textContent='STOP'; main.appendChild(stop);
+    const back=document.createElement('button'); back.className='m-btn'; back.textContent='BACK'; back.addEventListener('click',()=>renderStaff('staff')); main.appendChild(back);
+    let id=null, p=0;
+    run.addEventListener('click',()=>{ if(id) return; p=0; pre.textContent='Purifying...'; id=setInterval(()=>{ p=Math.min(100,p+5); pre.textContent='Purifying... '+p+'%'; if(p>=100){ clearInterval(id); id=null; pre.textContent='Air filtration engaged — contaminants <0.03%'; } },200); });
+    stop.addEventListener('click',()=>{ if(id){ clearInterval(id); id=null; pre.textContent='Stopped.'; } });
+  }
+
+  function powerView(){
+    main.innerHTML='';
+    const card=document.createElement('div'); card.className='m-card'; main.appendChild(card);
+    const h=document.createElement('h3'); h.textContent='Power Reroute'; card.appendChild(h);
+    const pre=document.createElement('pre'); pre.className='m-pre'; pre.textContent='Connect nodes to reroute power.'; main.appendChild(pre);
+    const run=document.createElement('button'); run.className='m-btn'; run.textContent='START'; main.appendChild(run);
+    const back=document.createElement('button'); back.className='m-btn'; back.textContent='BACK'; back.addEventListener('click',()=>renderStaff('staff')); main.appendChild(back);
+    run.addEventListener('click',()=>{
+      pre.textContent='[A]───┐      
+     ├─[C]──[D]
+[B]───┘      
+
+Tap sequence: A B C D';
+      setTimeout(()=>{ pre.textContent+='\nOK — POWER STABLE'; }, 2000);
+    });
+  }
