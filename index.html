@@ -3,19 +3,54 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>The Safehouse — Terminal</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta name="description" content="The Safehouse terminal console." />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+  <title>The Safehouse - P-59 Console</title>
+  <script>
+    (function () {
+      const version = String(Date.now());
+      window.__SAFEHOUSE_ASSET_VERSION__ = version;
+      const css = document.createElement("link");
+      css.rel = "stylesheet";
+      css.href = "style.css?v=" + version;
+      document.head.appendChild(css);
+    })();
+  </script>
 </head>
 <body>
-  <div id="mobile" hidden></div>
-    <div id="crt">
+  <div id="crt">
     <div id="boot" aria-live="polite"></div>
     <div id="screen" aria-live="polite" hidden></div>
     <div id="prompt" hidden>
       <span id="ps1">guest@safehouse:~$</span>
-      <input id="cmd" autocomplete="off" spellcheck="false" />
+      <input
+        id="cmd"
+        type="text"
+        name="safehouse_console_field"
+        autocomplete="new-password"
+        autocorrect="off"
+        autocapitalize="none"
+        inputmode="text"
+        enterkeyhint="go"
+        spellcheck="false"
+        aria-autocomplete="none"
+        autofill="off"
+        data-form-type="other"
+        data-lpignore="true"
+        data-1p-ignore="true"
+      />
     </div>
   </div>
-  <script src="main.js"></script>
+
+  <script>
+    (function () {
+      const version = window.__SAFEHOUSE_ASSET_VERSION__ || String(Date.now());
+      const js = document.createElement("script");
+      js.src = "main.js?v=" + version;
+      document.body.appendChild(js);
+    })();
+  </script>
 </body>
 </html>
