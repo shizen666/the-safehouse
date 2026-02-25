@@ -86,6 +86,42 @@ body {
   color: var(--ph);
 }
 
+#screen.corrupt-game-screen {
+  font-size: 18px;
+  line-height: 1.28;
+}
+
+#screen.corrupt-game-screen .ascii-title {
+  font-size: 1.08em;
+  line-height: 1.02;
+}
+
+#screen.corrupt-game-screen .title-secondary {
+  font-size: 0.98em;
+}
+
+#screen.corrupt-game-screen .title-version {
+  font-size: 1.08em;
+  letter-spacing: 0.16em;
+  margin-bottom: 4px;
+}
+
+#screen.corrupt-game-screen .menu-item {
+  padding: 1px 3px;
+}
+
+@media (max-width: 760px) {
+  #screen.corrupt-game-screen {
+    font-size: 15px;
+    line-height: 1.18;
+  }
+
+  #screen.corrupt-game-screen .title-version {
+    font-size: 1em;
+    letter-spacing: 0.12em;
+  }
+}
+
 #prompt {
   position: absolute;
   left: 20px;
@@ -178,6 +214,118 @@ body {
   background: rgba(145, 247, 167, 0.13);
 }
 
+.staff-login-form {
+  max-width: 880px;
+  border: 1px solid rgba(145, 247, 167, 0.2);
+  padding: 12px;
+  background: rgba(2, 15, 7, 0.4);
+}
+
+.staff-field {
+  display: block;
+  margin-bottom: 8px;
+}
+
+.staff-label {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--dim);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-size: 0.86em;
+}
+
+.staff-login-input {
+  width: 100%;
+  border: 1px solid rgba(145, 247, 167, 0.4);
+  background: rgba(0, 0, 0, 0.45);
+  color: var(--ph);
+  resize: none;
+  overflow-y: hidden;
+  overflow-x: auto;
+  white-space: nowrap;
+  min-height: 50px;
+  border-radius: 0;
+  padding: 8px 10px;
+  font: inherit;
+  letter-spacing: 0.03em;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.staff-login-input::placeholder {
+  color: rgba(145, 247, 167, 0.45);
+}
+
+.staff-login-input:focus {
+  outline: none;
+  border-color: rgba(145, 247, 167, 0.9);
+  box-shadow: 0 0 0 1px rgba(145, 247, 167, 0.25), 0 0 16px rgba(145, 247, 167, 0.15);
+}
+
+.staff-login-masked {
+  -webkit-text-security: disc;
+}
+
+.staff-suggest {
+  margin-bottom: 10px;
+}
+
+.staff-fill-btn {
+  appearance: none;
+  border: 1px dashed rgba(145, 247, 167, 0.45);
+  background: rgba(145, 247, 167, 0.06);
+  color: #d6ffe2;
+  font: inherit;
+  padding: 4px 8px;
+  cursor: pointer;
+}
+
+.staff-fill-btn:hover,
+.staff-fill-btn:focus {
+  outline: none;
+  border-color: rgba(145, 247, 167, 0.9);
+  background: rgba(145, 247, 167, 0.14);
+}
+
+.staff-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.staff-action-btn {
+  appearance: none;
+  border: 1px solid rgba(145, 247, 167, 0.4);
+  background: rgba(145, 247, 167, 0.06);
+  color: #d6ffe2;
+  font: inherit;
+  padding: 4px 10px;
+  cursor: pointer;
+}
+
+.staff-action-btn:hover,
+.staff-action-btn:focus {
+  outline: none;
+  border-color: rgba(145, 247, 167, 0.9);
+  background: rgba(145, 247, 167, 0.14);
+}
+
+.staff-status {
+  margin-top: 10px;
+  min-height: 1.2em;
+}
+
+.corrupt-option {
+  animation: corrupt-filename-flicker 0.48s steps(2, end) infinite;
+}
+
+.corrupt-option.selected {
+  animation-duration: 0.26s;
+  text-shadow: 0 0 10px rgba(214, 255, 227, 0.5);
+}
+
 .map-frame {
   position: relative;
   overflow: hidden;
@@ -216,6 +364,12 @@ body {
   animation: corrupt-flicker 0.24s steps(2, end) infinite;
 }
 
+.corrupt-row.probe {
+  background: rgba(145, 247, 167, 0.08);
+  border-left: 2px solid rgba(145, 247, 167, 0.6);
+  padding-left: 8px;
+}
+
 .corrupt-filename {
   animation: corrupt-filename-flicker 0.46s steps(2, end) infinite;
 }
@@ -223,6 +377,12 @@ body {
 .corrupt-row.burst {
   color: #d6ffe3;
   text-shadow: 0 0 12px rgba(214, 255, 227, 0.7);
+}
+
+.corrupt-row.reveal {
+  color: #e3ffd1;
+  text-shadow: 0 0 14px rgba(227, 255, 209, 0.92);
+  background: rgba(145, 247, 167, 0.12);
 }
 
 .lockdown {
@@ -289,6 +449,19 @@ body {
 
   .map-image {
     max-height: 32vh;
+  }
+
+  .staff-login-form {
+    padding: 10px;
+  }
+
+  .staff-label {
+    letter-spacing: 0.1em;
+    font-size: 0.84em;
+  }
+
+  .staff-login-input {
+    padding: 7px 9px;
   }
 
   #crt {
