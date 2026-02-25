@@ -91,6 +91,12 @@ function initSafehouse() {
   const RECOVERED_OPERATOR_ID = "vault_maintenance";
   const RECOVERED_ACCESS_KEY = "p59_relay_7734";
   const FOUNDER_WORKSPACE_PASSWORD = "frostline_719";
+  let touchNavRoot = null;
+  const prefersTouchNav = Boolean(
+    (window.matchMedia && (window.matchMedia("(pointer: coarse)").matches || window.matchMedia("(hover: none)").matches)) ||
+    ("ontouchstart" in window) ||
+    (navigator.maxTouchPoints > 0)
+  );
 
   const STAFF_CODES = new Set(["admin", "0000", "1234", "staff", "letmein", "password", "safehouse", "user", "hack", "bypass"]);
 
@@ -178,6 +184,109 @@ function initSafehouse() {
     requestAnimationFrame(() => {
       input.removeAttribute("readonly");
     });
+  }
+
+  function ensureTouchNav() {
+    if (touchNavRoot && touchNavRoot.isConnected) {
+      return touchNavRoot;
+    }
+
+    const nav = document.createElement("div");
+    nav.id = "touch-nav";
+    nav.hidden = true;
+    nav.setAttribute("aria-label", "mobile controls");
+
+    [
+      { action: "up", label: "UP" },
+      { action: "down", label: "DOWN" },
+      { action: "select", label: "SELECT" },
+      { action: "back", label: "BACK" }
+    ].forEach((entry) => {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "touch-nav-btn";
+      button.setAttribute("data-action", entry.action);
+      button.textContent = entry.label;
+      nav.appendChild(button);
+    });
+
+    nav.addEventListener("click", (event) => {
+      const target = event.target;
+      if (!(target instanceof HTMLElement)) {
+        return;
+      }
+      const button = target.closest("button[data-action]");
+      if (!button || !(button instanceof HTMLButtonElement) || button.disabled) {
+        return;
+      }
+      event.preventDefault();
+      const action = button.getAttribute("data-action");
+      if (!action || state.phase !== "menu") {
+        return;
+      }
+      if (action === "up") {
+        moveGuestMenuCursor(-1);
+        return;
+      }
+      if (action === "down") {
+        moveGuestMenuCursor(1);
+        return;
+      }
+      if (action === "select") {
+        runGuestMenuSelection();
+        return;
+      }
+      if (action === "back") {
+        runMenuBackAction();
+      }
+    });
+
+    terminal.appendChild(nav);
+    touchNavRoot = nav;
+    return touchNavRoot;
+  }
+
+  function setTouchNavVisible(visible) {
+    if (!prefersTouchNav) {
+      if (touchNavRoot) {
+        touchNavRoot.hidden = true;
+      }
+      terminal.classList.remove("touch-nav-visible");
+      return;
+    }
+    const nav = ensureTouchNav();
+    const show = Boolean(visible);
+    nav.hidden = !show;
+    terminal.classList.toggle("touch-nav-visible", show);
+    updateTouchNavState();
+  }
+
+  function updateTouchNavState() {
+    if (!touchNavRoot) {
+      return;
+    }
+    const inMenu = state.phase === "menu";
+    const hasActions = (state.guestMenu.actions || []).length > 0;
+    touchNavRoot.querySelectorAll("button[data-action]").forEach((button) => {
+      const action = button.getAttribute("data-action");
+      if (!inMenu) {
+        button.disabled = true;
+        return;
+      }
+      if (action === "back") {
+        button.disabled = false;
+        return;
+      }
+      button.disabled = !hasActions;
+    });
+  }
+
+  function runMenuBackAction() {
+    if (typeof state.guestMenu.onBack === "function") {
+      state.guestMenu.onBack();
+      return;
+    }
+    renderGuestHome();
   }
 
   function banner(title) {
@@ -708,11 +817,32 @@ function initSafehouse() {
     }));
     state.guestMenu.rows = normalized.map((action, index) => {
       const rowClass = action.rowClass ? "menu-item " + action.rowClass : "menu-item";
-      return line("  " + String(index + 1) + ") " + action.label, rowClass);
+      const row = line("  " + String(index + 1) + ") " + action.label, rowClass);
+      row.setAttribute("role", "button");
+      row.setAttribute("tabindex", "0");
+      row.addEventListener("pointerdown", () => {
+        if (state.phase !== "menu") {
+          return;
+        }
+        state.guestMenu.index = index;
+        updateGuestMenuCursor();
+      });
+      row.addEventListener("click", (event) => {
+        event.preventDefault();
+        if (state.phase !== "menu") {
+          return;
+        }
+        state.guestMenu.index = index;
+        updateGuestMenuCursor();
+        runGuestMenuSelection();
+      });
+      return row;
     });
     updateGuestMenuCursor();
+    setTouchNavVisible(true);
+    updateTouchNavState();
     line("");
-    line("UP/DOWN move  ENTER select  ESC back", "muted");
+    line("UP/DOWN move  ENTER select  ESC back  TAP select", "muted");
   }
 
   function updateGuestMenuCursor() {
@@ -731,6 +861,7 @@ function initSafehouse() {
       row.textContent = (selected ? "> " : "  ") + String(i + 1) + ") " + label;
       row.classList.toggle("selected", selected);
     }
+    updateTouchNavState();
   }
 
   function moveGuestMenuCursor(delta) {
@@ -765,6 +896,7 @@ function initSafehouse() {
     state.phase = "menu";
     screen.innerHTML = "";
     screen.classList.remove("corrupt-game-screen");
+    setTouchNavVisible(false);
     drawSafehouseHeader();
     line("");
     if (title) {
@@ -1474,6 +1606,7 @@ const CORRUPT_STORY = [
     state.phase = "founder_gate";
     screen.innerHTML = "";
     screen.classList.remove("corrupt-game-screen");
+    setTouchNavVisible(false);
 
     const draft = ensureFounderVaultDraft();
 
@@ -1788,6 +1921,7 @@ const CORRUPT_STORY = [
     state.phase = "login_form";
     screen.innerHTML = "";
     screen.classList.remove("corrupt-game-screen");
+    setTouchNavVisible(false);
 
     const draft = ensureStaffLoginDraft();
     const unlocked = !!state.recoveredCreds.unlocked;
@@ -3517,6 +3651,7 @@ const CORRUPT_STORY = [
     prompt.style.display = "none";
     input.disabled = true;
     input.blur();
+    setTouchNavVisible(false);
     updatePrompt();
     configureInputMode();
     renderGuestHome();
@@ -3529,6 +3664,7 @@ const CORRUPT_STORY = [
     screen.hidden = true;
     prompt.hidden = true;
     boot.textContent = "";
+    setTouchNavVisible(false);
 
     const frames = [
       { text: "Safehouse Instrumentation Works", wait: 190 },
@@ -3651,11 +3787,7 @@ const CORRUPT_STORY = [
       }
       if (event.key === "Escape") {
         event.preventDefault();
-        if (typeof state.guestMenu.onBack === "function") {
-          state.guestMenu.onBack();
-        } else {
-          renderGuestHome();
-        }
+        runMenuBackAction();
         return;
       }
       if (/^[1-9]$/.test(event.key)) {
@@ -3689,6 +3821,9 @@ const CORRUPT_STORY = [
 
   updatePrompt();
   configureInputMode();
+  if (prefersTouchNav) {
+    ensureTouchNav();
+  }
   startBootSequence();
 }
 

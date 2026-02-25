@@ -207,11 +207,62 @@ body {
 
 .menu-item {
   padding: 1px 4px;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 
 .menu-item.selected {
   color: #d6ffe2;
   background: rgba(145, 247, 167, 0.13);
+}
+
+.menu-item:active {
+  background: rgba(145, 247, 167, 0.2);
+}
+
+#touch-nav {
+  position: absolute;
+  left: 20px;
+  right: 20px;
+  bottom: 20px;
+  display: none;
+  z-index: 7;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.touch-nav-btn {
+  appearance: none;
+  border: 1px solid rgba(145, 247, 167, 0.35);
+  background: rgba(6, 30, 11, 0.82);
+  color: #d6ffe2;
+  font: inherit;
+  letter-spacing: 0.08em;
+  min-height: 46px;
+  padding: 8px 6px;
+  border-radius: 0;
+  cursor: pointer;
+}
+
+.touch-nav-btn:active {
+  background: rgba(145, 247, 167, 0.2);
+}
+
+.touch-nav-btn:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+#crt.touch-nav-visible #screen,
+#crt.touch-nav-visible #boot {
+  bottom: 124px;
+}
+
+#crt.touch-nav-visible #touch-nav {
+  display: grid;
 }
 
 .staff-login-form {
@@ -481,6 +532,25 @@ body {
     right: 12px;
     bottom: 12px;
     padding-top: 9px;
+  }
+
+  #touch-nav {
+    left: 12px;
+    right: 12px;
+    bottom: max(12px, env(safe-area-inset-bottom));
+    gap: 6px;
+  }
+
+  .touch-nav-btn {
+    min-height: 44px;
+    padding: 7px 4px;
+    font-size: 0.96em;
+    letter-spacing: 0.06em;
+  }
+
+  #crt.touch-nav-visible #screen,
+  #crt.touch-nav-visible #boot {
+    bottom: calc(122px + env(safe-area-inset-bottom));
   }
 }
 
