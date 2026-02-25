@@ -198,6 +198,12 @@ body {
   line-height: 1.06;
 }
 
+.ascii-title-mobile {
+  font-size: 0.94em;
+  line-height: 1.03;
+  letter-spacing: 0.03em;
+}
+
 .title-secondary {
   font-size: 1.08em;
   letter-spacing: 0.32em;
@@ -505,6 +511,12 @@ body {
   .ascii-title-compact {
     font-size: 0.82em;
     line-height: 1.08;
+  }
+
+  .ascii-title-mobile {
+    font-size: 0.9em;
+    line-height: 1.04;
+    letter-spacing: 0.02em;
   }
 
   .title-secondary {

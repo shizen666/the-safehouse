@@ -785,26 +785,44 @@ function initSafehouse() {
   }
 
   function drawSafehouseHeader() {
-    const compactHeader = window.innerWidth <= 900;
-    const art = compactHeader
+    const mobileHeader = window.innerWidth <= 760;
+    const compactHeader = !mobileHeader && window.innerWidth <= 900;
+    const art = mobileHeader
       ? [
-          " ___   _   ___ ___ _  _  ___ _   _ ___ ___ ",
-          "| _ \\ /_\\ | __| __| || |/ _ \\ | | / __| __|",
-          "|  _// _ \\| _|| _|| __ | (_) | |_| \\__ \\ _|",
-          "|_| /_/ \\_\\___|___|_||_|\\___/ \\___/|___/___|"
+          "### ### ### ### # # ### # # ### ###",
+          "#   # # #   #   # # # # # # #   #  ",
+          "##  ### ##  ##  ### # # # # ##  ## ",
+          "  # # # #   #   # # # # # # #   #  ",
+          "### # # #   ### # # ###  #  ### ###"
         ]
-      : [
-          "  _____           ______ ______ _    _  ____  _    _  _____ ______ ",
-          " / ____|   /\\    |  ____|  ____| |  | |/ __ \\| |  | |/ ____|  ____|",
-          "| (___    /  \\   | |__  | |__  | |__| | |  | | |  | | (___ | |__   ",
-          " \\___ \\  / /\\ \\  |  __| |  __| |  __  | |  | | |  | |\\___ \\|  __|  ",
-          " ____) |/ ____ \\ | |    | |____| |  | | |__| | |__| |____) | |____ ",
-          "|_____//_/    \\_\\|_|    |______|_|  |_|\\____/ \\____/|_____/|______|"
-        ];
-    const className = compactHeader ? "ascii-title ascii-title-compact" : "ascii-title";
+      : compactHeader
+        ? [
+            " ___   _   ___ ___ _  _  ___ _   _ ___ ___ ",
+            "| _ \\ /_\\ | __| __| || |/ _ \\ | | / __| __|",
+            "|  _// _ \\| _|| _|| __ | (_) | |_| \\__ \\ _|",
+            "|_| /_/ \\_\\___|___|_||_|\\___/ \\___/|___/___|"
+          ]
+        : [
+            "  _____           ______ ______ _    _  ____  _    _  _____ ______ ",
+            " / ____|   /\\    |  ____|  ____| |  | |/ __ \\| |  | |/ ____|  ____|",
+            "| (___    /  \\   | |__  | |__  | |__| | |  | | |  | | (___ | |__   ",
+            " \\___ \\  / /\\ \\  |  __| |  __| |  __  | |  | | |  | |\\___ \\|  __|  ",
+            " ____) |/ ____ \\ | |    | |____| |  | | |__| | |__| |____) | |____ ",
+            "|_____//_/    \\_\\|_|    |______|_|  |_|\\____/ \\____/|_____/|______|"
+          ];
+    const className = mobileHeader
+      ? "ascii-title ascii-title-mobile"
+      : compactHeader
+        ? "ascii-title ascii-title-compact"
+        : "ascii-title";
     art.forEach((row) => line(row, className));
     line("");
-    line("TERMINAL P-59", compactHeader ? "title title-secondary title-secondary-compact muted" : "title title-secondary muted");
+    line(
+      "TERMINAL P-59",
+      mobileHeader || compactHeader
+        ? "title title-secondary title-secondary-compact muted"
+        : "title title-secondary muted"
+    );
   }
 
   function drawCompactHeader(title) {
