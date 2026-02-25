@@ -785,44 +785,28 @@ function initSafehouse() {
   }
 
   function drawSafehouseHeader() {
-    const mobileHeader = window.innerWidth <= 760;
-    const compactHeader = !mobileHeader && window.innerWidth <= 900;
-    const art = mobileHeader
-      ? [
-          "### ### ### ### # # ### # # ### ###",
-          "#   # # #   #   # # # # # # #   #  ",
-          "##  ### ##  ##  ### # # # # ##  ## ",
-          "  # # # #   #   # # # # # # #   #  ",
-          "### # # #   ### # # ###  #  ### ###"
-        ]
-      : compactHeader
-        ? [
-            " ___   _   ___ ___ _  _  ___ _   _ ___ ___ ",
-            "| _ \\ /_\\ | __| __| || |/ _ \\ | | / __| __|",
-            "|  _// _ \\| _|| _|| __ | (_) | |_| \\__ \\ _|",
-            "|_| /_/ \\_\\___|___|_||_|\\___/ \\___/|___/___|"
-          ]
-        : [
-            "  _____           ______ ______ _    _  ____  _    _  _____ ______ ",
-            " / ____|   /\\    |  ____|  ____| |  | |/ __ \\| |  | |/ ____|  ____|",
-            "| (___    /  \\   | |__  | |__  | |__| | |  | | |  | | (___ | |__   ",
-            " \\___ \\  / /\\ \\  |  __| |  __| |  __  | |  | | |  | |\\___ \\|  __|  ",
-            " ____) |/ ____ \\ | |    | |____| |  | | |__| | |__| |____) | |____ ",
-            "|_____//_/    \\_\\|_|    |______|_|  |_|\\____/ \\____/|_____/|______|"
-          ];
-    const className = mobileHeader
-      ? "ascii-title ascii-title-mobile"
-      : compactHeader
-        ? "ascii-title ascii-title-compact"
-        : "ascii-title";
-    art.forEach((row) => line(row, className));
-    line("");
-    line(
-      "TERMINAL P-59",
-      mobileHeader || compactHeader
-        ? "title title-secondary title-secondary-compact muted"
-        : "title title-secondary muted"
-    );
+    const header = document.createElement("div");
+    header.className = "brand-header";
+
+    const picture = document.createElement("picture");
+    picture.className = "brand-header-picture";
+
+    const mobile = document.createElement("source");
+    mobile.media = "(max-width: 760px)";
+    mobile.srcset = "assets/header-mobile-crop.png?v=20260226-h1";
+    picture.appendChild(mobile);
+
+    const image = document.createElement("img");
+    image.className = "brand-header-image";
+    image.src = "assets/header-desktop-crop.png?v=20260226-h1";
+    image.alt = "THE SAFEHOUSE";
+    image.decoding = "async";
+    picture.appendChild(image);
+
+    header.appendChild(picture);
+    screen.appendChild(header);
+
+    line("TERMINAL P-59", "title title-secondary muted");
   }
 
   function drawCompactHeader(title) {

@@ -184,6 +184,24 @@ body {
   line-height: 1.2;
 }
 
+.brand-header {
+  display: flex;
+  justify-content: center;
+  margin: 0 auto 6px auto;
+}
+
+.brand-header-picture {
+  display: block;
+  width: min(100%, 1120px);
+}
+
+.brand-header-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 0 16px rgba(145, 247, 167, 0.15));
+}
+
 .ascii-title {
   text-align: center;
   letter-spacing: 0;
@@ -501,6 +519,19 @@ body {
   .title {
     letter-spacing: 0.14em;
     line-height: 1.24;
+  }
+
+  .brand-header {
+    margin-bottom: 4px;
+  }
+
+  .brand-header-picture {
+    width: min(100%, 560px);
+  }
+
+  .brand-header-image {
+    max-height: 132px;
+    object-fit: contain;
   }
 
   .ascii-title {
