@@ -193,13 +193,15 @@ body {
 .brand-header-picture {
   display: block;
   width: min(100%, 1120px);
+  aspect-ratio: 1536 / 420;
   line-height: 0;
 }
 
 .brand-header-image {
   display: block;
   width: 100%;
-  height: auto;
+  height: 100%;
+  object-fit: contain;
   opacity: 0.98;
   filter: drop-shadow(0 0 16px rgba(145, 247, 167, 0.2));
 }
@@ -529,11 +531,11 @@ body {
 
   .brand-header-picture {
     width: min(100%, 560px);
+    aspect-ratio: 1024 / 560;
   }
 
   .brand-header-image {
     max-height: 132px;
-    object-fit: contain;
     opacity: 1;
   }
 
