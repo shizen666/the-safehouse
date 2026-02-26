@@ -188,8 +188,6 @@ body {
   display: flex;
   justify-content: center;
   margin: 0 auto 6px auto;
-  position: relative;
-  isolation: isolate;
 }
 
 .brand-header-picture {
@@ -202,15 +200,8 @@ body {
   display: block;
   width: 100%;
   height: auto;
-  opacity: 0.94;
-  mix-blend-mode: screen;
-  filter:
-    saturate(1.08)
-    contrast(1.06)
-    brightness(1.03)
-    drop-shadow(0 0 18px rgba(145, 247, 167, 0.18));
-  -webkit-mask-image: radial-gradient(ellipse at center, rgba(0, 0, 0, 1) 72%, rgba(0, 0, 0, 0.96) 84%, rgba(0, 0, 0, 0) 100%);
-  mask-image: radial-gradient(ellipse at center, rgba(0, 0, 0, 1) 72%, rgba(0, 0, 0, 0.96) 84%, rgba(0, 0, 0, 0) 100%);
+  opacity: 0.98;
+  filter: drop-shadow(0 0 16px rgba(145, 247, 167, 0.2));
 }
 
 .ascii-title {
@@ -543,9 +534,7 @@ body {
   .brand-header-image {
     max-height: 132px;
     object-fit: contain;
-    opacity: 0.97;
-    -webkit-mask-image: radial-gradient(ellipse at center, rgba(0, 0, 0, 1) 76%, rgba(0, 0, 0, 0.96) 88%, rgba(0, 0, 0, 0) 100%);
-    mask-image: radial-gradient(ellipse at center, rgba(0, 0, 0, 1) 76%, rgba(0, 0, 0, 0.96) 88%, rgba(0, 0, 0, 0) 100%);
+    opacity: 1;
   }
 
   .ascii-title {
