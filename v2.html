@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Safehouse Terminal V2" />
+  <title>Safehouse CRT OS // V2</title>
+  <script>
+    (function () {
+      const v = String(Date.now());
+      window.__SAFEHOUSE_V2_ASSET_VERSION__ = v;
+      const css = document.createElement("link");
+      css.rel = "stylesheet";
+      css.href = "v2.css?v=" + v;
+      document.head.appendChild(css);
+    })();
+  </script>
+</head>
+<body>
+  <div id="crt-v2">
+    <div id="v2-app" aria-live="polite"></div>
+  </div>
+
+  <script>
+    (function () {
+      const v = window.__SAFEHOUSE_V2_ASSET_VERSION__ || String(Date.now());
+      const js = document.createElement("script");
+      js.src = "v2.js?v=" + v;
+      document.body.appendChild(js);
+    })();
+  </script>
+</body>
+</html>
