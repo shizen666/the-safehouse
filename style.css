@@ -195,6 +195,8 @@ body {
   width: min(100%, 1120px);
   aspect-ratio: 1536 / 420;
   line-height: 0;
+  overflow: hidden;
+  background: linear-gradient(180deg, #010301 0%, #020702 55%, #010401 100%);
 }
 
 .brand-header-image {
@@ -202,8 +204,9 @@ body {
   width: 100%;
   height: 100%;
   object-fit: contain;
-  opacity: 0.98;
-  filter: drop-shadow(0 0 16px rgba(145, 247, 167, 0.2));
+  opacity: 0.96;
+  mix-blend-mode: screen;
+  filter: drop-shadow(0 0 14px rgba(145, 247, 167, 0.18));
 }
 
 .ascii-title {

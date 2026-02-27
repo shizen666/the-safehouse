@@ -289,6 +289,27 @@ function initSafehouse() {
     renderGuestHome();
   }
 
+  function keepSelectedMenuRowVisible(block) {
+    if (state.phase !== "menu") {
+      return;
+    }
+    const rows = state.guestMenu.rows || [];
+    const actions = state.guestMenu.actions || [];
+    if (!rows.length || !actions.length) {
+      return;
+    }
+    const index = Math.max(0, Math.min(rows.length - 1, state.guestMenu.index || 0));
+    const row = rows[index];
+    requestAnimationFrame(() => {
+      if (!row || !row.isConnected) {
+        return;
+      }
+      if (typeof row.scrollIntoView === "function") {
+        row.scrollIntoView({ block: block || "nearest" });
+      }
+    });
+  }
+
   function banner(title) {
     line("");
     line("[ " + title + " ]", "muted");
@@ -874,6 +895,7 @@ function initSafehouse() {
     updateGuestMenuCursor();
     setTouchNavVisible(true);
     updateTouchNavState();
+    keepSelectedMenuRowVisible("nearest");
     line("");
     line("UP/DOWN move  ENTER select  ESC back  TAP select", "muted");
   }
@@ -1124,22 +1146,14 @@ const CORRUPT_STORY = [
     }
     const game = state.corruptGame;
     const backFn = onBack || renderGuestHome;
-    const compactHeader = window.matchMedia && window.matchMedia("(max-width: 760px)").matches;
     const clarity = computeCorruptClarity(game.values);
     const clarityPct = Math.round(clarity * 100);
     const distance = computeCorruptDistance(game.values);
 
     screen.innerHTML = "";
     screen.classList.add("corrupt-game-screen");
-    if (compactHeader) {
-      drawCompactHeader("CORRUPTED FILE // REC-77");
-      line("");
-    } else {
-      drawSafehouseHeader();
-      line("");
-      line("CORRUPTED FILE // REC-77", "title title-version muted");
-      line("");
-    }
+    drawCompactHeader("CORRUPTED FILE // REC-77");
+    line("");
 
     line("record: /public/corrupted-file-77.bin", "muted corrupt-filename");
     line("status: CRC mismatch / payload unreadable", "warn");
@@ -1256,7 +1270,7 @@ const CORRUPT_STORY = [
     });
     state.guestMenu.index = Math.max(0, Math.min(actions.length - 1, game.menuIndex || 0));
     updateGuestMenuCursor();
-    screen.scrollTop = 0;
+    keepSelectedMenuRowVisible("end");
   }
 
   function renderPublicFilesMenu(onBack) {
