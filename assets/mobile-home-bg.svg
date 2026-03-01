@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 2000">
+  <defs>
+    <linearGradient id="glow" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#b9ffd0" stop-opacity="0.9"/>
+      <stop offset="1" stop-color="#95f5af" stop-opacity="0.5"/>
+    </linearGradient>
+    <filter id="soft" x="-25%" y="-25%" width="150%" height="150%">
+      <feGaussianBlur stdDeviation="4"/>
+    </filter>
+  </defs>
+
+  <g opacity="0.42">
+    <circle cx="180" cy="250" r="120" fill="none" stroke="#95f5af" stroke-width="2"/>
+    <circle cx="1020" cy="360" r="90" fill="none" stroke="#95f5af" stroke-width="2"/>
+    <circle cx="980" cy="1760" r="110" fill="none" stroke="#95f5af" stroke-width="2"/>
+    <circle cx="130" cy="1600" r="80" fill="none" stroke="#95f5af" stroke-width="2"/>
+  </g>
+
+  <g transform="translate(130 380)" opacity="0.55">
+    <path d="M 0 20 L 240 20 L 170 360 L 70 360 Z" fill="none" stroke="#95f5af" stroke-width="5"/>
+    <line x1="120" y1="360" x2="120" y2="620" stroke="#95f5af" stroke-width="5"/>
+    <line x1="30" y1="620" x2="210" y2="620" stroke="#95f5af" stroke-width="5"/>
+    <line x1="160" y1="0" x2="230" y2="-100" stroke="#95f5af" stroke-width="5"/>
+    <circle cx="235" cy="-108" r="18" fill="none" stroke="#95f5af" stroke-width="4"/>
+  </g>
+
+  <g transform="translate(720 300)" opacity="0.5">
+    <rect x="40" y="40" width="210" height="300" rx="24" fill="none" stroke="#95f5af" stroke-width="5"/>
+    <line x1="70" y1="130" x2="220" y2="130" stroke="#95f5af" stroke-width="4"/>
+    <line x1="70" y1="190" x2="220" y2="190" stroke="#95f5af" stroke-width="4"/>
+    <line x1="145" y1="-30" x2="145" y2="40" stroke="#95f5af" stroke-width="5"/>
+  </g>
+
+  <g transform="translate(190 1060)" opacity="0.62">
+    <text x="0" y="0" fill="#b9ffd0" font-family="'IBM Plex Mono', monospace" font-size="92" letter-spacing="9" filter="url(#soft)">THE SAFEHOUSE</text>
+    <text x="0" y="0" fill="#95f5af" font-family="'IBM Plex Mono', monospace" font-size="92" letter-spacing="9">THE SAFEHOUSE</text>
+    <line x1="0" y1="60" x2="760" y2="60" stroke="#95f5af" stroke-width="3"/>
+    <text x="0" y="126" fill="url(#glow)" font-family="'IBM Plex Mono', monospace" font-size="44" letter-spacing="7">COCKTAIL BAR</text>
+  </g>
+
+  <g transform="translate(160 1680)" opacity="0.55">
+    <path d="M 0 0 Q 140 -120 280 0" fill="none" stroke="#95f5af" stroke-width="4"/>
+    <path d="M 300 0 Q 440 -120 580 0" fill="none" stroke="#95f5af" stroke-width="4"/>
+    <path d="M 600 0 Q 740 -120 880 0" fill="none" stroke="#95f5af" stroke-width="4"/>
+  </g>
+</svg>
