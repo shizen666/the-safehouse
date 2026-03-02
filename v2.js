@@ -16,7 +16,8 @@
   const STORAGE_KEYS = {
     repairSolved: "safehouse.v2.repair.solved",
     decryptSolvedLegacy: "safehouse.v2.decrypt.solved",
-    iconLayout: "safehouse.v2.icon.layout"
+    iconLayout: "safehouse.v2.icon.layout",
+    language: "safehouse.v2.language"
   };
 
   const REC77_TARGET = {
@@ -44,6 +45,18 @@
     selectedFilePath: ""
   };
 
+  const LANGUAGES = [
+    { code: "en", label: "English" },
+    { code: "ja", label: "日本語" },
+    { code: "it", label: "Italiano" },
+    { code: "tlh", label: "tlhIngan Hol" }
+  ];
+
+  const appState = {
+    phase: "boot",
+    language: ""
+  };
+
   const APPS = [
     { id: "hours", label: "hours", glyph: "H", title: "Service Hours", icon: "assets/icons/hours.svg" },
     { id: "location", label: "location", glyph: "L", title: "Location", icon: "assets/icons/location.svg" },
@@ -63,6 +76,7 @@
   const VFS = createVfs();
   const listeners = new Set();
   let mode = "";
+  let renderedPhase = "";
   let clockHandle = null;
 
   loadStoredState();
@@ -81,6 +95,19 @@
     } catch (_ignore) {
       repairState.solved = false;
     }
+  }
+
+  function persistLanguage() {
+    try {
+      window.localStorage.setItem(STORAGE_KEYS.language, appState.language);
+    } catch (_ignore) {
+      // no-op
+    }
+  }
+
+  function languageLabel() {
+    const entry = LANGUAGES.find((item) => item.code === appState.language);
+    return entry ? entry.label.toUpperCase() : "UNSET";
   }
 
   function persistRepairSolved() {
@@ -1461,6 +1488,146 @@
     }
   }
 
+  function renderBoot() {
+    stopClock();
+    root.innerHTML = "";
+    const shell = document.createElement("section");
+    shell.className = "boot-screen";
+
+    const title = document.createElement("div");
+    title.className = "boot-title";
+    title.textContent = "SAFEHOUSE SYSTEMS // P-59 MAIN TERMINAL";
+
+    const log = document.createElement("pre");
+    log.className = "boot-log";
+
+    const prompt = document.createElement("div");
+    prompt.className = "boot-prompt";
+    prompt.textContent = "INITIALIZING GUEST INTERFACE...";
+
+    shell.appendChild(title);
+    shell.appendChild(log);
+    shell.appendChild(prompt);
+    root.appendChild(shell);
+
+    const lines = [
+      "[0000.001] Boot ROM: SoftCo Microkernel Loader 8.4.59",
+      "[0000.014] CPU Cluster: VT-Radial 12 Core ............... OK",
+      "[0000.027] Core Memory Bank A ............................ OK",
+      "[0000.039] Core Memory Bank B ............................ OK",
+      "[0000.052] I/O Bus Bridge ................................. OK",
+      "[0000.066] Glass-TTY Matrix .............................. READY",
+      "[0000.081] Storage Array /bar /public /secure ............ MOUNTED",
+      "[0000.098] Service Modules: menu contacts events .......... LOADED",
+      "[0000.112] Staff Partition ................................ LOCKED",
+      "[0000.129] Guest Console ................................. ONLINE",
+      "[0000.146] Security Checksum: 9A1F-3C44 .................. VALID",
+      "[0000.159] Hand-off: SAFEHOUSE GUEST TERMINAL"
+    ];
+
+    let idx = 0;
+    let timer = null;
+    let advanceTimer = null;
+
+    function cleanup() {
+      if (timer) {
+        clearInterval(timer);
+        timer = null;
+      }
+      if (advanceTimer) {
+        clearTimeout(advanceTimer);
+        advanceTimer = null;
+      }
+    }
+
+    function finishBoot() {
+      prompt.classList.add("visible");
+      advanceTimer = setTimeout(() => {
+        cleanup();
+        appState.phase = "intro";
+        render(true);
+      }, 950);
+    }
+
+    timer = setInterval(() => {
+      if (idx >= lines.length) {
+        cleanup();
+        finishBoot();
+        return;
+      }
+      log.textContent += lines[idx] + "\n";
+      log.scrollTop = log.scrollHeight;
+      idx += 1;
+    }, 95);
+
+    shell.addEventListener(
+      "v2-destroy",
+      () => {
+        cleanup();
+      },
+      { once: true }
+    );
+  }
+
+  function renderLanguageGate() {
+    stopClock();
+    root.innerHTML = "";
+    const gate = document.createElement("section");
+    gate.className = "language-gate";
+
+    const logo = document.createElement("div");
+    logo.className = "language-logo";
+
+    const picture = document.createElement("picture");
+    picture.className = "language-logo-picture";
+
+    const sourceMobile = document.createElement("source");
+    sourceMobile.media = "(max-width: 760px)";
+    sourceMobile.srcset = "assets/language-logo-mobile-crop.png";
+
+    const img = document.createElement("img");
+    img.className = "language-logo-image";
+    img.src = "assets/language-logo-desktop-crop.png";
+    img.alt = "The Safehouse";
+    img.loading = "eager";
+
+    picture.appendChild(sourceMobile);
+    picture.appendChild(img);
+    logo.appendChild(picture);
+
+    const subtitle = document.createElement("div");
+    subtitle.className = "language-subtitle";
+    subtitle.textContent = "GUEST TERMINAL // POWERED BY SOFTCO";
+
+    const hint = document.createElement("div");
+    hint.className = "language-hint";
+    hint.textContent = "Select interface language:";
+
+    const choices = document.createElement("div");
+    choices.className = "language-choices";
+
+    LANGUAGES.forEach((lang) => {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "language-button";
+      button.textContent = lang.label;
+      button.addEventListener("click", () => {
+        appState.language = lang.code;
+        persistLanguage();
+        appState.phase = "main";
+        mode = "";
+        render(true);
+      });
+      choices.appendChild(button);
+    });
+
+    gate.appendChild(logo);
+    gate.appendChild(subtitle);
+    gate.appendChild(hint);
+    gate.appendChild(choices);
+    root.appendChild(gate);
+  }
+
   function renderMobile() {
     root.innerHTML = "";
     const shell = document.createElement("div");
@@ -1469,7 +1636,7 @@
     const status = document.createElement("div");
     status.className = "mobile-status";
     const statusLeft = document.createElement("span");
-    statusLeft.textContent = "SAFEHOUSE NET // " + sessionRoleText();
+    statusLeft.textContent = "SAFEHOUSE NET // " + sessionRoleText() + " // " + languageLabel();
     const statusRight = document.createElement("span");
     statusRight.textContent = clockText();
     status.appendChild(statusLeft);
@@ -1607,7 +1774,7 @@
     root.appendChild(shell);
 
     const unbind = onSession(() => {
-      statusLeft.textContent = "SAFEHOUSE NET // " + sessionRoleText();
+      statusLeft.textContent = "SAFEHOUSE NET // " + sessionRoleText() + " // " + languageLabel();
     });
     shell.addEventListener(
       "v2-destroy",
@@ -1620,7 +1787,7 @@
     stopClock();
     clockHandle = setInterval(() => {
       statusRight.textContent = clockText();
-      statusLeft.textContent = "SAFEHOUSE NET // " + sessionRoleText();
+      statusLeft.textContent = "SAFEHOUSE NET // " + sessionRoleText() + " // " + languageLabel();
     }, 1000 * 30);
   }
 
@@ -1633,14 +1800,14 @@
     topbar.className = "desktop-topbar";
     const brand = document.createElement("div");
     brand.className = "desktop-brand";
-    brand.textContent = "safehouse crt os // p-59    file  edit  view  tools";
+    brand.textContent = "safehouse crt os // p-59 // " + languageLabel() + "    file  edit  view  tools";
 
     const right = document.createElement("div");
     right.className = "desktop-topbar-right";
 
     const role = document.createElement("div");
     role.className = "desktop-role";
-    role.textContent = sessionRoleText();
+    role.textContent = sessionRoleText() + " // " + languageLabel();
 
     const clock = document.createElement("div");
     clock.className = "desktop-clock";
@@ -1811,10 +1978,15 @@
       windows.appendChild(win);
 
       const offset = windowMap.size;
-      win.style.width = "760px";
-      win.style.height = "520px";
-      win.style.left = 160 + offset * 28 + "px";
-      win.style.top = 24 + offset * 22 + "px";
+      const bounds = windows.getBoundingClientRect();
+      const defaultW = Math.max(560, Math.min(980, Math.round(bounds.width * 0.54)));
+      const defaultH = Math.max(360, Math.min(640, Math.round(bounds.height * 0.56)));
+      const anchorLeft = Math.max(24, Math.round((bounds.width - defaultW) * 0.5));
+      const anchorTop = Math.max(18, Math.round((bounds.height - defaultH) * 0.2));
+      win.style.width = defaultW + "px";
+      win.style.height = defaultH + "px";
+      win.style.left = anchorLeft + offset * 22 + "px";
+      win.style.top = anchorTop + offset * 18 + "px";
 
       windowMap.set(windowKey, win);
       bringToFront(win);
@@ -2161,12 +2333,12 @@
     requestAnimationFrame(clampDesktopLayout);
 
     const unbind = onSession(() => {
-      role.textContent = sessionRoleText();
+      role.textContent = sessionRoleText() + " // " + languageLabel();
     });
 
     stopClock();
     clockHandle = setInterval(() => {
-      role.textContent = sessionRoleText();
+      role.textContent = sessionRoleText() + " // " + languageLabel();
       clock.textContent = clockText();
     }, 1000 * 30);
 
@@ -2182,8 +2354,12 @@
   }
 
   function render(force) {
+    const phase = appState.phase;
     const nextMode = isMobileMode() ? "mobile" : "desktop";
-    const shouldRerender = Boolean(force) || nextMode !== mode || !root.childElementCount;
+    const shouldRerender =
+      Boolean(force) ||
+      phase !== renderedPhase ||
+      (phase === "main" && (nextMode !== mode || !root.childElementCount));
     if (!shouldRerender) {
       return;
     }
@@ -2191,6 +2367,18 @@
     const previous = root.firstElementChild;
     if (previous) {
       previous.dispatchEvent(new Event("v2-destroy"));
+    }
+
+    renderedPhase = phase;
+    if (phase === "boot") {
+      mode = "";
+      renderBoot();
+      return;
+    }
+    if (phase === "intro") {
+      mode = "";
+      renderLanguageGate();
+      return;
     }
 
     mode = nextMode;
@@ -2209,6 +2397,9 @@
   window.addEventListener("resize", () => {
     clearTimeout(resizeTimer);
     resizeTimer = setTimeout(() => {
+      if (appState.phase !== "main") {
+        return;
+      }
       window.dispatchEvent(new Event("v2-layout-resize"));
       const nextMode = isMobileMode() ? "mobile" : "desktop";
       if (nextMode !== mode) {

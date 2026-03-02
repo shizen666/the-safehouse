@@ -26,7 +26,7 @@ body {
 }
 
 body {
-  font: 18px/1.4 "IBM Plex Mono", "Cascadia Mono", "Lucida Console", "Courier New", monospace;
+  font: 19px/1.45 "IBM Plex Mono", "Cascadia Mono", "Lucida Console", "Courier New", monospace;
 }
 
 #crt-v2 {
@@ -93,16 +93,145 @@ body {
   text-transform: uppercase;
 }
 
+.boot-screen,
+.language-gate {
+  position: absolute;
+  inset: 0;
+  padding: 18px;
+  overflow: auto;
+}
+
+.boot-screen {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: 12px;
+}
+
+.boot-title {
+  font-size: 0.9em;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--fg-bright);
+}
+
+.boot-log {
+  margin: 0;
+  border: 1px solid rgba(149, 245, 175, 0.34);
+  border-radius: 12px;
+  background: rgba(2, 12, 6, 0.88);
+  padding: 12px;
+  overflow: auto;
+  line-height: 1.5;
+  white-space: pre-wrap;
+}
+
+.boot-prompt {
+  opacity: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--fg-bright);
+  transition: opacity 160ms ease;
+}
+
+.boot-prompt.visible {
+  opacity: 1;
+}
+
+.language-gate {
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  gap: 12px;
+}
+
+.language-logo {
+  margin: 0;
+  width: min(1080px, 96vw);
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  padding: 0;
+}
+
+.language-logo-picture {
+  display: block;
+  width: 100%;
+}
+
+.language-logo-image {
+  display: block;
+  width: 100%;
+  height: clamp(160px, 24vh, 280px);
+  object-fit: cover;
+  object-position: center 46%;
+  border-radius: 0;
+  opacity: 0.95;
+  mix-blend-mode: screen;
+  -webkit-mask-image: radial-gradient(
+    ellipse at center,
+    rgba(0, 0, 0, 1) 62%,
+    rgba(0, 0, 0, 0.7) 84%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  mask-image: radial-gradient(
+    ellipse at center,
+    rgba(0, 0, 0, 1) 62%,
+    rgba(0, 0, 0, 0.7) 84%,
+    rgba(0, 0, 0, 0) 100%
+  );
+}
+
+.language-subtitle {
+  font-size: 0.88em;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--fg-bright);
+  text-align: center;
+}
+
+.language-hint {
+  font-size: 0.86em;
+  color: var(--dim);
+  letter-spacing: 0.08em;
+}
+
+.language-choices {
+  width: min(780px, 100%);
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.language-button {
+  appearance: none;
+  border: 1px solid rgba(149, 245, 175, 0.3);
+  border-radius: 10px;
+  background: rgba(3, 14, 8, 0.84);
+  color: var(--fg);
+  font: inherit;
+  font-size: 0.88em;
+  letter-spacing: 0.06em;
+  padding: 12px 10px;
+  cursor: pointer;
+  text-align: center;
+}
+
+.language-button.active,
+.language-button:hover {
+  border-color: rgba(149, 245, 175, 0.5);
+  background: rgba(149, 245, 175, 0.14);
+}
+
 .mobile-shell {
   position: relative;
   width: 100%;
   height: 100%;
-  max-width: 520px;
+  max-width: 560px;
   margin: 0 auto;
   display: grid;
   grid-template-rows: auto auto 1fr auto;
-  padding: 12px;
-  gap: 10px;
+  padding: 14px;
+  gap: 12px;
   isolation: isolate;
 }
 
@@ -144,13 +273,13 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 0.84em;
+  font-size: 0.9em;
   color: rgba(185, 255, 208, 0.92);
   letter-spacing: 0.07em;
   border: 1px solid rgba(149, 245, 175, 0.24);
   border-radius: 10px;
   background: rgba(2, 12, 6, 0.72);
-  padding: 8px 10px;
+  padding: 9px 11px;
 }
 
 .mobile-brand {
@@ -163,16 +292,16 @@ body {
 
 .mobile-brand-name {
   text-align: center;
-  font-size: 1.02em;
-  letter-spacing: 0.16em;
+  font-size: 1.08em;
+  letter-spacing: 0.14em;
   color: var(--fg-bright);
   text-transform: uppercase;
 }
 
 .mobile-brand-sub {
   margin-top: 6px;
-  font-size: 0.74em;
-  letter-spacing: 0.14em;
+  font-size: 0.79em;
+  letter-spacing: 0.12em;
   color: var(--dim);
   text-align: center;
   text-transform: uppercase;
@@ -183,7 +312,7 @@ body {
   border-top: 1px solid rgba(149, 245, 175, 0.22);
   padding-top: 8px;
   text-align: center;
-  font-size: 0.75em;
+  font-size: 0.79em;
   color: rgba(185, 255, 208, 0.92);
   letter-spacing: 0.08em;
 }
@@ -198,7 +327,7 @@ body {
 }
 
 .mobile-launchpad-title {
-  font-size: 0.78em;
+  font-size: 0.86em;
   text-transform: uppercase;
   letter-spacing: 0.14em;
   color: var(--dim);
@@ -207,8 +336,8 @@ body {
 
 .mobile-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 9px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
   align-content: start;
 }
 
@@ -218,11 +347,11 @@ body {
   border-radius: 12px;
   background: linear-gradient(180deg, rgba(12, 39, 21, 0.78), rgba(5, 20, 10, 0.86));
   color: var(--fg);
-  min-height: 104px;
+  min-height: 132px;
   padding: 10px 6px 8px;
   display: grid;
   grid-template-rows: 1fr auto;
-  gap: 7px;
+  gap: 9px;
   cursor: pointer;
   transition: border-color 120ms ease, background 120ms ease;
 }
@@ -235,8 +364,8 @@ body {
 .mobile-app-glyph {
   align-self: center;
   justify-self: center;
-  width: 42px;
-  height: 42px;
+  width: 52px;
+  height: 52px;
   border: 1px solid rgba(149, 245, 175, 0.44);
   border-radius: 10px;
   display: grid;
@@ -247,15 +376,15 @@ body {
 }
 
 .mobile-app-glyph img {
-  width: 26px;
-  height: 26px;
+  width: 30px;
+  height: 30px;
   object-fit: contain;
   filter: drop-shadow(0 0 6px rgba(149, 245, 175, 0.36));
 }
 
 .mobile-app-label {
   text-align: center;
-  font-size: 0.74em;
+  font-size: 0.88em;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   line-height: 1.25;
@@ -269,7 +398,7 @@ body {
   padding: 8px 10px 9px;
   text-align: center;
   color: rgba(149, 245, 175, 0.86);
-  font-size: 0.72em;
+  font-size: 0.8em;
   letter-spacing: 0.09em;
   text-transform: uppercase;
 }
@@ -300,7 +429,7 @@ body {
 }
 
 .mobile-panel-title {
-  font-size: 0.95em;
+  font-size: 1.02em;
   letter-spacing: 0.14em;
   text-transform: uppercase;
 }
@@ -317,9 +446,10 @@ body {
 
 .mobile-panel-content {
   overflow: auto;
-  padding: 12px;
+  padding: 14px;
   white-space: pre-wrap;
-  line-height: 1.5;
+  line-height: 1.55;
+  font-size: 1.02em;
 }
 
 .desktop-shell {
@@ -352,7 +482,7 @@ body {
 }
 
 .desktop-brand {
-  font-size: 0.76em;
+  font-size: 0.82em;
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--fg-bright);
@@ -425,8 +555,8 @@ body {
 .desktop-icon {
   appearance: none;
   position: absolute;
-  width: 96px;
-  min-height: 84px;
+  width: 110px;
+  min-height: 96px;
   display: grid;
   grid-template-rows: auto 1fr;
   gap: 6px;
@@ -439,7 +569,7 @@ body {
   text-align: center;
   font: inherit;
   cursor: pointer;
-  font-size: 0.72em;
+  font-size: 0.8em;
   letter-spacing: 0.04em;
   pointer-events: auto;
   touch-action: none;
@@ -458,23 +588,23 @@ body {
 .desktop-icon-glyph {
   display: grid;
   place-items: center;
-  width: 42px;
-  height: 34px;
+  width: 48px;
+  height: 40px;
   border: 0;
   background: transparent;
   font-size: 0.86em;
 }
 
 .desktop-icon-glyph img {
-  width: 30px;
-  height: 30px;
+  width: 34px;
+  height: 34px;
   object-fit: contain;
   filter: drop-shadow(0 0 5px rgba(149, 245, 175, 0.4));
 }
 
 .desktop-icon-label {
   text-transform: uppercase;
-  line-height: 1.2;
+  line-height: 1.25;
   background: rgba(1, 9, 3, 0.7);
   border: 1px solid rgba(149, 245, 175, 0.2);
   padding: 1px 5px;
@@ -562,7 +692,7 @@ body {
 }
 
 .v2-window-title {
-  font-size: 0.76em;
+  font-size: 0.84em;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--fg-bright);
@@ -592,6 +722,7 @@ body {
   background: #020a04;
   white-space: pre-wrap;
   line-height: 1.45;
+  font-size: 1em;
 }
 
 .v2-window-resize {
@@ -1056,12 +1187,31 @@ body {
 
 @media (max-width: 760px) {
   body {
-    font-size: 15px;
+    font-size: 17px;
+  }
+
+  .boot-screen,
+  .language-gate {
+    padding: 12px;
+  }
+
+  .language-logo {
+    padding: 0;
+  }
+
+  .language-logo-image {
+    height: clamp(132px, 22vh, 200px);
+    object-position: center 42%;
+  }
+
+  .language-choices {
+    grid-template-columns: 1fr;
   }
 
   .mobile-shell {
+    max-width: none;
     padding: 10px;
-    gap: 8px;
+    gap: 9px;
   }
 
   .mobile-brand {
@@ -1069,17 +1219,17 @@ body {
   }
 
   .mobile-brand-name {
-    font-size: 0.92em;
+    font-size: 1em;
     letter-spacing: 0.12em;
   }
 
   .mobile-brand-sub {
-    font-size: 0.7em;
+    font-size: 0.78em;
     letter-spacing: 0.1em;
   }
 
   .mobile-brand-now {
-    font-size: 0.68em;
+    font-size: 0.74em;
   }
 
   .mobile-launchpad {
@@ -1091,26 +1241,30 @@ body {
   }
 
   .mobile-app {
-    min-height: 94px;
-    padding: 8px 5px 7px;
+    min-height: 124px;
+    padding: 9px 7px 8px;
   }
 
   .mobile-app-glyph {
-    width: 38px;
-    height: 38px;
+    width: 48px;
+    height: 48px;
   }
 
   .mobile-app-glyph img {
-    width: 23px;
-    height: 23px;
+    width: 28px;
+    height: 28px;
+  }
+
+  .mobile-app-label {
+    font-size: 0.9em;
   }
 
   .mobile-dock {
-    font-size: 0.68em;
+    font-size: 0.76em;
   }
 
   .mobile-panel-content {
-    font-size: 0.95em;
+    font-size: 1.02em;
   }
 
   .v2-fs-body {
