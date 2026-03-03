@@ -11,6 +11,12 @@
   --dither-b: rgba(149, 245, 175, 0.018);
 }
 
+@font-face {
+  font-family: "pIqaD-qolqoS";
+  src: url("assets/fonts/pIqaD-qolqoS.ttf") format("truetype");
+  font-display: swap;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -204,6 +210,12 @@ body {
   padding: 12px 10px;
   cursor: pointer;
   text-align: center;
+}
+
+.language-button-klingon {
+  font-family: "pIqaD-qolqoS", "IBM Plex Mono", "Cascadia Mono", "Lucida Console", "Courier New", monospace;
+  font-size: 1.02em;
+  letter-spacing: 0.04em;
 }
 
 .language-button.active,

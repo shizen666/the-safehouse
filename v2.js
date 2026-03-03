@@ -49,7 +49,7 @@
     { code: "en", label: "English" },
     { code: "ja", label: "日本語" },
     { code: "it", label: "Italiano" },
-    { code: "tlh", label: " " }
+    { code: "tlh", label: " ", statusLabel: "tlhIngan Hol" }
   ];
 
   const appState = {
@@ -107,7 +107,8 @@
 
   function languageLabel() {
     const entry = LANGUAGES.find((item) => item.code === appState.language);
-    return entry ? entry.label.toUpperCase() : "UNSET";
+    const label = entry ? entry.statusLabel || entry.label : "UNSET";
+    return label.toUpperCase();
   }
 
   function persistRepairSolved() {
@@ -1610,6 +1611,9 @@
       const button = document.createElement("button");
       button.type = "button";
       button.className = "language-button";
+      if (lang.code === "tlh") {
+        button.classList.add("language-button-klingon");
+      }
       button.textContent = lang.label;
       button.addEventListener("click", () => {
         appState.language = lang.code;
