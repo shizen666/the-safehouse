@@ -161,24 +161,14 @@ body {
 .language-logo-image {
   display: block;
   width: 100%;
-  height: clamp(160px, 24vh, 280px);
-  object-fit: cover;
-  object-position: center 46%;
+  height: clamp(220px, 30vh, 360px);
+  object-fit: contain;
+  object-position: center center;
   border-radius: 0;
   opacity: 0.95;
   mix-blend-mode: screen;
-  -webkit-mask-image: radial-gradient(
-    ellipse at center,
-    rgba(0, 0, 0, 1) 62%,
-    rgba(0, 0, 0, 0.7) 84%,
-    rgba(0, 0, 0, 0) 100%
-  );
-  mask-image: radial-gradient(
-    ellipse at center,
-    rgba(0, 0, 0, 1) 62%,
-    rgba(0, 0, 0, 0.7) 84%,
-    rgba(0, 0, 0, 0) 100%
-  );
+  -webkit-mask-image: none;
+  mask-image: none;
 }
 
 .language-subtitle {
@@ -1200,8 +1190,8 @@ body {
   }
 
   .language-logo-image {
-    height: clamp(132px, 22vh, 200px);
-    object-position: center 42%;
+    height: clamp(150px, 24vh, 240px);
+    object-position: center center;
   }
 
   .language-choices {
