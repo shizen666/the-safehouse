@@ -814,12 +814,12 @@ function initSafehouse() {
 
     const mobile = document.createElement("source");
     mobile.media = "(max-width: 760px)";
-    mobile.srcset = "assets/header-mobile-crop.png?v=20260226-h3";
+    mobile.srcset = "assets/header-mobile-crop.png?v=20260303-logo1";
     picture.appendChild(mobile);
 
     const image = document.createElement("img");
     image.className = "brand-header-image";
-    image.src = "assets/header-desktop-crop.png?v=20260226-h3";
+    image.src = "assets/header-desktop-crop.png?v=20260303-logo1";
     image.width = 1536;
     image.height = 420;
     image.alt = "THE SAFEHOUSE";
