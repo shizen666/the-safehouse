@@ -2168,6 +2168,81 @@
       return shellWindow.win;
     }
 
+    function setWindowFrame(win, frame) {
+      if (!win || !frame) {
+        return;
+      }
+      if (typeof frame.width === "number") {
+        win.style.width = Math.round(frame.width) + "px";
+      }
+      if (typeof frame.height === "number") {
+        win.style.height = Math.round(frame.height) + "px";
+      }
+      if (typeof frame.left === "number") {
+        win.style.left = Math.round(frame.left) + "px";
+      }
+      if (typeof frame.top === "number") {
+        win.style.top = Math.round(frame.top) + "px";
+      }
+      clampWindow(win);
+    }
+
+    function openStartupWindows() {
+      const bounds = windows.getBoundingClientRect();
+      if (bounds.width < 820 || bounds.height < 520) {
+        createAppWindow("hours");
+        createAppWindow("contacts");
+        createAppWindow("location");
+        return;
+      }
+
+      const pad = 14;
+      const gap = 14;
+      const usableWidth = Math.max(640, bounds.width - pad * 2 - gap);
+      let leftWidth = Math.round(usableWidth * 0.43);
+      leftWidth = Math.max(360, Math.min(620, leftWidth));
+      let rightWidth = usableWidth - leftWidth;
+      if (rightWidth < 420) {
+        rightWidth = 420;
+        leftWidth = Math.max(320, usableWidth - rightWidth);
+      }
+
+      const leftX = pad;
+      const rightX = leftX + leftWidth + gap;
+      const topY = pad;
+      const hoursHeight = Math.max(250, Math.min(390, Math.round(bounds.height * 0.33)));
+      const contactsHeight = Math.max(250, Math.min(370, Math.round(bounds.height * 0.31)));
+      const contactsTop = topY + hoursHeight + gap;
+      const locationHeight = Math.max(440, Math.min(bounds.height - pad * 2, Math.round(bounds.height * 0.88)));
+
+      const hoursWin = createAppWindow("hours");
+      const contactsWin = createAppWindow("contacts");
+      const locationWin = createAppWindow("location");
+
+      setWindowFrame(hoursWin, {
+        left: leftX,
+        top: topY,
+        width: leftWidth,
+        height: hoursHeight
+      });
+      setWindowFrame(contactsWin, {
+        left: leftX,
+        top: contactsTop,
+        width: leftWidth,
+        height: contactsHeight
+      });
+      setWindowFrame(locationWin, {
+        left: rightX,
+        top: topY,
+        width: rightWidth,
+        height: locationHeight
+      });
+
+      if (locationWin) {
+        bringToFront(locationWin);
+      }
+    }
+
     function readStoredIconLayout() {
       try {
         const raw = window.localStorage.getItem(STORAGE_KEYS.iconLayout);
@@ -2309,6 +2384,8 @@
       icon.addEventListener("pointercancel", stopIconDrag);
       icons.appendChild(icon);
     });
+
+    openStartupWindows();
 
     function clampDesktopLayout() {
       windowMap.forEach((win) => {

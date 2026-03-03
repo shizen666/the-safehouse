@@ -1022,6 +1022,7 @@ body {
 
 .v2-location {
   display: grid;
+  grid-template-rows: auto auto;
   gap: 10px;
 }
 
@@ -1030,12 +1031,15 @@ body {
   border: 1px solid rgba(149, 245, 175, 0.35);
   background: #041108;
   padding: 8px;
+  height: clamp(230px, 42vh, 460px);
 }
 
 .v2-location-map {
   display: block;
-  width: min(920px, 100%);
-  height: auto;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
   border: 1px solid rgba(149, 245, 175, 0.16);
 }
 
@@ -1056,6 +1060,7 @@ body {
   background: #031007;
   padding: 10px;
   white-space: pre-wrap;
+  line-height: 1.55;
 }
 
 .v2-fs-list {
@@ -1208,6 +1213,10 @@ body {
 
   .language-choices {
     grid-template-columns: 1fr;
+  }
+
+  .v2-location-map-frame {
+    height: clamp(180px, 32vh, 260px);
   }
 
   .mobile-shell {
