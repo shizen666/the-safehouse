@@ -49,7 +49,7 @@
     { code: "en", label: "English" },
     { code: "ja", label: "日本語" },
     { code: "it", label: "Italiano" },
-    { code: "tlh", label: "tlhIngan Hol" }
+    { code: "tlh", label: " " }
   ];
 
   const appState = {
