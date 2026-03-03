@@ -1583,11 +1583,11 @@
 
     const sourceMobile = document.createElement("source");
     sourceMobile.media = "(max-width: 760px)";
-    sourceMobile.srcset = "assets/language-logo-mobile-crop.png?v=20260303-logo1";
+    sourceMobile.srcset = "assets/language-logo-mobile-crop.png?v=20260303-logo2";
 
     const img = document.createElement("img");
     img.className = "language-logo-image";
-    img.src = "assets/language-logo-desktop-crop.png?v=20260303-logo1";
+    img.src = "assets/language-logo-desktop-crop.png?v=20260303-logo2";
     img.alt = "The Safehouse";
     img.loading = "eager";
 

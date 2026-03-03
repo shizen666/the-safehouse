@@ -146,7 +146,7 @@ body {
 
 .language-logo {
   margin: 0;
-  width: min(1080px, 96vw);
+  width: min(1280px, 96vw);
   border: 0;
   border-radius: 0;
   background: transparent;
@@ -161,7 +161,7 @@ body {
 .language-logo-image {
   display: block;
   width: 100%;
-  height: clamp(220px, 30vh, 360px);
+  height: clamp(240px, 34vh, 420px);
   object-fit: contain;
   object-position: center center;
   border-radius: 0;
@@ -1190,7 +1190,7 @@ body {
   }
 
   .language-logo-image {
-    height: clamp(150px, 24vh, 240px);
+    height: clamp(170px, 28vh, 270px);
     object-position: center center;
   }
 
