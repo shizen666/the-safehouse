@@ -64,11 +64,25 @@
     { id: "events", label: "events", glyph: "E", title: "Events", icon: "assets/icons/events.svg" },
     { id: "contacts", label: "contacts", glyph: "C", title: "Contacts", icon: "assets/icons/contacts.svg" },
     { id: "public-files", label: "public files", glyph: "P", title: "Public Files", icon: "assets/icons/public-files.svg" },
-    { id: "filesystem", label: "system files", glyph: "FS", title: "File System", icon: "assets/icons/system-files.svg" },
-    { id: "lore", label: "archive", glyph: "LR", title: "Lore Archive", icon: "assets/icons/archive.svg" },
-    { id: "decryptor", label: "file repair", glyph: "FR", title: "REC-77 File Repair Utility", icon: "assets/icons/file-repair.svg" },
-    { id: "staff-login", label: "staff login", glyph: "S", title: "Staff Login", icon: "assets/icons/staff-login.svg" },
-    { id: "terminal", label: "terminal", glyph: "T", title: "Legacy Terminal", icon: "assets/icons/terminal.svg" }
+    {
+      id: "filesystem",
+      label: "system files",
+      glyph: "FS",
+      title: "File System",
+      icon: "assets/icons/system-files.svg",
+      hiddenByDefault: true
+    },
+    { id: "lore", label: "archive", glyph: "LR", title: "Lore Archive", icon: "assets/icons/archive.svg", hiddenByDefault: true },
+    {
+      id: "decryptor",
+      label: "file repair",
+      glyph: "FR",
+      title: "REC-77 File Repair Utility",
+      icon: "assets/icons/file-repair.svg",
+      hiddenByDefault: true
+    },
+    { id: "staff-login", label: "staff login", glyph: "S", title: "Staff Login", icon: "assets/icons/staff-login.svg", hiddenByDefault: true },
+    { id: "terminal", label: "terminal", glyph: "T", title: "Legacy Terminal", icon: "assets/icons/terminal.svg", hiddenByDefault: true }
   ];
 
   const appById = new Map(APPS.map((app) => [app.id, app]));
@@ -1804,14 +1818,52 @@
     topbar.className = "desktop-topbar";
     const brand = document.createElement("div");
     brand.className = "desktop-brand";
-    brand.textContent = "safehouse crt os // p-59 // " + languageLabel() + "    file  edit  view  tools";
+
+    const brandTitle = document.createElement("span");
+    brandTitle.className = "desktop-brand-title";
+    brandTitle.textContent = "safehouse crt os // p-59";
+
+    const menu = document.createElement("div");
+    menu.className = "desktop-menu";
+
+    const fileMenuBtn = document.createElement("button");
+    fileMenuBtn.type = "button";
+    fileMenuBtn.className = "desktop-menu-item";
+    fileMenuBtn.textContent = "file";
+    fileMenuBtn.disabled = true;
+
+    const editMenuBtn = document.createElement("button");
+    editMenuBtn.type = "button";
+    editMenuBtn.className = "desktop-menu-item";
+    editMenuBtn.textContent = "edit";
+    editMenuBtn.disabled = true;
+
+    const viewMenuBtn = document.createElement("button");
+    viewMenuBtn.type = "button";
+    viewMenuBtn.className = "desktop-menu-item";
+    viewMenuBtn.textContent = "view";
+    viewMenuBtn.setAttribute("aria-pressed", "false");
+    viewMenuBtn.title = "Show hidden desktop apps";
+
+    const toolsMenuBtn = document.createElement("button");
+    toolsMenuBtn.type = "button";
+    toolsMenuBtn.className = "desktop-menu-item";
+    toolsMenuBtn.textContent = "tools";
+    toolsMenuBtn.disabled = true;
+
+    menu.appendChild(fileMenuBtn);
+    menu.appendChild(editMenuBtn);
+    menu.appendChild(viewMenuBtn);
+    menu.appendChild(toolsMenuBtn);
+    brand.appendChild(brandTitle);
+    brand.appendChild(menu);
 
     const right = document.createElement("div");
     right.className = "desktop-topbar-right";
 
     const role = document.createElement("div");
     role.className = "desktop-role";
-    role.textContent = sessionRoleText() + " // " + languageLabel();
+    role.textContent = sessionRoleText();
 
     const clock = document.createElement("div");
     clock.className = "desktop-clock";
@@ -1845,6 +1897,21 @@
     const windowMap = new Map();
     const minimizedMap = new Map();
     let zCursor = 40;
+    let showHiddenApps = false;
+
+    function applyHiddenIconVisibility() {
+      icons.querySelectorAll(".desktop-icon[data-hidden='1']").forEach((iconEl) => {
+        iconEl.hidden = !showHiddenApps;
+      });
+      viewMenuBtn.classList.toggle("active", showHiddenApps);
+      viewMenuBtn.setAttribute("aria-pressed", showHiddenApps ? "true" : "false");
+      viewMenuBtn.title = showHiddenApps ? "Hide hidden desktop apps" : "Show hidden desktop apps";
+    }
+
+    viewMenuBtn.addEventListener("click", () => {
+      showHiddenApps = !showHiddenApps;
+      applyHiddenIconVisibility();
+    });
 
     function keyForApp(appId) {
       return "app:" + appId;
@@ -2297,6 +2364,9 @@
       const icon = document.createElement("button");
       icon.type = "button";
       icon.className = "desktop-icon";
+      if (app.hiddenByDefault) {
+        icon.dataset.hidden = "1";
+      }
 
       const glyph = createAppGlyphElement(app, "desktop-icon-glyph");
 
@@ -2385,6 +2455,7 @@
       icons.appendChild(icon);
     });
 
+    applyHiddenIconVisibility();
     openStartupWindows();
 
     function clampDesktopLayout() {
@@ -2414,12 +2485,12 @@
     requestAnimationFrame(clampDesktopLayout);
 
     const unbind = onSession(() => {
-      role.textContent = sessionRoleText() + " // " + languageLabel();
+      role.textContent = sessionRoleText();
     });
 
     stopClock();
     clockHandle = setInterval(() => {
-      role.textContent = sessionRoleText() + " // " + languageLabel();
+      role.textContent = sessionRoleText();
       clock.textContent = clockText();
     }, 1000 * 30);
 

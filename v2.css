@@ -484,11 +484,48 @@ body {
 }
 
 .desktop-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.desktop-brand-title {
   font-size: 0.82em;
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--fg-bright);
-  align-self: center;
+  white-space: nowrap;
+}
+
+.desktop-menu {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.desktop-menu-item {
+  appearance: none;
+  border: 1px solid rgba(149, 245, 175, 0.24);
+  background: rgba(4, 14, 7, 0.76);
+  color: var(--fg);
+  font: inherit;
+  font-size: 0.72em;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 2px 6px;
+  cursor: pointer;
+}
+
+.desktop-menu-item:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
+.desktop-menu-item:not(:disabled):hover,
+.desktop-menu-item.active {
+  border-color: rgba(149, 245, 175, 0.52);
+  background: rgba(149, 245, 175, 0.14);
 }
 
 .desktop-topbar-right {
