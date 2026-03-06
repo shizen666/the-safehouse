@@ -100,15 +100,14 @@
 
   function loadStoredState() {
     try {
-      const solved =
-        window.localStorage.getItem(STORAGE_KEYS.repairSolved) === "1" ||
-        window.localStorage.getItem(STORAGE_KEYS.decryptSolvedLegacy) === "1";
-      repairState.solved = solved;
-      if (repairState.solved) {
-        repairState.clock = REC77_TARGET.clock;
-        repairState.phase = REC77_TARGET.phase;
-        repairState.gain = REC77_TARGET.gain;
-      }
+      // Always start a fresh REC-77 puzzle on new page load.
+      repairState.solved = false;
+      repairState.clock = 5;
+      repairState.phase = 4;
+      repairState.gain = 1;
+      repairState.attempts = 0;
+      window.localStorage.removeItem(STORAGE_KEYS.repairSolved);
+      window.localStorage.removeItem(STORAGE_KEYS.decryptSolvedLegacy);
     } catch (_ignore) {
       repairState.solved = false;
     }
@@ -329,7 +328,15 @@
         "Stayed 28 min. No spoken words to guests.\n" +
         "Floor noise dropped after his entry.",
 
-      "/secure/files/staff-records": ["erik.profile", "theo.profile", "andrea.profile", "ju.profile", "kenji.profile"],
+      "/secure/files/staff-records": [
+        "erik.profile",
+        "theo.profile",
+        "andrea.profile",
+        "ju.profile",
+        "kenji.profile",
+        "mira.profile",
+        "masaya.dossier"
+      ],
       "/secure/files/staff-records/erik.profile":
         "ERIK // floor lead\n" +
         "Met during ration line disputes in lower sector.\n" +
@@ -350,8 +357,21 @@
         "KENJI // service lane\n" +
         "Met at station west gate blackout night.\n" +
         "Trait: disciplined movement, protects weak guests first.",
+      "/secure/files/staff-records/mira.profile":
+        "MIRA // records + inventory\n" +
+        "Joined from municipal archive salvage team.\n" +
+        "Trait: pattern memory, can reconstruct missing stock trails.",
+      "/secure/files/staff-records/masaya.dossier":
+        "MASAYA // external contact dossier\n" +
+        "status: non-staff, high-impact presence\n" +
+        "Known behavior: short visits, low speech, strict drink spec.\n" +
+        "Risk rule: keep C3 visible, never force interaction.",
 
-      "/secure/files/internal-messages": ["owner-broadcast.txt", "floor-alert-template.txt"],
+      "/secure/files/internal-messages": [
+        "owner-broadcast.txt",
+        "floor-alert-template.txt",
+        "founder-passphrase-recovery.txt"
+      ],
       "/secure/files/internal-messages/owner-broadcast.txt":
         "OWNER BROADCAST\n" +
         "Keep service tight. No theater. No ego.\n" +
@@ -361,6 +381,11 @@
         "[time] [zone] [pressure index]\n" +
         "action: [lights/music/door]\n" +
         "result: [stable/watch/escalate]",
+      "/secure/files/internal-messages/founder-passphrase-recovery.txt":
+        "FOUNDER PASSPHRASE RECOVERY\n" +
+        "Escrow fragment verified by Theo + Mira.\n" +
+        "Founder passphrase: frostline_719\n" +
+        "Do not print on public terminals.",
 
       "/secure/files/continuity-chain": ["continuity-log-sy26-q1.md", "event-consequence-matrix.md"],
       "/secure/files/continuity-chain/continuity-log-sy26-q1.md":
@@ -380,7 +405,11 @@
         "emergence-log-sy00-day11.md",
         "masaya-visit-ledger-sy04-sy10.log",
         "second-lock-adoption-sy12.md",
-        "clock-drift-incident-sy17.md"
+        "clock-drift-incident-sy17.md",
+        "corridor-map-notes-sy06.txt",
+        "quiet-floor-rationale-sy14.txt",
+        "surface-radio-fragment-sy19.log",
+        "founder-passphrase-ledger.txt"
       ],
       "/secure/lore/timeline-bunker-fragments.md":
         "# BUNKER TIMELINE FRAGMENTS\n" +
@@ -410,6 +439,23 @@
         "CLOCK DRIFT INCIDENT / SY17\n" +
         "Four bunker sectors reported different dates by up to 19 days.\n" +
         "Timeline reconciliation failed. We retained SY as local standard.",
+      "/secure/lore/corridor-map-notes-sy06.txt":
+        "CORRIDOR MAP NOTES / SY06\n" +
+        "North service tunnel collapsed at marker N-12.\n" +
+        "Re-route guest flow through lower ring after 22:00.",
+      "/secure/lore/quiet-floor-rationale-sy14.txt":
+        "QUIET FLOOR RATIONALE / SY14\n" +
+        "Noise-trigger incidents dropped 38% after low-word service protocol.\n" +
+        "Short language is now mandatory during peak load.",
+      "/secure/lore/surface-radio-fragment-sy19.log":
+        "SURFACE RADIO FRAGMENT / SY19\n" +
+        "[00:14] carrier unstable\n" +
+        "[00:17] \"...keep lights low... gate still open...\"\n" +
+        "[00:18] signal lost",
+      "/secure/lore/founder-passphrase-ledger.txt":
+        "FOUNDER PASSPHRASE LEDGER\n" +
+        "escrow key (latest): frostline_719\n" +
+        "rotate only after dual-sign from floor lead + records.",
 
       "/secure/founder": [
         "README.txt",
@@ -1129,7 +1175,7 @@
     const state = {
       cwd: normalizePath(startPath || rootPath),
       selectedFile: "",
-      viewMode: "tree",
+      viewMode: "list",
       expanded: new Set([rootPath, "/"]),
       lastDragAt: 0
     };
@@ -1475,11 +1521,11 @@
   function buildLore(env) {
     if (!session.staff) {
       return lockedNotice(
-        "LORE ARCHIVE LOCKED\n\nStaff login required to access /secure/lore.\nUse File Repair app to restore REC-77, then authenticate in Staff Login."
+        "SECURE ARCHIVE LOCKED\n\nStaff login required to access /secure.\nUse File Repair app to restore REC-77, then authenticate in Staff Login."
       );
     }
-    return createFilesystemBrowser("/secure/lore", {
-      rootPath: "/secure/lore",
+    return createFilesystemBrowser("/secure", {
+      rootPath: "/secure",
       lockRoot: true,
       onOpenFile: env && env.openDocumentWindow ? env.openDocumentWindow : null,
       enableDrag: Boolean(env && env.enableFileDrag)

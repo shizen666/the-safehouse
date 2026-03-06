@@ -1173,30 +1173,31 @@ body {
   background: #06160d;
   overflow: auto;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(126px, 1fr));
-  grid-auto-rows: minmax(110px, auto);
-  gap: 8px;
+  grid-template-columns: minmax(0, 1fr);
+  grid-auto-rows: minmax(0, auto);
+  gap: 4px;
   align-content: start;
-  padding: 8px;
+  padding: 6px;
 }
 
 .v2-fs-entry {
   appearance: none;
   border: 1px solid rgba(149, 245, 175, 0.24);
-  border-radius: 8px;
-  background: rgba(1, 11, 5, 0.7);
+  border-radius: 3px;
+  background: rgba(1, 11, 5, 0.82);
   color: var(--fg);
   font: inherit;
-  font-size: 0.8em;
+  font-size: 0.88em;
   letter-spacing: 0.04em;
-  text-align: center;
-  padding: 8px 6px;
+  text-align: left;
+  padding: 6px 8px;
   cursor: pointer;
   display: grid;
-  justify-items: center;
-  align-content: start;
+  grid-template-columns: 28px minmax(0, 1fr);
+  align-items: center;
+  justify-items: start;
   gap: 8px;
-  min-height: 110px;
+  min-height: 42px;
 }
 
 .v2-fs-entry:hover,
@@ -1219,14 +1220,14 @@ body {
 }
 
 .v2-fs-entry-glyph {
-  width: 32px;
-  height: 26px;
+  width: 22px;
+  height: 22px;
   border: 1px solid rgba(149, 245, 175, 0.46);
-  border-radius: 5px;
+  border-radius: 2px;
   display: grid;
   place-items: center;
   color: var(--fg-bright);
-  font-size: 0.82em;
+  font-size: 0.7em;
   letter-spacing: 0.04em;
   background:
     repeating-linear-gradient(
@@ -1239,7 +1240,7 @@ body {
 }
 
 .v2-fs-entry-label {
-  line-height: 1.25;
+  line-height: 1.3;
   word-break: break-word;
   max-width: 100%;
 }
@@ -1394,9 +1395,9 @@ body {
   }
 
   .v2-fs-list {
-    grid-template-columns: repeat(auto-fill, minmax(104px, 1fr));
-    grid-auto-rows: minmax(96px, auto);
-    gap: 6px;
+    grid-template-columns: minmax(0, 1fr);
+    grid-auto-rows: minmax(0, auto);
+    gap: 4px;
     padding: 6px;
   }
 
