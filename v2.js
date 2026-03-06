@@ -607,6 +607,9 @@
       img.src = app.icon;
       img.alt = "";
       img.loading = "lazy";
+      img.addEventListener("error", () => {
+        glyph.textContent = app.glyph;
+      });
       glyph.appendChild(img);
       return glyph;
     }
@@ -1952,6 +1955,7 @@
     viewHiddenRow = addMenuAction(viewMenu.panel, "Show hidden apps", () => {
       showHiddenApps = !showHiddenApps;
       applyHiddenIconVisibility();
+      ensureIconLayoutNoOverlap();
     });
 
     const toolsMenu = createMenuGroup("tools", "tools");
@@ -2468,8 +2472,14 @@
       }
     }
 
+    function gridRows() {
+      const rect = workspace.getBoundingClientRect();
+      const estimated = Math.floor((rect.height - 28) / 176);
+      return Math.max(4, Math.min(6, estimated));
+    }
+
     function defaultIconPosition(index) {
-      const rows = 5;
+      const rows = gridRows();
       const col = Math.floor(index / rows);
       const row = index % rows;
       return {
@@ -2493,6 +2503,67 @@
     }
 
     const iconLayout = readStoredIconLayout();
+
+    function iconBoxesOverlap(a, b) {
+      return a.left < b.right && a.right > b.left && a.top < b.bottom && a.bottom > b.top;
+    }
+
+    function collectVisibleIconBoxes() {
+      const boxes = [];
+      icons.querySelectorAll(".desktop-icon").forEach((iconEl) => {
+        const icon = iconEl;
+        if (!showHiddenApps && icon.classList.contains("desktop-icon-hidden")) {
+          return;
+        }
+        const left = parseFloat(icon.style.left || "0");
+        const top = parseFloat(icon.style.top || "0");
+        const width = icon.offsetWidth || 152;
+        const height = icon.offsetHeight || 156;
+        boxes.push({
+          left,
+          top,
+          right: left + width,
+          bottom: top + height
+        });
+      });
+      return boxes;
+    }
+
+    function hasVisibleIconOverlap() {
+      const boxes = collectVisibleIconBoxes();
+      for (let i = 0; i < boxes.length; i += 1) {
+        for (let j = i + 1; j < boxes.length; j += 1) {
+          if (iconBoxesOverlap(boxes[i], boxes[j])) {
+            return true;
+          }
+        }
+      }
+      return false;
+    }
+
+    function resetIconLayoutToGrid() {
+      Object.keys(iconLayout).forEach((key) => {
+        delete iconLayout[key];
+      });
+      APPS.forEach((app, index) => {
+        const icon = icons.querySelector(".desktop-icon[data-app-id='" + app.id + "']");
+        if (!icon) {
+          return;
+        }
+        const next = clampIconPosition(defaultIconPosition(index), icon);
+        icon.style.left = next.x + "px";
+        icon.style.top = next.y + "px";
+        iconLayout[app.id] = { x: next.x, y: next.y };
+      });
+      saveStoredIconLayout(iconLayout);
+    }
+
+    function ensureIconLayoutNoOverlap() {
+      if (!hasVisibleIconOverlap()) {
+        return;
+      }
+      resetIconLayoutToGrid();
+    }
 
     APPS.forEach((app) => {
       const icon = document.createElement("button");
@@ -2591,6 +2662,7 @@
     });
 
     applyHiddenIconVisibility();
+    ensureIconLayoutNoOverlap();
     openStartupWindows();
 
     function clampDesktopLayout() {
