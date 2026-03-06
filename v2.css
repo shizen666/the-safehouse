@@ -537,7 +537,7 @@ body {
   position: absolute;
   top: calc(100% + 4px);
   left: 0;
-  min-width: 220px;
+  min-width: 300px;
   display: grid;
   gap: 2px;
   padding: 6px;
@@ -554,6 +554,10 @@ body {
   z-index: 35;
 }
 
+.desktop-menu-panel[hidden] {
+  display: none !important;
+}
+
 .desktop-menu-row {
   appearance: none;
   width: 100%;
@@ -566,6 +570,7 @@ body {
   text-align: left;
   padding: 6px 8px;
   cursor: pointer;
+  white-space: nowrap;
 }
 
 .desktop-menu-row:hover {
@@ -646,13 +651,14 @@ body {
   appearance: none;
   position: absolute;
   width: 154px;
-  min-height: 136px;
+  height: 156px;
+  min-height: 156px;
   display: grid;
   grid-template-rows: auto 1fr;
   gap: 10px;
   align-items: center;
   justify-items: center;
-  border: 1px solid transparent;
+  border: 0;
   background: transparent;
   color: var(--fg);
   padding: 10px 8px;
@@ -665,22 +671,13 @@ body {
   touch-action: none;
 }
 
-.desktop-icon:active {
-  border-color: rgba(149, 245, 175, 0.34);
-  background: rgba(149, 245, 175, 0.08);
-}
-
-.desktop-icon:hover {
-  border-color: rgba(149, 245, 175, 0.26);
-  background: rgba(149, 245, 175, 0.04);
-}
-
 .desktop-icon-glyph {
   display: grid;
   place-items: center;
   width: 66px;
   height: 58px;
-  border: 0;
+  border: 1px solid transparent;
+  border-radius: 4px;
   background: transparent;
   font-size: 1.02em;
 }
@@ -692,6 +689,17 @@ body {
   filter: drop-shadow(0 0 7px rgba(149, 245, 175, 0.5));
 }
 
+.desktop-icon:hover .desktop-icon-glyph,
+.desktop-icon:active .desktop-icon-glyph,
+.desktop-icon:focus-visible .desktop-icon-glyph {
+  border-color: rgba(149, 245, 175, 0.42);
+  background: rgba(149, 245, 175, 0.08);
+}
+
+.desktop-icon:focus-visible {
+  outline: none;
+}
+
 .desktop-icon-label {
   text-transform: uppercase;
   line-height: 1.24;
@@ -701,12 +709,12 @@ body {
   font-size: 1.05em;
 }
 
-.desktop-icon-hidden {
-  display: none;
+.desktop-icon.desktop-icon-hidden {
+  display: none !important;
 }
 
-.desktop-shell.show-hidden-apps .desktop-icon-hidden {
-  display: grid;
+.desktop-shell.show-hidden-apps .desktop-icon.desktop-icon-hidden {
+  display: grid !important;
 }
 
 .desktop-windows {

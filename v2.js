@@ -17,8 +17,10 @@
     repairSolved: "safehouse.v2.repair.solved",
     decryptSolvedLegacy: "safehouse.v2.decrypt.solved",
     iconLayout: "safehouse.v2.icon.layout",
+    iconLayoutVersion: "safehouse.v2.icon.layout.version",
     language: "safehouse.v2.language"
   };
+  const ICON_LAYOUT_VERSION = "20260306-icons-v2";
 
   const REC77_TARGET = {
     clock: 6,
@@ -2437,6 +2439,12 @@
 
     function readStoredIconLayout() {
       try {
+        const version = window.localStorage.getItem(STORAGE_KEYS.iconLayoutVersion);
+        if (version !== ICON_LAYOUT_VERSION) {
+          window.localStorage.removeItem(STORAGE_KEYS.iconLayout);
+          window.localStorage.setItem(STORAGE_KEYS.iconLayoutVersion, ICON_LAYOUT_VERSION);
+          return {};
+        }
         const raw = window.localStorage.getItem(STORAGE_KEYS.iconLayout);
         if (!raw) {
           return {};
@@ -2453,6 +2461,7 @@
 
     function saveStoredIconLayout(layout) {
       try {
+        window.localStorage.setItem(STORAGE_KEYS.iconLayoutVersion, ICON_LAYOUT_VERSION);
         window.localStorage.setItem(STORAGE_KEYS.iconLayout, JSON.stringify(layout));
       } catch (_ignore) {
         // no-op
@@ -2464,8 +2473,8 @@
       const col = Math.floor(index / rows);
       const row = index % rows;
       return {
-        x: 18 + col * 176,
-        y: 16 + row * 150
+        x: 22 + col * 192,
+        y: 18 + row * 176
       };
     }
 
