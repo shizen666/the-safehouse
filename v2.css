@@ -466,7 +466,7 @@ body {
   left: 0;
   right: 0;
   top: 0;
-  height: 34px;
+  height: 40px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -479,8 +479,8 @@ body {
       rgba(5, 22, 11, 0.95) 1px,
       rgba(5, 22, 11, 0.95) 3px
     );
-  padding: 0 12px;
-  z-index: 20;
+  padding: 0 14px;
+  z-index: 220;
 }
 
 .desktop-brand {
@@ -491,8 +491,8 @@ body {
 }
 
 .desktop-brand-title {
-  font-size: 0.82em;
-  letter-spacing: 0.16em;
+  font-size: 0.9em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--fg-bright);
   white-space: nowrap;
@@ -501,19 +501,23 @@ body {
 .desktop-menu {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
+}
+
+.desktop-menu-group {
+  position: relative;
 }
 
 .desktop-menu-item {
   appearance: none;
-  border: 1px solid rgba(149, 245, 175, 0.24);
-  background: rgba(4, 14, 7, 0.76);
+  border: 1px solid rgba(149, 245, 175, 0.34);
+  background: rgba(4, 14, 7, 0.9);
   color: var(--fg);
   font: inherit;
-  font-size: 0.72em;
+  font-size: 0.8em;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  padding: 2px 6px;
+  padding: 4px 9px;
   cursor: pointer;
 }
 
@@ -523,9 +527,61 @@ body {
 }
 
 .desktop-menu-item:not(:disabled):hover,
+.desktop-menu-item.menu-open,
 .desktop-menu-item.active {
   border-color: rgba(149, 245, 175, 0.52);
   background: rgba(149, 245, 175, 0.14);
+}
+
+.desktop-menu-panel {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  min-width: 220px;
+  display: grid;
+  gap: 2px;
+  padding: 6px;
+  border: 1px solid rgba(149, 245, 175, 0.44);
+  background:
+    repeating-linear-gradient(
+      0deg,
+      rgba(149, 245, 175, 0.1) 0,
+      rgba(149, 245, 175, 0.1) 1px,
+      rgba(3, 12, 6, 0.96) 1px,
+      rgba(3, 12, 6, 0.96) 3px
+    );
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.46);
+  z-index: 35;
+}
+
+.desktop-menu-row {
+  appearance: none;
+  width: 100%;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--fg);
+  font: inherit;
+  font-size: 0.84em;
+  letter-spacing: 0.04em;
+  text-align: left;
+  padding: 6px 8px;
+  cursor: pointer;
+}
+
+.desktop-menu-row:hover {
+  border-color: rgba(149, 245, 175, 0.42);
+  background: rgba(149, 245, 175, 0.14);
+}
+
+.desktop-menu-row.checked::before {
+  content: "✓ ";
+  color: var(--fg-bright);
+}
+
+.desktop-menu-divider {
+  height: 1px;
+  margin: 3px 2px;
+  background: rgba(149, 245, 175, 0.24);
 }
 
 .desktop-topbar-right {
@@ -552,11 +608,8 @@ body {
 
 .desktop-workspace {
   position: absolute;
-  inset: 34px 0 0 0;
-  background:
-    radial-gradient(circle at 1px 1px, rgba(149, 245, 175, 0.065) 1px, transparent 1px),
-    linear-gradient(180deg, rgba(1, 10, 4, 0.45), rgba(1, 10, 4, 0.7));
-  background-size: 4px 4px, auto;
+  inset: 40px 0 0 0;
+  background: #020904;
   overflow: hidden;
 }
 
@@ -565,23 +618,21 @@ body {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background: url("assets/wallpaper-safehouse.svg") center 50% / min(72vw, 1180px) auto no-repeat;
-  opacity: 0.74;
-  mix-blend-mode: screen;
-  -webkit-mask-image: radial-gradient(
-    circle at center,
-    rgba(0, 0, 0, 1) 0%,
-    rgba(0, 0, 0, 1) 56%,
-    rgba(0, 0, 0, 0.44) 82%,
-    rgba(0, 0, 0, 0) 100%
-  );
-  mask-image: radial-gradient(
-    circle at center,
-    rgba(0, 0, 0, 1) 0%,
-    rgba(0, 0, 0, 1) 56%,
-    rgba(0, 0, 0, 0.44) 82%,
-    rgba(0, 0, 0, 0) 100%
-  );
+  background:
+    linear-gradient(180deg, rgba(1, 9, 3, 0.52), rgba(1, 9, 3, 0.68)),
+    url("assets/desktop-bg-main.png") center center / cover no-repeat;
+  opacity: 0.92;
+}
+
+.desktop-workspace::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 1px 1px, rgba(149, 245, 175, 0.07) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(1, 10, 4, 0.15), rgba(1, 10, 4, 0.38));
+  background-size: 4px 4px, auto;
 }
 
 .desktop-icons {
@@ -594,22 +645,22 @@ body {
 .desktop-icon {
   appearance: none;
   position: absolute;
-  width: 110px;
-  min-height: 96px;
+  width: 154px;
+  min-height: 136px;
   display: grid;
   grid-template-rows: auto 1fr;
-  gap: 6px;
+  gap: 10px;
   align-items: center;
   justify-items: center;
   border: 1px solid transparent;
   background: transparent;
   color: var(--fg);
-  padding: 8px 6px;
+  padding: 10px 8px;
   text-align: center;
   font: inherit;
   cursor: pointer;
-  font-size: 0.8em;
-  letter-spacing: 0.04em;
+  font-size: 0.98em;
+  letter-spacing: 0.05em;
   pointer-events: auto;
   touch-action: none;
 }
@@ -627,26 +678,35 @@ body {
 .desktop-icon-glyph {
   display: grid;
   place-items: center;
-  width: 48px;
-  height: 40px;
+  width: 66px;
+  height: 58px;
   border: 0;
   background: transparent;
-  font-size: 0.86em;
+  font-size: 1.02em;
 }
 
 .desktop-icon-glyph img {
-  width: 34px;
-  height: 34px;
+  width: 50px;
+  height: 50px;
   object-fit: contain;
-  filter: drop-shadow(0 0 5px rgba(149, 245, 175, 0.4));
+  filter: drop-shadow(0 0 7px rgba(149, 245, 175, 0.5));
 }
 
 .desktop-icon-label {
   text-transform: uppercase;
-  line-height: 1.25;
+  line-height: 1.24;
   background: rgba(1, 9, 3, 0.7);
   border: 1px solid rgba(149, 245, 175, 0.2);
-  padding: 1px 5px;
+  padding: 3px 8px;
+  font-size: 1.05em;
+}
+
+.desktop-icon-hidden {
+  display: none;
+}
+
+.desktop-shell.show-hidden-apps .desktop-icon-hidden {
+  display: grid;
 }
 
 .desktop-windows {

@@ -64,6 +64,7 @@
     { id: "events", label: "events", glyph: "E", title: "Events", icon: "assets/icons/events.svg" },
     { id: "contacts", label: "contacts", glyph: "C", title: "Contacts", icon: "assets/icons/contacts.svg" },
     { id: "public-files", label: "public files", glyph: "P", title: "Public Files", icon: "assets/icons/public-files.svg" },
+    { id: "trash", label: "trash", glyph: "TR", title: "Recycle Bin", icon: "assets/icons/trash.svg" },
     {
       id: "filesystem",
       label: "system files",
@@ -666,6 +667,12 @@
 
   function buildContacts() {
     return textBlock(readFileText("/bar/service/contacts.txt") || "contacts unavailable");
+  }
+
+  function buildTrash() {
+    return textBlock(
+      "RECYCLE BIN\n\nNo deleted files.\n\nTip: Use this space for future discarded logs and transient notes."
+    );
   }
 
   function buildPublicFiles(env) {
@@ -1486,6 +1493,8 @@
         return buildEvents();
       case "contacts":
         return buildContacts();
+      case "trash":
+        return buildTrash();
       case "public-files":
         return buildPublicFiles(env);
       case "filesystem":
@@ -1825,36 +1834,136 @@
 
     const menu = document.createElement("div");
     menu.className = "desktop-menu";
+    const menuGroups = new Map();
+    let openMenuName = "";
+    let showHiddenApps = false;
+    let viewMenuBtn = null;
+    let viewHiddenRow = null;
 
-    const fileMenuBtn = document.createElement("button");
-    fileMenuBtn.type = "button";
-    fileMenuBtn.className = "desktop-menu-item";
-    fileMenuBtn.textContent = "file";
-    fileMenuBtn.disabled = true;
+    function setMenuOpen(menuId) {
+      openMenuName = menuId || "";
+      menuGroups.forEach((entry, id) => {
+        const isOpen = openMenuName === id;
+        entry.group.classList.toggle("open", isOpen);
+        entry.button.classList.toggle("menu-open", isOpen);
+        entry.button.setAttribute("aria-expanded", isOpen ? "true" : "false");
+        entry.panel.hidden = !isOpen;
+      });
+    }
 
-    const editMenuBtn = document.createElement("button");
-    editMenuBtn.type = "button";
-    editMenuBtn.className = "desktop-menu-item";
-    editMenuBtn.textContent = "edit";
-    editMenuBtn.disabled = true;
+    function closeMenus() {
+      setMenuOpen("");
+    }
 
-    const viewMenuBtn = document.createElement("button");
-    viewMenuBtn.type = "button";
-    viewMenuBtn.className = "desktop-menu-item";
-    viewMenuBtn.textContent = "view";
-    viewMenuBtn.setAttribute("aria-pressed", "false");
-    viewMenuBtn.title = "Show hidden desktop apps";
+    function createMenuGroup(menuId, label) {
+      const group = document.createElement("div");
+      group.className = "desktop-menu-group";
+      group.dataset.menu = menuId;
 
-    const toolsMenuBtn = document.createElement("button");
-    toolsMenuBtn.type = "button";
-    toolsMenuBtn.className = "desktop-menu-item";
-    toolsMenuBtn.textContent = "tools";
-    toolsMenuBtn.disabled = true;
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "desktop-menu-item";
+      button.textContent = label;
+      button.setAttribute("aria-haspopup", "true");
+      button.setAttribute("aria-expanded", "false");
 
-    menu.appendChild(fileMenuBtn);
-    menu.appendChild(editMenuBtn);
-    menu.appendChild(viewMenuBtn);
-    menu.appendChild(toolsMenuBtn);
+      const panel = document.createElement("div");
+      panel.className = "desktop-menu-panel";
+      panel.hidden = true;
+
+      group.appendChild(button);
+      group.appendChild(panel);
+      menu.appendChild(group);
+      menuGroups.set(menuId, { group, button, panel });
+
+      button.addEventListener("click", (event) => {
+        event.stopPropagation();
+        setMenuOpen(openMenuName === menuId ? "" : menuId);
+      });
+
+      return { button, panel };
+    }
+
+    function addMenuAction(panel, label, onSelect, opts) {
+      const options = opts || {};
+      const row = document.createElement("button");
+      row.type = "button";
+      row.className = "desktop-menu-row";
+      row.textContent = label;
+      if (options.checked) {
+        row.classList.add("checked");
+      }
+      if (options.disabled) {
+        row.disabled = true;
+      }
+      row.addEventListener("click", (event) => {
+        event.stopPropagation();
+        if (row.disabled) {
+          return;
+        }
+        if (typeof onSelect === "function") {
+          onSelect();
+        }
+        closeMenus();
+      });
+      panel.appendChild(row);
+      return row;
+    }
+
+    function addMenuDivider(panel) {
+      const divider = document.createElement("div");
+      divider.className = "desktop-menu-divider";
+      panel.appendChild(divider);
+    }
+
+    const fileMenu = createMenuGroup("file", "file");
+    addMenuAction(fileMenu.panel, "Reopen startup windows", () => {
+      openStartupWindows();
+    });
+    addMenuAction(fileMenu.panel, "Minimize all windows", () => {
+      windowMap.forEach((win, windowKey) => {
+        const titleNode = win.querySelector(".v2-window-title");
+        const dockLabel = titleNode ? titleNode.textContent || "window" : "window";
+        minimizeWindow(windowKey, dockLabel);
+      });
+    });
+
+    const editMenu = createMenuGroup("edit", "edit");
+    addMenuAction(editMenu.panel, "Reset icon positions", () => {
+      Object.keys(iconLayout).forEach((key) => {
+        delete iconLayout[key];
+      });
+      APPS.forEach((app, index) => {
+        const iconEl = icons.querySelector(".desktop-icon[data-app-id='" + app.id + "']");
+        if (!iconEl) {
+          return;
+        }
+        const next = clampIconPosition(defaultIconPosition(index), iconEl);
+        iconEl.style.left = next.x + "px";
+        iconEl.style.top = next.y + "px";
+      });
+      saveStoredIconLayout(iconLayout);
+    });
+
+    const viewMenu = createMenuGroup("view", "view");
+    viewMenuBtn = viewMenu.button;
+    viewHiddenRow = addMenuAction(viewMenu.panel, "Show hidden apps", () => {
+      showHiddenApps = !showHiddenApps;
+      applyHiddenIconVisibility();
+    });
+
+    const toolsMenu = createMenuGroup("tools", "tools");
+    addMenuAction(toolsMenu.panel, "Open file repair", () => {
+      createAppWindow("decryptor");
+    });
+    addMenuAction(toolsMenu.panel, "Open terminal", () => {
+      createAppWindow("terminal");
+    });
+    addMenuDivider(toolsMenu.panel);
+    addMenuAction(toolsMenu.panel, "Open recycle bin", () => {
+      createAppWindow("trash");
+    });
+
     brand.appendChild(brandTitle);
     brand.appendChild(menu);
 
@@ -1894,24 +2003,40 @@
     shell.appendChild(workspace);
     root.appendChild(shell);
 
+    const onGlobalPointerDown = (event) => {
+      const target = event.target;
+      if (!(target instanceof Node)) {
+        return;
+      }
+      if (!topbar.contains(target)) {
+        closeMenus();
+      }
+    };
+
+    const onGlobalKeyDown = (event) => {
+      if (event.key === "Escape") {
+        closeMenus();
+      }
+    };
+
+    window.addEventListener("pointerdown", onGlobalPointerDown);
+    window.addEventListener("keydown", onGlobalKeyDown);
+
     const windowMap = new Map();
     const minimizedMap = new Map();
     let zCursor = 40;
-    let showHiddenApps = false;
 
     function applyHiddenIconVisibility() {
-      icons.querySelectorAll(".desktop-icon[data-hidden='1']").forEach((iconEl) => {
-        iconEl.hidden = !showHiddenApps;
-      });
-      viewMenuBtn.classList.toggle("active", showHiddenApps);
-      viewMenuBtn.setAttribute("aria-pressed", showHiddenApps ? "true" : "false");
-      viewMenuBtn.title = showHiddenApps ? "Hide hidden desktop apps" : "Show hidden desktop apps";
+      shell.classList.toggle("show-hidden-apps", showHiddenApps);
+      if (viewMenuBtn) {
+        viewMenuBtn.classList.toggle("active", showHiddenApps);
+        viewMenuBtn.title = showHiddenApps ? "Hide hidden desktop apps" : "Show hidden desktop apps";
+      }
+      if (viewHiddenRow) {
+        viewHiddenRow.classList.toggle("checked", showHiddenApps);
+        viewHiddenRow.textContent = (showHiddenApps ? "Hide hidden apps" : "Show hidden apps");
+      }
     }
-
-    viewMenuBtn.addEventListener("click", () => {
-      showHiddenApps = !showHiddenApps;
-      applyHiddenIconVisibility();
-    });
 
     function keyForApp(appId) {
       return "app:" + appId;
@@ -2335,12 +2460,12 @@
     }
 
     function defaultIconPosition(index) {
-      const rows = 6;
+      const rows = 5;
       const col = Math.floor(index / rows);
       const row = index % rows;
       return {
-        x: 16 + col * 112,
-        y: 14 + row * 96
+        x: 18 + col * 176,
+        y: 16 + row * 150
       };
     }
 
@@ -2350,8 +2475,8 @@
 
     function clampIconPosition(pos, iconEl) {
       const rect = workspace.getBoundingClientRect();
-      const w = iconEl.offsetWidth || 94;
-      const h = iconEl.offsetHeight || 84;
+      const w = iconEl.offsetWidth || 152;
+      const h = iconEl.offsetHeight || 132;
       return {
         x: Math.max(8, Math.min(rect.width - w - 8, pos.x)),
         y: Math.max(8, Math.min(rect.height - h - 44, pos.y))
@@ -2364,8 +2489,9 @@
       const icon = document.createElement("button");
       icon.type = "button";
       icon.className = "desktop-icon";
+      icon.dataset.appId = app.id;
       if (app.hiddenByDefault) {
-        icon.dataset.hidden = "1";
+        icon.classList.add("desktop-icon-hidden");
       }
 
       const glyph = createAppGlyphElement(app, "desktop-icon-glyph");
@@ -2500,6 +2626,8 @@
       () => {
         unbind();
         window.removeEventListener("v2-layout-resize", onLayoutResize);
+        window.removeEventListener("pointerdown", onGlobalPointerDown);
+        window.removeEventListener("keydown", onGlobalKeyDown);
       },
       { once: true }
     );
