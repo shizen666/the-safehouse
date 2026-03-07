@@ -900,7 +900,7 @@
     wrap.className = "v2-decrypt";
 
     const summary = document.createElement("div");
-    summary.className = "v2-muted";
+    summary.className = "v2-decrypt-status";
 
     const importRow = document.createElement("div");
     importRow.className = "v2-repair-import";
@@ -916,13 +916,19 @@
     loadSelectedBtn.className = "v2-decrypt-reset";
 
     const selectedInfo = document.createElement("div");
-    selectedInfo.className = "v2-muted";
+    selectedInfo.className = "v2-decrypt-selected";
 
     const meters = document.createElement("div");
     meters.className = "v2-decrypt-meters";
 
     const preview = document.createElement("div");
     preview.className = "v2-decrypt-preview";
+
+    const main = document.createElement("div");
+    main.className = "v2-decrypt-main";
+
+    const tuning = document.createElement("div");
+    tuning.className = "v2-decrypt-tuning";
 
     const controls = document.createElement("div");
     controls.className = "v2-decrypt-controls";
@@ -1127,6 +1133,12 @@
         controls.style.display = "none";
         meters.style.display = "none";
         preview.style.display = "none";
+        preview.classList.remove("solved");
+        preview.classList.add("live");
+        preview.style.display = "block";
+        preview.textContent =
+          "REC-77 STREAM // awaiting target\n\n" +
+          obfuscateText(repairedRecordText(), 6);
         return;
       }
 
@@ -1141,12 +1153,16 @@
       if (solved) {
         repairState.solved = true;
         persistRepairSolved();
+        preview.classList.remove("live");
+        preview.classList.add("solved");
         summary.textContent =
           "REC-77 repaired // integrity 100% // credentials available in Staff Login and file system";
         preview.textContent = repairedRecordText();
         return;
       }
 
+      preview.classList.add("live");
+      preview.classList.remove("solved");
       summary.textContent =
         "integrity " +
         integrity +
@@ -1161,11 +1177,13 @@
     importRow.appendChild(loadTargetBtn);
     importRow.appendChild(loadSelectedBtn);
     wrap.appendChild(importRow);
-    wrap.appendChild(selectedInfo);
-    wrap.appendChild(dropZone);
-    wrap.appendChild(controls);
-    wrap.appendChild(meters);
-    wrap.appendChild(preview);
+    tuning.appendChild(selectedInfo);
+    tuning.appendChild(dropZone);
+    tuning.appendChild(controls);
+    tuning.appendChild(meters);
+    main.appendChild(preview);
+    main.appendChild(tuning);
+    wrap.appendChild(main);
     renderFrame();
     return wrap;
   }
