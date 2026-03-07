@@ -40,7 +40,8 @@
   };
 
   const repairWorkbench = {
-    loadedPath: ""
+    loadedPath: "",
+    waitingForSelection: false
   };
 
   const uiState = {
@@ -898,6 +899,9 @@
   function buildDecryptor(env) {
     const wrap = document.createElement("section");
     wrap.className = "v2-decrypt";
+    // Always require explicit manual load when File Repair opens.
+    repairWorkbench.loadedPath = "";
+    repairWorkbench.waitingForSelection = false;
 
     const summary = document.createElement("div");
     summary.className = "v2-decrypt-status";
@@ -905,14 +909,9 @@
     const importRow = document.createElement("div");
     importRow.className = "v2-repair-import";
 
-    const loadTargetBtn = document.createElement("button");
-    loadTargetBtn.type = "button";
-    loadTargetBtn.textContent = "load target rec-77";
-    loadTargetBtn.className = "v2-decrypt-reset";
-
     const loadSelectedBtn = document.createElement("button");
     loadSelectedBtn.type = "button";
-    loadSelectedBtn.textContent = "load selected file";
+    loadSelectedBtn.textContent = "load from file system";
     loadSelectedBtn.className = "v2-decrypt-reset";
 
     const selectedInfo = document.createElement("div");
@@ -1048,25 +1047,31 @@
     function handlePathDrop(path) {
       if (!path) {
         summary.textContent = "drop rejected: no file payload";
-        return;
+        return false;
       }
       if (!isFile(path)) {
         summary.textContent = "drop rejected: source is not a file";
-        return;
+        return false;
       }
       if (path !== REC77_PATH) {
         summary.textContent = "unsupported file. only REC-77 can be repaired in this utility.";
-        return;
+        return false;
       }
       setLoadedPath(path);
+      repairWorkbench.waitingForSelection = false;
+      return true;
     }
 
-    loadTargetBtn.addEventListener("click", () => {
-      handlePathDrop(REC77_PATH);
-    });
-
     loadSelectedBtn.addEventListener("click", () => {
-      handlePathDrop(uiState.selectedFilePath);
+      repairWorkbench.waitingForSelection = true;
+      if (env && typeof env.openFileSystem === "function") {
+        env.openFileSystem();
+        summary.textContent =
+          "file system opened // select /public/corrupted-file-77.bin or drag it into this utility";
+      } else {
+        summary.textContent =
+          "select /public/corrupted-file-77.bin from file system or drag it into this utility";
+      }
     });
 
     dropZone.addEventListener("dragover", (event) => {
@@ -1115,7 +1120,12 @@
     }
 
     refreshSelectedInfo();
-    const onSelect = () => refreshSelectedInfo();
+    const onSelect = () => {
+      refreshSelectedInfo();
+      if (repairWorkbench.waitingForSelection && uiState.selectedFilePath) {
+        handlePathDrop(uiState.selectedFilePath);
+      }
+    };
     window.addEventListener("v2-file-selected", onSelect);
     wrap.addEventListener(
       "v2-destroy",
@@ -1127,7 +1137,7 @@
 
     function renderFrame() {
       if (!hasLoadedRepairFile()) {
-        summary.textContent = "load target file first";
+        summary.textContent = "no file loaded // click LOAD to browse or drag /public/corrupted-file-77.bin";
         dropZone.textContent =
           "DROP FILE HERE\n\nTarget: /public/corrupted-file-77.bin\nDrag the file from File System into this area.";
         controls.style.display = "none";
@@ -1174,7 +1184,6 @@
     }
 
     wrap.appendChild(summary);
-    importRow.appendChild(loadTargetBtn);
     importRow.appendChild(loadSelectedBtn);
     wrap.appendChild(importRow);
     tuning.appendChild(selectedInfo);
@@ -2409,8 +2418,13 @@
       }
     }
 
+    function openFileSystemWindow() {
+      return createAppWindow("filesystem");
+    }
+
     const desktopEnv = {
       openDocumentWindow,
+      openFileSystem: openFileSystemWindow,
       enableFileDrag: true
     };
 
