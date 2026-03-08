@@ -1067,9 +1067,9 @@
       repairWorkbench.waitingForSelection = true;
       if (env && typeof env.openFileSystem === "function") {
         env.openFileSystem();
-        summary.textContent = "file browser opened // select a file or drag it into this utility";
+        summary.textContent = "file browser opened // awaiting candidate";
       } else {
-        summary.textContent = "select a file from file system or drag it into this utility";
+        summary.textContent = "awaiting candidate";
       }
     });
 
@@ -1136,9 +1136,9 @@
 
     function renderFrame() {
       if (!hasLoadedRepairFile()) {
-        summary.textContent = "no file loaded // click LOAD or drag a file here";
+        summary.textContent = "idle // no active repair candidate";
         dropZone.textContent =
-          "DROP FILE HERE\n\nDrag a file from File System into this area.";
+          "DROP FILE HERE\n\nAwaiting candidate input.";
         controls.style.display = "none";
         meters.style.display = "none";
         preview.style.display = "none";
@@ -1146,7 +1146,7 @@
         preview.classList.add("live");
         preview.style.display = "block";
         preview.textContent =
-          "REPAIR BUS // awaiting candidate\n\n" +
+          "REPAIR BUS // standby\n\n" +
           obfuscateText(repairedRecordText(), 6);
         return;
       }
