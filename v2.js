@@ -900,6 +900,7 @@
     const wrap = document.createElement("section");
     wrap.className = "v2-decrypt";
     // Always require explicit manual load when File Repair opens.
+    setSelectedFilePath("");
     repairWorkbench.loadedPath = "";
     repairWorkbench.waitingForSelection = false;
 
@@ -2440,6 +2441,15 @@
       );
       if (shellWindow.created) {
         shellWindow.body.appendChild(buildAppContent(appId, desktopEnv));
+        if (appId === "decryptor") {
+          const bounds = windows.getBoundingClientRect();
+          setWindowFrame(shellWindow.win, {
+            width: Math.max(920, Math.min(1360, Math.round(bounds.width * 0.82))),
+            height: Math.max(620, Math.min(920, Math.round(bounds.height * 0.8))),
+            left: Math.max(12, Math.round(bounds.width * 0.04)),
+            top: Math.max(10, Math.round(bounds.height * 0.04))
+          });
+        }
       }
       return shellWindow.win;
     }
