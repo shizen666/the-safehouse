@@ -1047,15 +1047,15 @@
 
     function handlePathDrop(path) {
       if (!path) {
-        summary.textContent = "drop rejected: no file payload";
+        summary.textContent = "no valid file signal detected";
         return false;
       }
       if (!isFile(path)) {
-        summary.textContent = "drop rejected: source is not a file";
+        summary.textContent = "selected entry is not a file";
         return false;
       }
       if (path !== REC77_PATH) {
-        summary.textContent = "unsupported file. only REC-77 can be repaired in this utility.";
+        summary.textContent = "integrity stable // selected file does not require repair";
         return false;
       }
       setLoadedPath(path);
@@ -1067,11 +1067,9 @@
       repairWorkbench.waitingForSelection = true;
       if (env && typeof env.openFileSystem === "function") {
         env.openFileSystem();
-        summary.textContent =
-          "file system opened // select /public/corrupted-file-77.bin or drag it into this utility";
+        summary.textContent = "file browser opened // select a file or drag it into this utility";
       } else {
-        summary.textContent =
-          "select /public/corrupted-file-77.bin from file system or drag it into this utility";
+        summary.textContent = "select a file from file system or drag it into this utility";
       }
     });
 
@@ -1138,9 +1136,9 @@
 
     function renderFrame() {
       if (!hasLoadedRepairFile()) {
-        summary.textContent = "no file loaded // click LOAD or drag target here";
+        summary.textContent = "no file loaded // click LOAD or drag a file here";
         dropZone.textContent =
-          "DROP FILE HERE\n\nTarget: /public/corrupted-file-77.bin\nDrag the file from File System into this area.";
+          "DROP FILE HERE\n\nDrag a file from File System into this area.";
         controls.style.display = "none";
         meters.style.display = "none";
         preview.style.display = "none";
@@ -1148,12 +1146,12 @@
         preview.classList.add("live");
         preview.style.display = "block";
         preview.textContent =
-          "REC-77 STREAM // awaiting target\n\n" +
+          "REPAIR BUS // awaiting candidate\n\n" +
           obfuscateText(repairedRecordText(), 6);
         return;
       }
 
-      dropZone.textContent = "Loaded: " + repairWorkbench.loadedPath;
+      dropZone.textContent = "Loaded candidate: " + repairWorkbench.loadedPath;
       controls.style.display = "grid";
       meters.style.display = "flex";
       preview.style.display = "block";
@@ -1167,7 +1165,7 @@
         preview.classList.remove("live");
         preview.classList.add("solved");
         summary.textContent =
-          "REC-77 repaired // integrity 100% // credentials available in Staff Login and file system";
+          "repair completed // integrity 100% // credentials available in staff login and file system";
         preview.textContent = repairedRecordText();
         return;
       }
