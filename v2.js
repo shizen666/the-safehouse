@@ -139,7 +139,7 @@
   }
 
   function setSelectedFilePath(path) {
-    uiState.selectedFilePath = normalizePath(path || "");
+    uiState.selectedFilePath = path ? normalizePath(path) : "";
     window.dispatchEvent(
       new CustomEvent("v2-file-selected", {
         detail: { path: uiState.selectedFilePath }
@@ -1113,7 +1113,7 @@
     });
 
     function refreshSelectedInfo() {
-      if (uiState.selectedFilePath) {
+      if (uiState.selectedFilePath && uiState.selectedFilePath !== "/") {
         selectedInfo.textContent = "selected: " + uiState.selectedFilePath;
       } else {
         selectedInfo.textContent = "selected: (none)";
@@ -1138,7 +1138,7 @@
 
     function renderFrame() {
       if (!hasLoadedRepairFile()) {
-        summary.textContent = "no file loaded // click LOAD to browse or drag /public/corrupted-file-77.bin";
+        summary.textContent = "no file loaded // click LOAD or drag target here";
         dropZone.textContent =
           "DROP FILE HERE\n\nTarget: /public/corrupted-file-77.bin\nDrag the file from File System into this area.";
         controls.style.display = "none";

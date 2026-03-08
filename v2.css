@@ -542,16 +542,18 @@ body {
   gap: 2px;
   padding: 6px;
   border: 1px solid rgba(149, 245, 175, 0.44);
+  background-color: #06170d;
   background:
+    linear-gradient(180deg, rgba(7, 28, 15, 1), rgba(4, 16, 8, 1)),
     repeating-linear-gradient(
       0deg,
-      rgba(149, 245, 175, 0.1) 0,
-      rgba(149, 245, 175, 0.1) 1px,
-      rgba(3, 12, 6, 0.96) 1px,
-      rgba(3, 12, 6, 0.96) 3px
+      rgba(149, 245, 175, 0.14) 0,
+      rgba(149, 245, 175, 0.14) 1px,
+      rgba(6, 23, 11, 1) 1px,
+      rgba(6, 23, 11, 1) 3px
     );
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.46);
-  z-index: 35;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.58);
+  z-index: 320;
 }
 
 .desktop-menu-panel[hidden] {
@@ -561,8 +563,8 @@ body {
 .desktop-menu-row {
   appearance: none;
   width: 100%;
-  border: 1px solid transparent;
-  background: transparent;
+  border: 1px solid rgba(149, 245, 175, 0.08);
+  background: rgba(2, 10, 5, 0.94);
   color: var(--fg);
   font: inherit;
   font-size: 0.84em;
@@ -575,7 +577,7 @@ body {
 
 .desktop-menu-row:hover {
   border-color: rgba(149, 245, 175, 0.42);
-  background: rgba(149, 245, 175, 0.14);
+  background: rgba(149, 245, 175, 0.16);
 }
 
 .desktop-menu-row.checked::before {
