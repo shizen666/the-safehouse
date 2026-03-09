@@ -313,198 +313,631 @@
         "REC-77 BINARY BLOCK\n" +
         "status: unreadable payload",
 
-      "/secure": ["files", "lore", "founder"],
+      "/secure": ["operations", "personnel", "archive", "founder"],
 
-      "/secure/files": ["daily-operations", "staff-records", "internal-messages", "continuity-chain"],
-      "/secure/files/daily-operations": ["debrief-sy26-02-22.txt", "debrief-sy26-02-23-masaya.txt"],
-      "/secure/files/daily-operations/debrief-sy26-02-22.txt":
-        "DEBRIEF SY26-02-22\n" +
-        "Crowd pressure rose at 21:40.\n" +
-        "Actions: short menu mode, low-noise protocol, one roaming lead.\n" +
-        "Result: no incidents, average service delay +4 min.",
-      "/secure/files/daily-operations/debrief-sy26-02-23-masaya.txt":
-        "DEBRIEF SY26-02-23 / MASAYA\n" +
-        "Masaya arrived 21:17, sat at C3.\n" +
-        "No menu requested. Ordered Masaya Chai cold.\n" +
-        "Stayed 28 min. No spoken words to guests.\n" +
-        "Floor noise dropped after his entry.",
+      "/secure/operations": ["daily-operations", "continuity", "internal-messages", "security-briefs"],
+      "/secure/operations/daily-operations": [
+        "debrief-sy26-02-22.txt",
+        "debrief-sy26-02-23-masaya.txt",
+        "maintenance-window-sy26-02-24.txt"
+      ],
+      "/secure/operations/daily-operations/debrief-sy26-02-22.txt": [
+        "DEBRIEF SY26-02-22",
+        "Crowd pressure rose at 21:40 and held for forty-seven minutes.",
+        "Actions taken: short menu mode, low-noise protocol, one roaming lead, one held spare table at C1.",
+        "Erik cut the greeting script down to six words and Andrea stopped using names after the first wave.",
+        "Result: no incidents, average service delay +4 min, two guests escorted to stairwell for air.",
+        "Note: the room stabilized the moment staff started speaking less."
+      ].join("\n"),
+      "/secure/operations/daily-operations/debrief-sy26-02-23-masaya.txt": [
+        "DEBRIEF SY26-02-23 / MASAYA",
+        "Masaya arrived 21:17, sat at C3 without waiting to be guided.",
+        "No menu requested. Ordered Masaya Chai cold.",
+        "Stayed 28 min. No spoken words to guests. One glance toward the inner lock at 21:31.",
+        "Floor noise dropped after his entry and remained low for the rest of service.",
+        "Recommendation: keep C3 dark, visible, and free of decorative glass."
+      ].join("\n"),
+      "/secure/operations/daily-operations/maintenance-window-sy26-02-24.txt": [
+        "MAINTENANCE WINDOW SY26-02-24",
+        "Theo isolated the west glycol line after midnight hiss in the cellar.",
+        "Ju scrubbed the underbar drain by hand because the rotary brush jammed again.",
+        "Laryssa stayed late to walk the empty room twice and confirm no one had bedded down under booth C6.",
+        "Power draw normalized by 03:18.",
+        "Reminder: never schedule deep maintenance on the night after a C3 visit."
+      ].join("\n"),
 
-      "/secure/files/staff-records": [
+      "/secure/operations/continuity": [
+        "continuity-log-sy26-q1.md",
+        "event-consequence-matrix.md",
+        "corridor-stability-watch.md"
+      ],
+      "/secure/operations/continuity/continuity-log-sy26-q1.md": [
+        "# CONTINUITY LOG SY26 Q1",
+        "- SY26-02-10: queue spill at stairwell -> added lane divider",
+        "- SY26-02-14: noise spike -> default low music profile",
+        "- SY26-02-18: cellar condensation -> shifted citrus stock to upper shelf",
+        "- SY26-02-23: Masaya visit -> C3 dark table kept reserved after close",
+        "- SY26-02-24: maintenance window -> west line patched, no guest impact"
+      ].join("\n"),
+      "/secure/operations/continuity/event-consequence-matrix.md": [
+        "# EVENT CONSEQUENCE MATRIX",
+        "Crowd surge -> short menu mode",
+        "Guest panic -> low-light + two-option protocol",
+        "Utility warning -> reduce ice lane and simplify menu",
+        "Unscheduled VIP presence -> freeze C3 and clear corridor sightline",
+        "Stairwell rumor -> frontdesk stops improv, switches to exact times only"
+      ].join("\n"),
+      "/secure/operations/continuity/corridor-stability-watch.md": [
+        "# CORRIDOR STABILITY WATCH",
+        "Marker N-12 remains unreliable after the old collapse.",
+        "Do not route exhausted guests through lower ring after 22:00 unless Erik or Kenji is present.",
+        "Laryssa reports that quiet guests hide distress better on the long return corridor than in the room itself.",
+        "Keep one spare blanket sealed in the door cabinet, not under the bar."
+      ].join("\n"),
+
+      "/secure/operations/internal-messages": [
+        "owner-broadcast.txt",
+        "floor-alert-template.txt",
+        "records-handoff-sy26-02.txt"
+      ],
+      "/secure/operations/internal-messages/owner-broadcast.txt": [
+        "OWNER BROADCAST",
+        "Keep service tight. No theater. No ego.",
+        "When conditions shift: shorten sentences, reduce menu branches, keep exits visible.",
+        "Guests forgive slowness faster than uncertainty.",
+        "If the room goes quiet on its own, do not fill it just because silence scares staff."
+      ].join("\n"),
+      "/secure/operations/internal-messages/floor-alert-template.txt": [
+        "FLOOR ALERT TEMPLATE",
+        "[time] [zone] [pressure index]",
+        "action: [lights/music/door]",
+        "result: [stable/watch/escalate]",
+        "follow-up: [who stayed after close, who left shaking, what changed the room]"
+      ].join("\n"),
+      "/secure/operations/internal-messages/records-handoff-sy26-02.txt": [
+        "RECORDS HANDOFF SY26-02",
+        "Mira to Theo:",
+        "The sealed note for the night safe rotation is back in the black envelope.",
+        "Do not leave it in the archive cabinet again. Andrea nearly filed it under supplier invoices.",
+        "If the founder recovery string ever has to be read aloud, the room is already too far gone."
+      ].join("\n"),
+
+      "/secure/operations/security-briefs": ["c3-observation-policy.txt", "night-safe-rotation-sy21.txt"],
+      "/secure/operations/security-briefs/c3-observation-policy.txt": [
+        "C3 OBSERVATION POLICY",
+        "Table must remain visible from frontdesk, service lane, and inner corridor mouth.",
+        "Do not seat loud parties nearby after 21:00.",
+        "If Masaya is present, staff movement around C3 becomes slower, not smaller.",
+        "No one asks if he is staying. They ask whether he needs more ice."
+      ].join("\n"),
+      "/secure/operations/security-briefs/night-safe-rotation-sy21.txt": [
+        "NIGHT SAFE ROTATION SY21",
+        "Escrow procedure revised after duplicate seal incident.",
+        "Active founder recovery string on sealed card: frostline_719",
+        "Reading it out on the floor voids protocol immediately.",
+        "Store one copy with records, one with utilities, and neither in the same room overnight."
+      ].join("\n"),
+
+      "/secure/personnel": ["staff-files", "evaluations", "interviews", "external-contacts"],
+      "/secure/personnel/staff-files": [
         "erik.profile",
         "theo.profile",
         "andrea.profile",
         "ju.profile",
         "kenji.profile",
         "mira.profile",
-        "masaya.dossier"
+        "laryssa.profile"
       ],
-      "/secure/files/staff-records/erik.profile":
-        "ERIK // floor lead\n" +
-        "Met during ration line disputes in lower sector.\n" +
-        "Trait: calm under pressure, minimal speech, fast decisions.",
-      "/secure/files/staff-records/theo.profile":
-        "THEO // cellar + utilities\n" +
-        "Met during recycler repair shift.\n" +
-        "Trait: obsessive precision, no shortcuts, dry humor.",
-      "/secure/files/staff-records/andrea.profile":
-        "ANDREA // frontdesk\n" +
-        "Met on evacuation corridor route SY08.\n" +
-        "Trait: excellent memory for names, reads tension early.",
-      "/secure/files/staff-records/ju.profile":
-        "JU // barback\n" +
-        "Met in storage cooperative SY11.\n" +
-        "Trait: extremely fast setup, silent on shift.",
-      "/secure/files/staff-records/kenji.profile":
-        "KENJI // service lane\n" +
-        "Met at station west gate blackout night.\n" +
-        "Trait: disciplined movement, protects weak guests first.",
-      "/secure/files/staff-records/mira.profile":
-        "MIRA // records + inventory\n" +
-        "Joined from municipal archive salvage team.\n" +
-        "Trait: pattern memory, can reconstruct missing stock trails.",
-      "/secure/files/staff-records/masaya.dossier":
-        "MASAYA // external contact dossier\n" +
-        "status: non-staff, high-impact presence\n" +
-        "Known behavior: short visits, low speech, strict drink spec.\n" +
-        "Risk rule: keep C3 visible, never force interaction.",
+      "/secure/personnel/staff-files/erik.profile": [
+        "ERIK // floor lead",
+        "joined: SY09-03-12",
+        "origin: lower sector ration mediation line",
+        "",
+        "Erik rarely raises his voice. He lowers the room instead.",
+        "He scans exits before faces and remembers who sat closest to them.",
+        "During the stairwell surge on SY18-07-03 he stopped a crush by offering two choices, one sentence each, until people believed they still had control.",
+        "Known habit: rewrites the opening line for new staff until it sounds calm when read half-asleep.",
+        "Risk: carries too much without reporting fatigue."
+      ].join("\n"),
+      "/secure/personnel/staff-files/theo.profile": [
+        "THEO // cellar + utilities",
+        "joined: SY07-11-01",
+        "origin: recycler repair block, north service lane",
+        "",
+        "Theo trusts instruments less than smell, vibration, and the sound pipes make when the room above is full.",
+        "He keeps three maps of the cellar because the official one lies in a different place each year.",
+        "When pressure dropped on SY20-02-14 he shut down the west line before the gauges even caught up.",
+        "Humor style: dry enough to feel like a warning.",
+        "Risk: chooses structural solutions even when people are asking for comfort."
+      ].join("\n"),
+      "/secure/personnel/staff-files/andrea.profile": [
+        "ANDREA // frontdesk",
+        "joined: SY08-06-19",
+        "origin: evacuation corridor checkpoint",
+        "",
+        "Andrea remembers shoes, sleeves, and the exact way a person asks for the bathroom when they are about to panic.",
+        "She can keep a line moving without ever making it feel hurried.",
+        "On SY25-09-11 she recognized a man from a six-second glance three months earlier and moved him away from the woman he had followed back then.",
+        "Strength: memory with judgment, not just memory.",
+        "Risk: absorbs guest grief and pretends that counts as part of the job."
+      ].join("\n"),
+      "/secure/personnel/staff-files/ju.profile": [
+        "JU // barback",
+        "joined: SY11-04-03",
+        "origin: storage cooperative south ring",
+        "",
+        "Ju works fast enough that guests think the room reset itself.",
+        "Speaks little on shift, but notices inventory drift before the counts do.",
+        "He once rebuilt the garnish rack from scrap in under an hour because he hated the way staff were reaching across one another.",
+        "Best under pressure when given one exact instruction and a clear lane.",
+        "Risk: hides pain to avoid slowing service."
+      ].join("\n"),
+      "/secure/personnel/staff-files/kenji.profile": [
+        "KENJI // service lane + door support",
+        "joined: SY10-11-28",
+        "origin: station west gate blackout night",
+        "",
+        "Kenji moves like every floor is wet and every guest might fall.",
+        "He protects weak points in the room without making the room feel guarded.",
+        "After the canal fight on SY16-08-04 he stood by the door for two hours with a split lip and never mentioned it until close.",
+        "Best use: sightline control, corridor escort, late-night exit shepherding.",
+        "Risk: will put himself between trouble and everyone else before asking if backup exists."
+      ].join("\n"),
+      "/secure/personnel/staff-files/mira.profile": [
+        "MIRA // records + inventory",
+        "joined: SY18-05-22",
+        "origin: municipal archive salvage team",
+        "",
+        "Mira can reconstruct a missing stock trail from handwriting pressure and which shelf dust got disturbed first.",
+        "She hates vague labels and keeps rewriting names until they stop sounding temporary.",
+        "Found the duplicated seal card in SY21 because one staple was newer than the others.",
+        "Strength: pattern memory under sleep debt.",
+        "Risk: if she stops talking entirely, something important has gone missing."
+      ].join("\n"),
+      "/secure/personnel/staff-files/laryssa.profile": [
+        "LARYSSA // guest floor watch",
+        "joined: SY18-11-06",
+        "origin: intake ward transfer, lower clinic stair",
+        "",
+        "Laryssa reads hands before faces and posture before words.",
+        "She was moved from intake because she could tell who needed a chair, who needed water, and who needed distance before they admitted any of it.",
+        "On SY24-03-02 she found a boy asleep beneath booth C6 after close and sat on the floor nearby until he woke on his own.",
+        "She keeps folded blankets hidden where guests cannot see them but staff can reach them in two steps.",
+        "Risk: still believes every person who asks for five more minutes might mean it."
+      ].join("\n"),
 
-      "/secure/files/internal-messages": [
-        "owner-broadcast.txt",
-        "floor-alert-template.txt",
-        "founder-passphrase-recovery.txt"
+      "/secure/personnel/evaluations": [
+        "frontdesk-review-andrea-sy25.txt",
+        "cellar-review-theo-sy25.txt",
+        "service-lane-review-kenji-sy25.txt",
+        "records-review-mira-sy25.txt",
+        "guest-floor-review-laryssa-sy25.txt"
       ],
-      "/secure/files/internal-messages/owner-broadcast.txt":
-        "OWNER BROADCAST\n" +
-        "Keep service tight. No theater. No ego.\n" +
-        "When conditions shift: shorten sentences, reduce menu branches.",
-      "/secure/files/internal-messages/floor-alert-template.txt":
-        "FLOOR ALERT TEMPLATE\n" +
-        "[time] [zone] [pressure index]\n" +
-        "action: [lights/music/door]\n" +
-        "result: [stable/watch/escalate]",
-      "/secure/files/internal-messages/founder-passphrase-recovery.txt":
-        "FOUNDER PASSPHRASE RECOVERY\n" +
-        "Escrow fragment verified by Theo + Mira.\n" +
-        "Founder passphrase: frostline_719\n" +
-        "Do not print on public terminals.",
+      "/secure/personnel/evaluations/frontdesk-review-andrea-sy25.txt": [
+        "FRONTDESK REVIEW // ANDREA // SY25",
+        "Andrea remains the best first-contact operator in the building.",
+        "Strengths: memory retention, early tension detection, low-drama escalation.",
+        "Observed issue: takes home too much of the room and sleeps badly after crowded nights.",
+        "Recommendation: mandatory split close every third peak shift, no exceptions."
+      ].join("\n"),
+      "/secure/personnel/evaluations/cellar-review-theo-sy25.txt": [
+        "CELLAR REVIEW // THEO // SY25",
+        "Theo prevented three equipment failures and reported none of them as personal credit.",
+        "Strengths: predictive maintenance, structural calm, contempt for shortcuts.",
+        "Observed issue: language can turn sharp when people ignore sequence.",
+        "Recommendation: pair with Ju for heavy windows; never pair with optimism alone."
+      ].join("\n"),
+      "/secure/personnel/evaluations/service-lane-review-kenji-sy25.txt": [
+        "SERVICE LANE REVIEW // KENJI // SY25",
+        "Kenji remains the steadiest body in motion on the floor.",
+        "Strengths: route control, protective instinct, clean reads on crowd flow.",
+        "Observed issue: injury concealment.",
+        "Recommendation: physical checks after any door incident, whether he protests or not."
+      ].join("\n"),
+      "/secure/personnel/evaluations/records-review-mira-sy25.txt": [
+        "RECORDS REVIEW // MIRA // SY25",
+        "Mira fixed naming drift across six cabinets and caught two mismatched intake cards.",
+        "Strengths: pattern memory, suspicion aimed in the correct direction.",
+        "Observed issue: will keep digging after the answer is already enough.",
+        "Recommendation: rotate her off seal work after midnight."
+      ].join("\n"),
+      "/secure/personnel/evaluations/guest-floor-review-laryssa-sy25.txt": [
+        "GUEST FLOOR REVIEW // LARYSSA // SY25",
+        "Laryssa reduced panic escalations on the quiet side by making fewer interventions, not more.",
+        "Strengths: body-language reading, restraint, patient follow-through.",
+        "Observed issue: personal attachment to vulnerable guests.",
+        "Recommendation: no solo close on nights when C3 is active."
+      ].join("\n"),
 
-      "/secure/files/continuity-chain": ["continuity-log-sy26-q1.md", "event-consequence-matrix.md"],
-      "/secure/files/continuity-chain/continuity-log-sy26-q1.md":
-        "# CONTINUITY LOG SY26 Q1\n" +
-        "- SY26-02-10: queue spill -> added lane divider\n" +
-        "- SY26-02-14: noise spike -> default low music profile\n" +
-        "- SY26-02-23: Masaya visit -> C3 dark table kept reserved",
-      "/secure/files/continuity-chain/event-consequence-matrix.md":
-        "# EVENT CONSEQUENCE MATRIX\n" +
-        "Crowd surge -> short menu mode\n" +
-        "Guest panic -> low-light + two-option protocol\n" +
-        "Utility warning -> reduce ice lane and simplify menu",
+      "/secure/personnel/interviews": [
+        "erik-intake-sy09.txt",
+        "andrea-intake-sy08.txt",
+        "ju-observation-sy11.txt",
+        "mira-clearance-sy20.txt",
+        "laryssa-transfer-sy18.txt"
+      ],
+      "/secure/personnel/interviews/erik-intake-sy09.txt": [
+        "ERIK INTAKE / SY09",
+        "Q: Why did you stop the fight?",
+        "A: It was blocking the food line.",
+        "Q: Why not hit either of them?",
+        "A: Then there would be three people not listening.",
+        "Assessment: hired after founder observed zero wasted movement."
+      ].join("\n"),
+      "/secure/personnel/interviews/andrea-intake-sy08.txt": [
+        "ANDREA INTAKE / SY08",
+        "Q: What did you do at the corridor checkpoint?",
+        "A: Counted breaths. The people who lied counted too fast.",
+        "Q: Why Safehouse?",
+        "A: Because lines get cruel when no one owns the front of them.",
+        "Assessment: immediate placement at frontdesk."
+      ].join("\n"),
+      "/secure/personnel/interviews/ju-observation-sy11.txt": [
+        "JU OBSERVATION / SY11",
+        "Observation window: thirty-seven minutes in supply lane.",
+        "Subject stacked six crates, corrected two labels, and noticed a cracked bottle no one else had seen.",
+        "When spoken to, answered clearly and without waste.",
+        "Assessment: not leadership material, indispensable support material."
+      ].join("\n"),
+      "/secure/personnel/interviews/mira-clearance-sy20.txt": [
+        "MIRA CLEARANCE / SY20",
+        "Q: Why keep old ledgers no one reads?",
+        "A: Because the room keeps paying for things no one remembers authorizing.",
+        "Q: Why do you want seal access?",
+        "A: I do not want it. I want to know who already touched it.",
+        "Assessment: clearance granted, monitor sleep debt."
+      ].join("\n"),
+      "/secure/personnel/interviews/laryssa-transfer-sy18.txt": [
+        "LARYSSA TRANSFER / SY18",
+        "Q: Why leave intake ward?",
+        "A: I stopped believing the stairs were temporary.",
+        "Q: Why guest floor?",
+        "A: People tell the truth with where they look when music starts.",
+        "Assessment: transferred with founder approval after two probation shifts."
+      ].join("\n"),
 
-      "/secure/lore": [
+      "/secure/personnel/external-contacts": ["masaya.dossier", "c3-protocol.txt"],
+      "/secure/personnel/external-contacts/masaya.dossier": [
+        "MASAYA // external contact dossier",
+        "status: non-staff, high-impact presence",
+        "Known behavior: short visits, low speech, strict drink spec.",
+        "No recorded threats. No recorded warmth either.",
+        "Room effect: conversations shorten, glass handling improves, frontdesk volume drops without instruction.",
+        "Risk rule: keep C3 visible, never force interaction."
+      ].join("\n"),
+      "/secure/personnel/external-contacts/c3-protocol.txt": [
+        "C3 PROTOCOL",
+        "Keep one path to C3 clear from frontdesk at all times.",
+        "Serve cold chai without garnish if requested and do not narrate the build.",
+        "If he leaves a glass unfinished, no one comments on the amount left.",
+        "If he asks who closed last night, answer with the role, not the name."
+      ].join("\n"),
+
+      "/secure/archive": ["emergence-records", "incident-ledgers", "facility-notes", "signal-captures", "access-ledgers"],
+      "/secure/archive/emergence-records": [
         "timeline-bunker-fragments.md",
         "emergence-log-sy00-day0.md",
-        "emergence-log-sy00-day11.md",
-        "masaya-visit-ledger-sy04-sy10.log",
-        "second-lock-adoption-sy12.md",
-        "clock-drift-incident-sy17.md",
-        "corridor-map-notes-sy06.txt",
-        "quiet-floor-rationale-sy14.txt",
-        "surface-radio-fragment-sy19.log",
-        "founder-passphrase-ledger.txt"
+        "emergence-log-sy00-day11.md"
       ],
-      "/secure/lore/timeline-bunker-fragments.md":
-        "# BUNKER TIMELINE FRAGMENTS\n" +
-        "Surface Year 00 marks first coordinated exits.\n" +
-        "Before SY00, records conflict across sectors.\n" +
-        "Most staff were born underground and inherit contradictory stories.",
-      "/secure/lore/emergence-log-sy00-day0.md":
-        "EMERGENCE LOG / SY00 DAY 0\n" +
-        "We stepped out at dawn under ash haze.\n" +
-        "No map matched reality.\n" +
-        "First safe room became what is now the Safehouse bar.",
-      "/secure/lore/emergence-log-sy00-day11.md":
-        "EMERGENCE LOG / SY00 DAY 11\n" +
-        "Water lines unstable. Power intermittent.\n" +
+      "/secure/archive/emergence-records/timeline-bunker-fragments.md": [
+        "# BUNKER TIMELINE FRAGMENTS",
+        "Surface Year 00 marks first coordinated exits.",
+        "Before SY00, records conflict across sectors and every family tells the date differently.",
+        "Most current staff were born underground and inherited stories that disagree on weather, light, and who opened which door first.",
+        "Consensus: the first true safe room became what is now the Safehouse bar."
+      ].join("\n"),
+      "/secure/archive/emergence-records/emergence-log-sy00-day0.md": [
+        "EMERGENCE LOG / SY00 DAY 0",
+        "We stepped out at dawn under ash haze.",
+        "No map matched reality and the old street names survived only in half-burned delivery tags.",
+        "The first room with an intact lock took in twelve people before noon.",
+        "By night the room was already serving boiled tea because structure travels faster when it comes in cups."
+      ].join("\n"),
+      "/secure/archive/emergence-records/emergence-log-sy00-day11.md": [
+        "EMERGENCE LOG / SY00 DAY 11",
+        "Water lines unstable. Power intermittent. Two sectors fighting over battery chalk.",
         "We learned calm is infrastructure, not mood.",
-      "/secure/lore/masaya-visit-ledger-sy04-sy10.log":
-        "MASAYA VISIT LEDGER SY04-SY10\n" +
-        "SY04-02-09 in 21:14 / out 22:03 / hot tea build only\n" +
-        "SY05-01-11 in 22:08 / out 23:22 / asked: same hand on bar?\n" +
-        "SY09-12-02 in 22:10 / out 23:14 / no spoken words\n" +
-        "SY10-11-17 in 21:26 / out 22:55 / final confirmed entry",
-      "/secure/lore/second-lock-adoption-sy12.md":
-        "SECOND LOCK ADOPTION / SY12\n" +
-        "After two corridor breaches, the inner lock became mandatory.\n" +
-        "Entry logic switched from trust to layered verification.",
-      "/secure/lore/clock-drift-incident-sy17.md":
-        "CLOCK DRIFT INCIDENT / SY17\n" +
-        "Four bunker sectors reported different dates by up to 19 days.\n" +
-        "Timeline reconciliation failed. We retained SY as local standard.",
-      "/secure/lore/corridor-map-notes-sy06.txt":
-        "CORRIDOR MAP NOTES / SY06\n" +
-        "North service tunnel collapsed at marker N-12.\n" +
-        "Re-route guest flow through lower ring after 22:00.",
-      "/secure/lore/quiet-floor-rationale-sy14.txt":
-        "QUIET FLOOR RATIONALE / SY14\n" +
-        "Noise-trigger incidents dropped 38% after low-word service protocol.\n" +
-        "Short language is now mandatory during peak load.",
-      "/secure/lore/surface-radio-fragment-sy19.log":
-        "SURFACE RADIO FRAGMENT / SY19\n" +
-        "[00:14] carrier unstable\n" +
-        "[00:17] \"...keep lights low... gate still open...\"\n" +
-        "[00:18] signal lost",
-      "/secure/lore/founder-passphrase-ledger.txt":
-        "FOUNDER PASSPHRASE LEDGER\n" +
-        "escrow key (latest): frostline_719\n" +
-        "rotate only after dual-sign from floor lead + records.",
+        "A room becomes useful when people stop checking the door every twenty seconds.",
+        "The bar idea arrived after the second night no one wanted to call shelter by its real name."
+      ].join("\n"),
 
-      "/secure/founder": [
-        "README.txt",
-        "journal-sy02-11-03.txt",
-        "journal-sy08-09-09.txt",
-        "letter-never-sent.txt",
-        "masaya-notes.txt",
-        "staff-notes"
+      "/secure/archive/incident-ledgers": ["masaya-visit-ledger-sy04-sy10.log", "clock-drift-incident-sy17.md"],
+      "/secure/archive/incident-ledgers/masaya-visit-ledger-sy04-sy10.log": [
+        "MASAYA VISIT LEDGER SY04-SY10",
+        "SY04-02-09 in 21:14 / out 22:03 / hot tea build only",
+        "SY05-01-11 in 22:08 / out 23:22 / asked: same hand on bar?",
+        "SY09-12-02 in 22:10 / out 23:14 / no spoken words",
+        "SY10-11-17 in 21:26 / out 22:55 / final confirmed entry"
+      ].join("\n"),
+      "/secure/archive/incident-ledgers/clock-drift-incident-sy17.md": [
+        "CLOCK DRIFT INCIDENT / SY17",
+        "Four bunker sectors reported different dates by up to nineteen days.",
+        "Timeline reconciliation failed because each sector had documents precise enough to be believed.",
+        "We retained SY as local standard and stopped pretending a single calendar could carry all the dead honestly.",
+        "After that, anniversaries became private."
+      ].join("\n"),
+
+      "/secure/archive/facility-notes": [
+        "second-lock-adoption-sy12.md",
+        "corridor-map-notes-sy06.txt",
+        "quiet-floor-rationale-sy14.txt"
       ],
-      "/secure/founder/README.txt":
-        "FOUNDER WORKSPACE\n" +
-        "Restricted partition.\n" +
-        "Contains private logs, recipe philosophy, and dark-era records.",
-      "/secure/founder/journal-sy02-11-03.txt":
-        "JOURNAL SY02-11-03\n" +
-        "Tonight we served twelve people with six glasses and one intact shaker.\n" +
-        "No one asked for hope. They asked for structure.",
-      "/secure/founder/journal-sy08-09-09.txt":
-        "JOURNAL SY08-09-09\n" +
-        "I rewrote the menu language to be shorter.\n" +
-        "Long words make anxious guests feel trapped.",
-      "/secure/founder/letter-never-sent.txt":
-        "LETTER NEVER SENT\n" +
-        "If you read this, the plan worked and failed at the same time.\n" +
-        "We built a safe room that became a bar because people only sit when they trust the room.\n" +
-        "Trust is expensive. Keep paying for it.",
-      "/secure/founder/masaya-notes.txt":
-        "MASAYA NOTES\n" +
-        "He never threatened directly. He changed the room by arriving.\n" +
-        "Table C3 stays reserved in low light.\n" +
-        "Masaya Chai was stabilized from his specs: cold, no garnish, no ceremony.",
+      "/secure/archive/facility-notes/second-lock-adoption-sy12.md": [
+        "SECOND LOCK ADOPTION / SY12",
+        "After two corridor breaches, the inner lock became mandatory.",
+        "Entry logic changed from trust to layered verification and then stayed that way because no one wanted to argue with the memory of the blood on the floor tiles.",
+        "Guests only see the polished side of this decision."
+      ].join("\n"),
+      "/secure/archive/facility-notes/corridor-map-notes-sy06.txt": [
+        "CORRIDOR MAP NOTES / SY06",
+        "North service tunnel collapsed at marker N-12.",
+        "Re-route guest flow through lower ring after 22:00.",
+        "Wall seam near old pump room still leaks cold air in winter and makes nervous people think someone is breathing behind them."
+      ].join("\n"),
+      "/secure/archive/facility-notes/quiet-floor-rationale-sy14.txt": [
+        "QUIET FLOOR RATIONALE / SY14",
+        "Noise-trigger incidents dropped 38% after low-word service protocol.",
+        "Short language is mandatory during peak load.",
+        "Guests in distress trust clear shapes and shorter sentences faster than friendliness."
+      ].join("\n"),
 
-      "/secure/founder/staff-notes": ["index.txt", "erik.story", "andrea.story", "kenji.story"],
-      "/secure/founder/staff-notes/index.txt":
-        "STAFF NOTES INDEX\n" +
-        "private notes on recruitment and trust decisions",
-      "/secure/founder/staff-notes/erik.story":
-        "ERIK STORY\n" +
-        "I met Erik breaking up a queue fight without touching anyone.\n" +
-        "He speaks less than most, but every sentence lowers temperature in the room.",
-      "/secure/founder/staff-notes/andrea.story":
-        "ANDREA STORY\n" +
-        "Andrea memorized thirty names on her second shift.\n" +
+      "/secure/archive/signal-captures": ["surface-radio-fragment-sy19.log"],
+      "/secure/archive/signal-captures/surface-radio-fragment-sy19.log": [
+        "SURFACE RADIO FRAGMENT / SY19",
+        "[00:14] carrier unstable",
+        "[00:17] keep lights low gate still open",
+        "[00:18] second voice lost under static",
+        "[00:18] signal cut hard, not faded"
+      ].join("\n"),
+
+      "/secure/archive/access-ledgers": ["seal-integrity-sy26.txt", "archive-routing-note-sy21.txt"],
+      "/secure/archive/access-ledgers/seal-integrity-sy26.txt": [
+        "SEAL INTEGRITY SY26",
+        "Envelope count matches ledger after late check by Mira.",
+        "Theo confirms no duplicate wax impressions.",
+        "Latest escrow string remains frostline_719 until rotation is signed by floor lead and records together.",
+        "If this file is open outside records review, someone is already too desperate."
+      ].join("\n"),
+      "/secure/archive/access-ledgers/archive-routing-note-sy21.txt": [
+        "ARCHIVE ROUTING NOTE SY21",
+        "Do not file safe rotation slips under archive by topic.",
+        "They go by risk, not by story.",
+        "The last person who indexed by story nearly got the founder note shelved beside ration poetry."
+      ].join("\n"),
+
+      "/secure/founder": ["README.txt", "journals", "letters-never-sent", "masaya-notes.txt", "staff-notes"],
+      "/secure/founder/README.txt": [
+        "FOUNDER WORKSPACE",
+        "Restricted partition.",
+        "Contains private logs, operating philosophy, unsent correspondence, and recruitment notes never meant for staff view.",
+        "Nothing in this directory was written for comfort."
+      ].join("\n"),
+      "/secure/founder/journals": ["journal-sy02-11-03.txt", "journal-sy08-09-09.txt", "journal-sy12-03-02.txt"],
+      "/secure/founder/journals/journal-sy02-11-03.txt": [
+        "JOURNAL SY02-11-03",
+        "Tonight we served twelve people with six glasses and one intact shaker.",
+        "No one asked for hope. They asked for structure.",
+        "I think that is kinder, in a way. Hope makes promises. Structure only asks to be maintained."
+      ].join("\n"),
+      "/secure/founder/journals/journal-sy08-09-09.txt": [
+        "JOURNAL SY08-09-09",
+        "I rewrote the menu language to be shorter.",
+        "Long words make anxious guests feel trapped.",
+        "The cruel thing is that I learned this from interrogations, not hospitality."
+      ].join("\n"),
+      "/secure/founder/journals/journal-sy12-03-02.txt": [
+        "JOURNAL SY12-03-02",
+        "The second lock went in today.",
+        "Everyone said it was necessary and no one was wrong.",
+        "That is what keeps me awake: the clean decisions are never the ones that cost us people."
+      ].join("\n"),
+      "/secure/founder/masaya-notes.txt": [
+        "MASAYA NOTES",
+        "He never threatened directly. He changed the room by arriving.",
+        "Table C3 stays reserved in low light.",
+        "Masaya Chai was stabilized from his specs: cold, no garnish, no ceremony.",
+        "When he looks at the inner lock I cannot tell whether he is remembering it or measuring it."
+      ].join("\n"),
+
+      "/secure/founder/staff-notes": ["index.txt", "erik.story", "andrea.story", "kenji.story", "laryssa.story"],
+      "/secure/founder/staff-notes/index.txt": [
+        "STAFF NOTES INDEX",
+        "Private notes on recruitment and trust decisions.",
+        "These are not profiles. They are the reasons I let people this close to the room."
+      ].join("\n"),
+      "/secure/founder/staff-notes/erik.story": [
+        "ERIK STORY",
+        "I met Erik breaking up a queue fight without touching anyone.",
+        "He spoke to each man as if embarrassment might save them faster than force.",
+        "It did.",
+        "I hired him because he understood that dignity is cheaper to preserve than to rebuild."
+      ].join("\n"),
+      "/secure/founder/staff-notes/andrea.story": [
+        "ANDREA STORY",
+        "Andrea memorized thirty names on her second shift.",
         "She can tell who is near panic before they sit.",
-      "/secure/founder/staff-notes/kenji.story":
-        "KENJI STORY\n" +
-        "Kenji arrived soaked from canal rain and asked where to stand.\n" +
+        "The hard part is not her memory. It is that she still treats memory like a form of care instead of ammunition."
+      ].join("\n"),
+      "/secure/founder/staff-notes/kenji.story": [
+        "KENJI STORY",
+        "Kenji arrived soaked from canal rain and asked where to stand.",
         "I said by the door. He has protected that line ever since.",
+        "Some people need purpose to survive. Kenji needs a threshold."
+      ].join("\n"),
+      "/secure/founder/staff-notes/laryssa.story": [
+        "LARYSSA STORY",
+        "Laryssa came from intake carrying the kind of silence that clinics teach and bars usually ruin.",
+        "I kept waiting for the room to harden her. It has not, not entirely.",
+        "She sees the people trying not to be seen, which makes her invaluable and in danger at the same time."
+      ].join("\n"),
+
+      "/secure/founder/letters-never-sent": [
+        "sy00-02-13_to_my_mother.txt",
+        "sy00-04-29_to_rin_at_gate.txt",
+        "sy00-09-18_to_the_first_dead.txt",
+        "sy01-03-07_to_erik_before_hire.txt",
+        "sy01-11-26_to_the_people_left_outside.txt",
+        "sy02-05-14_to_theo_after_the_leak.txt",
+        "sy03-08-31_to_andrea_without_sending.txt",
+        "sy04-02-09_to_masaya_after_c3.txt",
+        "sy05-12-19_to_ju_about_the_cellar.txt",
+        "sy07-06-03_to_the_room_itself.txt",
+        "sy08-09-09_to_laryssa_before_transfer.txt",
+        "sy10-11-17_to_masaya_after_last_entry.txt",
+        "sy12-03-02_to_the_inner_lock.txt",
+        "sy14-06-27_to_future_owner.txt",
+        "sy17-01-05_to_the_clock_team.txt",
+        "sy19-08-13_to_the_surface.txt",
+        "sy26-02-24_to_whoever_reads_last.txt"
+      ],
+      "/secure/founder/letters-never-sent/sy00-02-13_to_my_mother.txt": [
+        "To my mother,",
+        "",
+        "We opened the door because staying below had started to feel like prayer and not survival.",
+        "You told me a sealed room can turn holy if people are frightened enough.",
+        "I think you were warning me, but I used the lesson anyway.",
+        "There is a street above us now where the wind smells like metal filings and wet smoke.",
+        "I did not come back for you in time.",
+        "There is no version of that sentence I can improve by rewriting it."
+      ].join("\n"),
+      "/secure/founder/letters-never-sent/sy00-04-29_to_rin_at_gate.txt": [
+        "To Rin at the gate,",
+        "",
+        "I keep remembering how politely you asked whether we would open again after close.",
+        "You said it like you were asking for another glass, not a place to sleep.",
+        "We had nine inside and one lock that already stuck in wet weather.",
+        "I chose the people already in the room and listened to your steps go quiet on the stairs.",
+        "The next day I told staff we had followed protocol.",
+        "That was true and not enough."
+      ].join("\n"),
+      "/secure/founder/letters-never-sent/sy00-09-18_to_the_first_dead.txt": [
+        "To the first dead we carried out ourselves,",
+        "",
+        "I never learned your name because everyone was too busy pretending names would make it harder.",
+        "You died three chairs from the bar while someone kept asking whether the tea was still hot.",
+        "I remember thinking the room had failed before I understood rooms cannot fail, only people inside them.",
+        "We cleaned the floor before sunrise and opened on time.",
+        "That decision became the shape of the rest of my life."
+      ].join("\n"),
+      "/secure/founder/letters-never-sent/sy01-03-07_to_erik_before_hire.txt": [
+        "To Erik, before I knew your name,",
+        "",
+        "You broke a queue apart without touching anyone.",
+        "I watched three men back away from their own anger because you sounded more tired than afraid.",
+        "That was when I understood authority survives the collapse better than charm does.",
+        "I wanted to ask whether you needed work.",
+        "Instead I asked whether you were hungry, which was the same thing in those years."
+      ].join("\n"),
+      "/secure/founder/letters-never-sent/sy01-11-26_to_the_people_left_outside.txt": [
+        "To the people left outside,",
+        "",
+        "There were nights when the room was full but not honest about it.",
+        "A person can still stand, still order, still smile, and already be one breath from breaking.",
+        "I counted chairs because chairs were countable.",
+        "I did not know how to count the damage of turning someone away and having them understand me.",
+        "Understanding is a colder mercy than refusal."
+      ].join("\n"),
+      "/secure/founder/letters-never-sent/sy02-05-14_to_theo_after_the_leak.txt": [
+        "To Theo, after the leak,",
+        "",
+        "You said if the line had gone ten minutes longer the wall would have burst and drowned the cellar.",
+        "I thanked you for saving the room.",
+        "I did not thank you for choosing the room while the clinic upstairs begged for cold storage to stay alive.",
+        "I know the numbers made your decision for you.",
+        "The numbers do not visit me at night. The faces do."
+      ].join("\n"),
+      "/secure/founder/letters-never-sent/sy03-08-31_to_andrea_without_sending.txt": [
+        "To Andrea, without sending,",
+        "",
+        "You still greet people as if the room owes them dignity instead of merely safety.",
+        "Do not let me train that out of you.",
+        "One day I will call your softness useful in a voice that sounds managerial and clean.",
+        "What I mean is uglier: the room needs at least one person who has not mistaken caution for virtue."
+      ].join("\n"),
+      "/secure/founder/letters-never-sent/sy04-02-09_to_masaya_after_c3.txt": [
+        "To Masaya, after your first night at C3,",
+        "",
+        "Nothing happened, which is not the same as saying nothing changed.",
+        "You held the room the way a bad memory holds the body: quietly and everywhere at once.",
+        "Staff moved better after you arrived. That frightened me more than if they had frozen.",
+        "I do not know whether you came for shelter, surveillance, or nostalgia.",
+        "I hate that the room suits you."
+      ].join("\n"),
+      "/secure/founder/letters-never-sent/sy05-12-19_to_ju_about_the_cellar.txt": [
+        "To Ju, about the cellar,",
+        "",
+        "You spend more time below than anyone and still come upstairs gentle with the glass.",
+        "I wonder if that is wisdom or damage.",
+        "The cellar teaches a person that leaks are patient and rot never argues for itself.",
+        "If you ever tell me the place feels wrong, I will close early and not ask you to justify it."
+      ].join("\n"),
+      "/secure/founder/letters-never-sent/sy07-06-03_to_the_room_itself.txt": [
+        "To the room itself,",
+        "",
+        "I built you to hold people until they could stand again.",
+        "Then I taught you to sell them a ritual so they would stay long enough to believe in your walls.",
+        "Sometimes I think that was hospitality.",
+        "Sometimes I think it was camouflage.",
+        "Either way, you have outlived the honesty of your first purpose."
+      ].join("\n"),
+      "/secure/founder/letters-never-sent/sy08-09-09_to_laryssa_before_transfer.txt": [
+        "To Laryssa, before transfer,",
+        "",
+        "The ward taught you to notice suffering early. The floor will teach you how often early is still too late.",
+        "Guests lie with better clothes than patients do, but the body is faithful to panic.",
+        "If you ever feel yourself becoming efficient about despair, leave the shift and do not apologize.",
+        "I can replace a worker faster than I can replace that warning."
+      ].join("\n"),
+      "/secure/founder/letters-never-sent/sy10-11-17_to_masaya_after_last_entry.txt": [
+        "To Masaya, after the last confirmed entry,",
+        "",
+        "You left the glass half-finished and never came back.",
+        "The room stayed careful for months, as if your absence might still be watching it.",
+        "I kept C3 dark because changing it felt like admitting relief.",
+        "Relief would have been dishonest.",
+        "What I felt was the kind of vacancy that makes every sound look guilty."
+      ].join("\n"),
+      "/secure/founder/letters-never-sent/sy12-03-02_to_the_inner_lock.txt": [
+        "To the inner lock,",
+        "",
+        "Today I praised you in front of staff and hated you in private.",
+        "You are a machine built to turn hesitation into policy.",
+        "People trust doors more when they know someone else was denied by them first.",
+        "That knowledge has made the room safer and me less certain I deserve to run it."
+      ].join("\n"),
+      "/secure/founder/letters-never-sent/sy14-06-27_to_future_owner.txt": [
+        "To whoever owns this room after me,",
+        "",
+        "Do not confuse atmosphere with safety.",
+        "A quiet room can still be cruel. A crowded room can still be kind.",
+        "Watch where staff stand when they are tired. That tells you the truth of the place faster than revenue ever will.",
+        "If you must choose between elegance and an exit path, choose the exit and lie about why."
+      ].join("\n"),
+      "/secure/founder/letters-never-sent/sy17-01-05_to_the_clock_team.txt": [
+        "To the clock team,",
+        "",
+        "You asked me which date to print on the continuity ledger after the drift reports arrived.",
+        "I told you to keep our local standard because the room needed one lie small enough to live with.",
+        "Everyone nodded because they were exhausted, not because I was right.",
+        "I still do not know whether consistency is a kindness or only easier to archive."
+      ].join("\n"),
+      "/secure/founder/letters-never-sent/sy19-08-13_to_the_surface.txt": [
+        "To the surface,",
+        "",
+        "We spent years talking about you like a wound that might someday close.",
+        "Then we learned wounds become geography if you survive inside them long enough.",
+        "There are streets now where children know the ash smell better than rain.",
+        "I opened a bar because people will sit for a drink in places where they would never admit they came for shelter."
+      ].join("\n"),
+      "/secure/founder/letters-never-sent/sy26-02-24_to_whoever_reads_last.txt": [
+        "To whoever reads last,",
+        "",
+        "If you have this directory open, then the room either trusted you too much or not enough.",
+        "Everything here was written after close, when the glasses were stacked and the courage wore off.",
+        "You will be tempted to sort these pages into wisdom and damage.",
+        "Do not. They came from the same hand on the same nights.",
+        "If Safehouse survives me, let it stay useful before it tries to stay pure."
+      ].join("\n"),
 
       "/var": ["log"],
       "/var/log": ["service.log", "security.log"],
@@ -587,16 +1020,21 @@
   }
 
   function listPathLines(path) {
-    const entries = filterVisibleChildren(path);
+    const entries = filterVisibleChildren(path).sort((a, b) => {
+      if (a.kind !== b.kind) {
+        return a.kind === "dir" ? -1 : 1;
+      }
+      return a.name.localeCompare(b.name);
+    });
     if (!entries.length) {
       return "(empty or restricted)";
     }
     return entries
       .map((entry) => {
         if (entry.locked) {
-          return "[L] " + entry.name;
+          return "[LOCK] " + entry.name;
         }
-        return (entry.kind === "dir" ? "[D] " : "[F] ") + entry.name;
+        return (entry.kind === "dir" ? "[DIR] " : "[FILE] ") + entry.name;
       })
       .join("\n");
   }
@@ -661,6 +1099,20 @@
       return glyph;
     }
     glyph.textContent = app.glyph;
+    return glyph;
+  }
+
+  function createFsGlyphElement(kind, className) {
+    const glyph = document.createElement("span");
+    glyph.className = className;
+    const img = document.createElement("img");
+    img.alt = "";
+    img.loading = "lazy";
+    img.src = kind === "dir" ? "assets/icons/fs-folder.svg" : "assets/icons/fs-file.svg";
+    img.addEventListener("error", () => {
+      glyph.textContent = kind === "dir" ? "[]" : "--";
+    });
+    glyph.appendChild(img);
     return glyph;
   }
 
@@ -1201,7 +1653,6 @@
     const state = {
       cwd: normalizePath(startPath || rootPath),
       selectedFile: "",
-      viewMode: "list",
       expanded: new Set([rootPath, "/"]),
       lastDragAt: 0
     };
@@ -1220,8 +1671,6 @@
 
     const actions = document.createElement("div");
     actions.className = "v2-fs-actions";
-    const viewModes = document.createElement("div");
-    viewModes.className = "v2-fs-viewmodes";
 
     const homeBtn = document.createElement("button");
     homeBtn.type = "button";
@@ -1239,20 +1688,8 @@
     actions.appendChild(upBtn);
     actions.appendChild(refreshBtn);
 
-    const treeModeBtn = document.createElement("button");
-    treeModeBtn.type = "button";
-    treeModeBtn.textContent = "tree";
-
-    const listModeBtn = document.createElement("button");
-    listModeBtn.type = "button";
-    listModeBtn.textContent = "list";
-
-    viewModes.appendChild(treeModeBtn);
-    viewModes.appendChild(listModeBtn);
-
     toolbar.appendChild(pathEl);
     toolbar.appendChild(actions);
-    toolbar.appendChild(viewModes);
 
     const body = document.createElement("div");
     body.className = "v2-fs-body";
@@ -1310,9 +1747,9 @@
 
     function directoryRowText(entry) {
       if (entry.locked) {
-        return "[L] " + entry.name;
+        return "restricted " + (entry.kind === "dir" ? "folder: " : "file: ") + entry.name;
       }
-      return (entry.kind === "dir" ? "[D] " : "[F] ") + entry.name;
+      return (entry.kind === "dir" ? "folder: " : "file: ") + entry.name;
     }
 
     function renderTree() {
@@ -1331,8 +1768,19 @@
         const name = isRootNode ? rootPath : path.split("/").filter(Boolean).slice(-1)[0];
         const locked = !canAccess(path);
         const expanded = state.expanded.has(path);
-        const marker = locked ? "x" : expanded ? "▾" : "▸";
-        row.textContent = marker + " " + (name || "/");
+        const marker = document.createElement("span");
+        marker.className = "v2-fs-tree-marker";
+        marker.textContent = expanded ? "-" : "+";
+
+        const glyph = createFsGlyphElement("dir", "v2-fs-tree-glyph");
+
+        const label = document.createElement("span");
+        label.className = "v2-fs-tree-label";
+        label.textContent = name || "/";
+
+        row.appendChild(marker);
+        row.appendChild(glyph);
+        row.appendChild(label);
 
         if (locked) {
           row.classList.add("locked");
@@ -1376,11 +1824,6 @@
       list.innerHTML = "";
       view.innerHTML = "";
 
-      treeModeBtn.classList.toggle("active", state.viewMode === "tree");
-      listModeBtn.classList.toggle("active", state.viewMode === "list");
-      wrap.classList.toggle("list-mode", state.viewMode === "list");
-      tree.classList.toggle("hidden", state.viewMode !== "tree");
-
       if (!canAccess(state.cwd)) {
         view.textContent = formatRestricted(state.cwd);
         hint.textContent = "login required (open Staff Login)";
@@ -1407,9 +1850,7 @@
         row.className = "v2-fs-entry";
         row.title = directoryRowText(entry);
 
-        const glyph = document.createElement("span");
-        glyph.className = "v2-fs-entry-glyph";
-        glyph.textContent = entry.locked ? "L" : entry.kind === "dir" ? "D" : "F";
+        const glyph = createFsGlyphElement(entry.kind, "v2-fs-entry-glyph");
 
         const label = document.createElement("span");
         label.className = "v2-fs-entry-label";
@@ -1473,7 +1914,7 @@
         list.appendChild(row);
       });
 
-      if (state.viewMode === "list" && options && typeof options.onOpenFile === "function") {
+      if (options && typeof options.onOpenFile === "function") {
         view.textContent = "Select a file to open it in a new window.";
       } else if (state.selectedFile && isFile(state.selectedFile) && canAccess(state.selectedFile)) {
         view.textContent = readFileText(state.selectedFile);
@@ -1483,7 +1924,7 @@
           state.cwd +
           "\n\n" +
           listPathLines(state.cwd) +
-          "\n\nOpen [D] to enter, [F] to read, [L] requires auth.";
+          "\n\nOpen folders to enter. Open files to read. Locked entries require auth.";
       }
 
       renderTree();
@@ -1514,16 +1955,6 @@
       renderView();
     });
 
-    treeModeBtn.addEventListener("click", () => {
-      state.viewMode = "tree";
-      renderView();
-    });
-
-    listModeBtn.addEventListener("click", () => {
-      state.viewMode = "list";
-      renderView();
-    });
-
     refreshBtn.addEventListener("click", () => {
       renderView();
     });
@@ -1550,8 +1981,8 @@
         "SECURE ARCHIVE LOCKED\n\nStaff login required to access /secure.\nUse File Repair app to restore REC-77, then authenticate in Staff Login."
       );
     }
-    return createFilesystemBrowser("/secure", {
-      rootPath: "/secure",
+    return createFilesystemBrowser("/secure/archive", {
+      rootPath: "/secure/archive",
       lockRoot: true,
       onOpenFile: env && env.openDocumentWindow ? env.openDocumentWindow : null,
       enableDrag: Boolean(env && env.enableFileDrag)

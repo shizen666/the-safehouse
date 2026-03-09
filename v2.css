@@ -1142,8 +1142,7 @@ body {
   gap: 6px;
 }
 
-.v2-fs-actions button,
-.v2-fs-viewmodes button {
+.v2-fs-actions button {
   appearance: none;
   border: 1px solid rgba(149, 245, 175, 0.24);
   background: rgba(149, 245, 175, 0.08);
@@ -1154,15 +1153,6 @@ body {
   text-transform: uppercase;
   padding: 4px 7px;
   cursor: pointer;
-}
-
-.v2-fs-viewmodes {
-  display: flex;
-  gap: 6px;
-}
-
-.v2-fs-viewmodes button.active {
-  background: rgba(149, 245, 175, 0.22);
 }
 
 .v2-fs-actions button:disabled {
@@ -1206,6 +1196,10 @@ body {
   text-align: left;
   padding: 7px 8px;
   cursor: pointer;
+  display: grid;
+  grid-template-columns: 12px 18px minmax(0, 1fr);
+  align-items: center;
+  gap: 8px;
 }
 
 .v2-fs-tree-row.active,
@@ -1215,6 +1209,34 @@ body {
 
 .v2-fs-tree-row.locked {
   color: var(--dim);
+}
+
+.v2-fs-tree-marker {
+  color: rgba(149, 245, 175, 0.72);
+  font-size: 0.86em;
+  line-height: 1;
+}
+
+.v2-fs-tree-glyph,
+.v2-fs-entry-glyph {
+  display: grid;
+  place-items: center;
+}
+
+.v2-fs-tree-glyph img,
+.v2-fs-entry-glyph img {
+  display: block;
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 6px rgba(149, 245, 175, 0.22));
+}
+
+.v2-fs-tree-label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .v2-fs-main {
@@ -1337,21 +1359,9 @@ body {
 .v2-fs-entry-glyph {
   width: 22px;
   height: 22px;
-  border: 1px solid rgba(149, 245, 175, 0.46);
+  border: 1px solid rgba(149, 245, 175, 0.26);
   border-radius: 2px;
-  display: grid;
-  place-items: center;
-  color: var(--fg-bright);
-  font-size: 0.7em;
-  letter-spacing: 0.04em;
-  background:
-    repeating-linear-gradient(
-      0deg,
-      rgba(149, 245, 175, 0.13) 0,
-      rgba(149, 245, 175, 0.13) 1px,
-      rgba(5, 20, 10, 0.7) 1px,
-      rgba(5, 20, 10, 0.7) 3px
-    );
+  background: rgba(5, 20, 10, 0.5);
 }
 
 .v2-fs-entry-label {
