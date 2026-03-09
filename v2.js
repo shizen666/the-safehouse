@@ -52,7 +52,7 @@
     { code: "en", label: "English" },
     { code: "ja", label: "日本語" },
     { code: "it", label: "Italiano" },
-    { code: "tlh", label: " ", statusLabel: "tlhIngan Hol" }
+    { code: "tlh", label: " ", statusLabel: " " }
   ];
 
   const appState = {
@@ -92,6 +92,8 @@
       "mobile.brand.sub": "COCKTAIL BAR // POST-SURFACE DISTRICT",
       "mobile.brand.now": "Now Serving: Masaya Highball",
       "mobile.quick": "Quick Access",
+      "mobile.section.public": "Guest Access",
+      "mobile.section.system": "System Access",
       "mobile.back": "back",
       "mobile.dock": "tap icon // swipe panel down to close",
       "auth.title.staff": "Restricted Records",
@@ -123,6 +125,7 @@
       "fs.dragHint": " // drag file card into File Repair",
       "fs.openedNewWindow": "opened in new window",
       "fs.selectToOpen": "Select a file to open it in a new window.",
+      "fs.mobileGuide": "Tap folders to enter. Tap files to preview.",
       "fs.directoryIntro": "directory: {path}\n\n{listing}\n\nOpen folders to enter. Open files to read. Locked entries require auth.",
       "fs.emptyOrRestricted": "(empty or restricted)",
       "fs.locked": "[LOCK] {name}",
@@ -240,6 +243,8 @@
       "mobile.brand.sub": "COCKTAIL BAR // DISTRETTO POST-SUPERFICIE",
       "mobile.brand.now": "Ora in servizio: Masaya Highball",
       "mobile.quick": "Accesso Rapido",
+      "mobile.section.public": "Accesso Ospiti",
+      "mobile.section.system": "Accesso Sistema",
       "mobile.back": "indietro",
       "mobile.dock": "tocca un'icona // scorri in basso per chiudere",
       "auth.title.staff": "Archivi Riservati",
@@ -271,6 +276,7 @@
       "fs.dragHint": " // trascina una scheda file in Ripara File",
       "fs.openedNewWindow": "aperto in una nuova finestra",
       "fs.selectToOpen": "Seleziona un file per aprirlo in una nuova finestra.",
+      "fs.mobileGuide": "Tocca le cartelle per entrare. Tocca i file per l'anteprima.",
       "fs.directoryIntro": "directory: {path}\n\n{listing}\n\nApri le cartelle per entrare. Apri i file per leggere. Le voci bloccate richiedono autenticazione.",
       "fs.emptyOrRestricted": "(vuoto o riservato)",
       "fs.locked": "[BLOCCATO] {name}",
@@ -388,6 +394,8 @@
       "mobile.brand.sub": "カクテルバー // 地上後地区",
       "mobile.brand.now": "現在提供中: Masaya Highball",
       "mobile.quick": "クイックアクセス",
+      "mobile.section.public": "ゲストアクセス",
+      "mobile.section.system": "システムアクセス",
       "mobile.back": "戻る",
       "mobile.dock": "アイコンをタップ // 下へスワイプして閉じる",
       "auth.title.staff": "制限記録",
@@ -419,6 +427,7 @@
       "fs.dragHint": " // ファイルカードを File Repair へドラッグ",
       "fs.openedNewWindow": "新しいウィンドウで開きました",
       "fs.selectToOpen": "ファイルを選択すると新しいウィンドウで開きます。",
+      "fs.mobileGuide": "フォルダをタップして移動し、ファイルをタップしてプレビューします。",
       "fs.directoryIntro": "ディレクトリ: {path}\n\n{listing}\n\nフォルダを開いて移動します。ファイルを開いて読みます。ロックされた項目には認証が必要です。",
       "fs.emptyOrRestricted": "(空、または制限中)",
       "fs.locked": "[LOCK] {name}",
@@ -529,8 +538,8 @@
     "app.lore.title": "pegh qonpa'",
     "app.decryptor.label": "De' Dub",
     "app.decryptor.title": "REC-77 De' Dub jan",
-    "app.terminal.label": "terminal",
-    "app.terminal.title": "legacy terminal",
+    "app.terminal.label": "SeHjan",
+    "app.terminal.title": "tIQ SeHjan",
     "language.subtitle": "meH De'wI' // SOFTCO chenmoH",
     "language.hint": "SeH Hol yIwIv:",
     "role.guest": "meH ghom",
@@ -539,6 +548,8 @@
     "mobile.brand.sub": "tach // qabDaq 'elDI' Sep",
     "mobile.brand.now": "DaH nobta': Masaya Highball",
     "mobile.quick": "nom 'el",
+    "mobile.section.public": "meH 'el",
+    "mobile.section.system": "jan 'el",
     "mobile.back": "chegh",
     "mobile.dock": "Degh yItu' // panel yISurmoH yIchImmoHmeH",
     "auth.title.staff": "pegh De'",
@@ -561,7 +572,7 @@
     "fs.home": "juH",
     "fs.up": "Dung",
     "fs.refresh": "choHqa'",
-    "fs.restricted": "pegh path: {path}\n\nSepvam yI'elmeH yaS naw'potlh.",
+    "fs.restricted": "pegh ghoStaH: {path}\n\nSepvam yI'elmeH yaS naw'potlh.",
     "fs.accessRestricted": "'elmeH pegh",
     "fs.credentialsRequired": "naw' potlh",
     "fs.invalidPath": "path qab",
@@ -570,22 +581,23 @@
     "fs.dragHint": " // File Repair yIghItlhmeH De' card yIghoSmoH",
     "fs.openedNewWindow": "cha'logh QorwaghDaq poSlu'",
     "fs.selectToOpen": "poSmeH De' yIwIv.",
+    "fs.mobileGuide": "foldermey yItu' yI'elmeH. De'mey yItu' yIbejmeH.",
     "fs.directoryIntro": "directory: {path}\n\n{listing}\n\nmeQ yIpoSmeH foldermey yIpoS. QonmeH De' yIpoS. pegh tetlhmeyvaD chaw' potlh.",
     "fs.emptyOrRestricted": "(pagh pagh pegh)",
     "fs.locked": "[pegh] {name}",
-    "fs.dir": "[folder] {name}",
+    "fs.dir": "[ngaS] {name}",
     "fs.file": "[De'] {name}",
-    "fs.dirLabel": "folder: {name}",
+    "fs.dirLabel": "ngaS: {name}",
     "fs.fileLabel": "De': {name}",
-    "fs.restrictedDirLabel": "pegh folder: {name}",
+    "fs.restrictedDirLabel": "pegh ngaS: {name}",
     "fs.restrictedFileLabel": "pegh De': {name}",
     "fs.secureArchiveLocked": "pegh qonpa' SoQlu'\n\nyaS naw' potlh.",
     "location.transit": "ghoSmeH:\nKyoto-kawaramachi station chanDaq botlh, Gion-shijo station nIHdaq botlh.",
     "trash.body": "veQjan\n\nQaw'lu'pu'bogh De' tu'be'lu'.\n\nvaj: DaHjaj Qaw'ghach logmey je notmey juppu' yIlan.",
     "decrypt.loadFromFs": "file systemDaq pol",
-    "decrypt.blockMap": "BLOCK MAP",
-    "decrypt.parity": "PARITY",
-    "decrypt.signalGain": "SIGNAL GAIN",
+    "decrypt.blockMap": "block Sep",
+    "decrypt.parity": "rap'a'",
+    "decrypt.signalGain": "signal HoS",
     "decrypt.runRepair": "Dub yIrInmoH",
     "decrypt.resetTuning": "tun yIchoHqa'",
     "decrypt.noSignal": "naw' De' signal tu'be'lu'",
@@ -2283,6 +2295,80 @@ Safehouse jItaH ret taHchugh, pure bIchoHpa' useful yItaH.`
     return map[currentLanguage()] || "en-US";
   }
 
+  const PIQAD_MAP = {
+    a: "\uf8d0",
+    b: "\uf8d1",
+    ch: "\uf8d2",
+    D: "\uf8d3",
+    e: "\uf8d4",
+    gh: "\uf8d5",
+    H: "\uf8d6",
+    I: "\uf8d7",
+    j: "\uf8d8",
+    l: "\uf8d9",
+    m: "\uf8da",
+    n: "\uf8db",
+    ng: "\uf8dc",
+    o: "\uf8dd",
+    p: "\uf8de",
+    q: "\uf8df",
+    Q: "\uf8e0",
+    r: "\uf8e1",
+    S: "\uf8e2",
+    t: "\uf8e3",
+    tlh: "\uf8e4",
+    u: "\uf8e5",
+    v: "\uf8e6",
+    w: "\uf8e7",
+    y: "\uf8e8",
+    "'": "\uf8e9"
+  };
+  const PIQAD_TOKENS = Object.keys(PIQAD_MAP).sort((a, b) => b.length - a.length);
+
+  function parseKlingonWord(word) {
+    const tokens = [];
+    let index = 0;
+    while (index < word.length) {
+      let match = "";
+      for (const token of PIQAD_TOKENS) {
+        if (word.startsWith(token, index)) {
+          match = token;
+          break;
+        }
+      }
+      if (!match) {
+        return null;
+      }
+      tokens.push(match);
+      index += match.length;
+    }
+    return tokens;
+  }
+
+  function tlhToPiqad(value) {
+    return String(value).split(/([A-Za-z']+)/g).map((part) => {
+      if (!part || !/[A-Za-z']/.test(part)) {
+        return part;
+      }
+      const parsed = parseKlingonWord(part);
+      if (!parsed) {
+        return part;
+      }
+      return parsed.map((token) => PIQAD_MAP[token]).join("");
+    }).join("");
+  }
+
+  function localizeKlingonText(value) {
+    if (currentLanguage() !== "tlh") {
+      return String(value);
+    }
+    return String(value).split(/(\{\w+\})/g).map((part) => (/^\{\w+\}$/.test(part) ? part : tlhToPiqad(part))).join("");
+  }
+
+  function applyLanguageMode() {
+    root.classList.toggle("lang-tlh", currentLanguage() === "tlh" && appState.phase === "main");
+  }
+
   function templateText(value, params) {
     return String(value).replace(/\{(\w+)\}/g, (_, key) => {
       if (params && Object.prototype.hasOwnProperty.call(params, key)) {
@@ -2296,13 +2382,14 @@ Safehouse jItaH ret taHchugh, pure bIchoHpa' useful yItaH.`
     const lang = currentLanguage();
     const primary = I18N[lang] && Object.prototype.hasOwnProperty.call(I18N[lang], key) ? I18N[lang][key] : null;
     const base = I18N.en && Object.prototype.hasOwnProperty.call(I18N.en, key) ? I18N.en[key] : fallback || key;
-    return templateText(primary != null ? primary : base, params);
+    return templateText(localizeKlingonText(primary != null ? primary : base), params);
   }
 
   function localizedFileContent(path) {
     const lang = currentLanguage();
     if (LOCALIZED_FILE_CONTENTS[lang] && Object.prototype.hasOwnProperty.call(LOCALIZED_FILE_CONTENTS[lang], path)) {
-      return LOCALIZED_FILE_CONTENTS[lang][path];
+      const content = LOCALIZED_FILE_CONTENTS[lang][path];
+      return lang === "tlh" ? tlhToPiqad(content) : content;
     }
     return null;
   }
@@ -2330,6 +2417,9 @@ Safehouse jItaH ret taHchugh, pure bIchoHpa' useful yItaH.`
   function languageLabel() {
     const entry = LANGUAGES.find((item) => item.code === currentLanguage());
     const label = entry ? entry.statusLabel || entry.label : "UNSET";
+    if (entry && entry.code === "tlh") {
+      return label;
+    }
     return /[a-z]/i.test(label) ? label.toUpperCase() : label;
   }
 
@@ -2381,7 +2471,8 @@ Safehouse jItaH ret taHchugh, pure bIchoHpa' useful yItaH.`
       );
     }
     if (currentLanguage() === "tlh") {
-      return (
+      return tlhToPiqad(
+        (
         "REC-77 DUBTA' RECORD\n" +
         "operator: vault_maintenance\n" +
         "access key: p59_relay_7734\n\n" +
@@ -2389,6 +2480,7 @@ Safehouse jItaH ret taHchugh, pure bIchoHpa' useful yItaH.`
         "SY09 note: Masaya Highball spec je tamghach je neHta'. C3 table peghtaH.\n" +
         "SY12 note: corridor breach qaSta'pu'DI', second lock mandatory choH.\n" +
         "SY26 note: archive handoff current staffvaD chavta'.\n"
+        )
       );
     }
     return (
@@ -2455,7 +2547,7 @@ Safehouse jItaH ret taHchugh, pure bIchoHpa' useful yItaH.`
           return "REC-77 NOTE\n状態: 修復済み\n回復した資格情報と記録は /public/corrupted-file-77.bin を開いてください。";
         }
         if (currentLanguage() === "tlh") {
-          return "REC-77 NOTE\nDotlh: Dubta'\n/public/corrupted-file-77.bin yIpoS peghmey je QonoS polboghmo'.";
+          return tlhToPiqad("REC-77 NOTE\nDotlh: Dubta'\n/public/corrupted-file-77.bin yIpoS peghmey je QonoS polboghmo'.");
         }
         return "REC-77 NOTE\nstatus: repaired\nopen /public/corrupted-file-77.bin for recovered credentials and story.";
       }
@@ -2466,7 +2558,7 @@ Safehouse jItaH ret taHchugh, pure bIchoHpa' useful yItaH.`
         return "REC-77 NOTE\nファイル整合性エラー。\nデスクトップの File Repair アプリで可読性を復元してください。";
       }
       if (currentLanguage() === "tlh") {
-        return "REC-77 NOTE\nfile integrity Qapbe'.\ndesktopDaq File Repair app yIlo' readability yIchenqa'meH.";
+        return tlhToPiqad("REC-77 NOTE\nfile integrity Qapbe'.\ndesktopDaq File Repair app yIlo' readability yIchenqa'meH.");
       }
       return "REC-77 NOTE\nfile integrity failed.\nuse FILE REPAIR utility app from desktop to restore readability.";
     }
@@ -3524,8 +3616,9 @@ Safehouse jItaH ret taHchugh, pure bIchoHpa' useful yItaH.`
       rootPath: "/public",
       lockRoot: true,
       title: "public",
-      onOpenFile: env && env.openDocumentWindow ? env.openDocumentWindow : null,
-      enableDrag: Boolean(env && env.enableFileDrag)
+      onOpenFile: env && env.openDocumentWindow && !(env && env.isMobile) ? env.openDocumentWindow : null,
+      enableDrag: Boolean(env && env.enableFileDrag),
+      compactMode: Boolean(env && env.isMobile)
     });
   }
 
@@ -4545,6 +4638,9 @@ Safehouse jItaH ret taHchugh, pure bIchoHpa' useful yItaH.`
   function buildDecryptor(env) {
     const wrap = document.createElement("section");
     wrap.className = "v2-decrypt";
+    if (env && env.isMobile) {
+      wrap.classList.add("v2-decrypt-mobile");
+    }
     // Always require explicit manual load when File Repair opens.
     setSelectedFilePath("");
     repairWorkbench.loadedPath = "";
@@ -4826,7 +4922,9 @@ Safehouse jItaH ret taHchugh, pure bIchoHpa' useful yItaH.`
     importRow.appendChild(loadSelectedBtn);
     wrap.appendChild(importRow);
     tuning.appendChild(selectedInfo);
-    tuning.appendChild(dropZone);
+    if (!(env && env.isMobile)) {
+      tuning.appendChild(dropZone);
+    }
     tuning.appendChild(controls);
     tuning.appendChild(meters);
     main.appendChild(preview);
@@ -4838,6 +4936,7 @@ Safehouse jItaH ret taHchugh, pure bIchoHpa' useful yItaH.`
 
   function createFilesystemBrowser(startPath, options) {
     const rootPath = normalizePath(options && options.rootPath ? options.rootPath : "/");
+    const compactMode = Boolean(options && options.compactMode);
     const state = {
       cwd: normalizePath(startPath || rootPath),
       selectedFile: "",
@@ -4847,6 +4946,9 @@ Safehouse jItaH ret taHchugh, pure bIchoHpa' useful yItaH.`
 
     const wrap = document.createElement("section");
     wrap.className = "v2-fs";
+    if (compactMode) {
+      wrap.classList.add("compact-mode");
+    }
     if (options && typeof options.onOpenFile === "function") {
       wrap.classList.add("has-external-view");
     }
@@ -4939,6 +5041,10 @@ Safehouse jItaH ret taHchugh, pure bIchoHpa' useful yItaH.`
     }
 
     function renderTree() {
+      if (compactMode) {
+        tree.innerHTML = "";
+        return;
+      }
       tree.innerHTML = "";
 
       function walk(path, depth) {
@@ -5123,7 +5229,13 @@ Safehouse jItaH ret taHchugh, pure bIchoHpa' useful yItaH.`
         list.appendChild(row);
       });
 
-      if (options && typeof options.onOpenFile === "function") {
+      if (compactMode) {
+        if (state.selectedFile && isFile(state.selectedFile) && canAccess(state.selectedFile)) {
+          view.textContent = readFileText(state.selectedFile);
+        } else {
+          view.textContent = tr("fs.mobileGuide") + "\n\n" + listPathLines(state.cwd);
+        }
+      } else if (options && typeof options.onOpenFile === "function") {
         view.textContent = tr("fs.selectToOpen");
       } else if (state.selectedFile && isFile(state.selectedFile) && canAccess(state.selectedFile)) {
         view.textContent = readFileText(state.selectedFile);
@@ -5177,9 +5289,10 @@ Safehouse jItaH ret taHchugh, pure bIchoHpa' useful yItaH.`
   function buildFilesystem(env) {
     return createFilesystemBrowser("/", {
       rootPath: "/",
-      onOpenFile: env && env.openDocumentWindow ? env.openDocumentWindow : null,
+      onOpenFile: env && env.openDocumentWindow && !(env && env.isMobile) ? env.openDocumentWindow : null,
       enableDrag: Boolean(env && env.enableFileDrag),
-      requestPathAccess: env && env.requestPathAccess ? env.requestPathAccess : null
+      requestPathAccess: env && env.requestPathAccess ? env.requestPathAccess : null,
+      compactMode: Boolean(env && env.isMobile)
     });
   }
 
@@ -5190,9 +5303,10 @@ Safehouse jItaH ret taHchugh, pure bIchoHpa' useful yItaH.`
     return createFilesystemBrowser("/secure/archive", {
       rootPath: "/secure/archive",
       lockRoot: true,
-      onOpenFile: env && env.openDocumentWindow ? env.openDocumentWindow : null,
+      onOpenFile: env && env.openDocumentWindow && !(env && env.isMobile) ? env.openDocumentWindow : null,
       enableDrag: Boolean(env && env.enableFileDrag),
-      requestPathAccess: env && env.requestPathAccess ? env.requestPathAccess : null
+      requestPathAccess: env && env.requestPathAccess ? env.requestPathAccess : null,
+      compactMode: Boolean(env && env.isMobile)
     });
   }
 
@@ -5219,6 +5333,9 @@ Safehouse jItaH ret taHchugh, pure bIchoHpa' useful yItaH.`
       case "decryptor":
         return buildDecryptor(env);
       case "terminal":
+        if (env && env.isMobile) {
+          return textBlock(tr("app.empty"));
+        }
         return buildLegacyTerminalInfo(env);
       default:
         return textBlock(tr("app.empty"));
@@ -5397,16 +5514,12 @@ Safehouse jItaH ret taHchugh, pure bIchoHpa' useful yItaH.`
     brand.appendChild(brandSub);
     brand.appendChild(brandNow);
 
-    const grid = document.createElement("div");
-    grid.className = "mobile-grid";
-
     const launchpad = document.createElement("section");
     launchpad.className = "mobile-launchpad";
     const launchpadTitle = document.createElement("div");
     launchpadTitle.className = "mobile-launchpad-title";
     launchpadTitle.textContent = tr("mobile.quick");
     launchpad.appendChild(launchpadTitle);
-    launchpad.appendChild(grid);
 
     const panel = document.createElement("div");
     panel.className = "mobile-panel";
@@ -5499,6 +5612,7 @@ Safehouse jItaH ret taHchugh, pure bIchoHpa' useful yItaH.`
     }
 
     const mobileEnv = {
+      isMobile: true,
       requestPathAccess,
       openApp: openPanel,
       openFileSystem: () => openPanel("filesystem")
@@ -5580,23 +5694,49 @@ Safehouse jItaH ret taHchugh, pure bIchoHpa' useful yItaH.`
     panelHeader.addEventListener("touchend", endSwipe);
     panelHeader.addEventListener("touchcancel", endSwipe);
 
-    APPS.forEach((app) => {
-      const icon = document.createElement("button");
-      icon.type = "button";
-      icon.className = "mobile-app";
-      icon.setAttribute("aria-label", appTitle(app));
+    function createMobileSection(titleKey, apps) {
+      const section = document.createElement("section");
+      section.className = "mobile-section";
 
-      const glyph = createAppGlyphElement(app, "mobile-app-glyph");
+      const title = document.createElement("div");
+      title.className = "mobile-section-title";
+      title.textContent = tr(titleKey);
 
-      const label = document.createElement("div");
-      label.className = "mobile-app-label";
-      label.textContent = appLabel(app);
+      const grid = document.createElement("div");
+      grid.className = "mobile-grid";
 
-      icon.appendChild(glyph);
-      icon.appendChild(label);
-      icon.addEventListener("click", () => openPanel(app.id));
-      grid.appendChild(icon);
-    });
+      apps.forEach((app) => {
+        const icon = document.createElement("button");
+        icon.type = "button";
+        icon.className = "mobile-app";
+        icon.setAttribute("aria-label", appTitle(app));
+
+        const glyph = createAppGlyphElement(app, "mobile-app-glyph");
+
+        const label = document.createElement("div");
+        label.className = "mobile-app-label";
+        label.textContent = appLabel(app);
+
+        icon.appendChild(glyph);
+        icon.appendChild(label);
+        icon.addEventListener("click", () => openPanel(app.id));
+        grid.appendChild(icon);
+      });
+
+      section.appendChild(title);
+      section.appendChild(grid);
+      return section;
+    }
+
+    const publicApps = APPS.filter((app) =>
+      ["hours", "location", "menu", "events", "contacts", "public-files"].includes(app.id)
+    );
+    const systemApps = APPS.filter((app) =>
+      ["filesystem", "lore", "decryptor", "trash"].includes(app.id)
+    );
+
+    launchpad.appendChild(createMobileSection("mobile.section.public", publicApps));
+    launchpad.appendChild(createMobileSection("mobile.section.system", systemApps));
 
     const dock = document.createElement("div");
     dock.className = "mobile-dock";
@@ -6637,6 +6777,7 @@ Safehouse jItaH ret taHchugh, pure bIchoHpa' useful yItaH.`
   function render(force) {
     const phase = appState.phase;
     const nextMode = isMobileMode() ? "mobile" : "desktop";
+    applyLanguageMode();
     const shouldRerender =
       Boolean(force) ||
       phase !== renderedPhase ||
@@ -6653,16 +6794,19 @@ Safehouse jItaH ret taHchugh, pure bIchoHpa' useful yItaH.`
     renderedPhase = phase;
     if (phase === "boot") {
       mode = "";
+      applyLanguageMode();
       renderBoot();
       return;
     }
     if (phase === "intro") {
       mode = "";
+      applyLanguageMode();
       renderLanguageGate();
       return;
     }
 
     mode = nextMode;
+    applyLanguageMode();
     if (mode === "mobile") {
       renderMobile();
     } else {
