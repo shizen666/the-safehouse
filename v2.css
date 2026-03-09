@@ -161,6 +161,12 @@ body {
   gap: 12px;
 }
 
+.language-gate-tlh .language-subtitle,
+.language-gate-tlh .language-hint {
+  font-family: "pIqaD-qolqoS", "IBM Plex Mono", "Cascadia Mono", "Lucida Console", "Courier New", monospace;
+  letter-spacing: 0.04em;
+}
+
 .language-logo {
   margin: 0;
   width: min(1280px, 96vw);
@@ -1774,7 +1780,10 @@ body {
 
   .boot-screen,
   .language-gate {
-    padding: 12px;
+    padding:
+      calc(12px + env(safe-area-inset-top, 0px))
+      12px
+      calc(12px + env(safe-area-inset-bottom, 0px));
   }
 
   .language-logo {

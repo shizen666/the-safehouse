@@ -5428,6 +5428,7 @@ Safehouse jItaH ret taHchugh, pure bIchoHpa' useful yItaH.`
     root.innerHTML = "";
     const gate = document.createElement("section");
     gate.className = "language-gate";
+    gate.classList.toggle("language-gate-tlh", currentLanguage() === "tlh");
 
     const logo = document.createElement("div");
     logo.className = "language-logo";
