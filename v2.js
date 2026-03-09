@@ -2323,6 +2323,35 @@ Safehouse jItaH ret taHchugh, pure bIchoHpa' useful yItaH.`
     y: "\uf8e8",
     "'": "\uf8e9"
   };
+  const PIQAD_FALLBACK_MAP = {
+    a: "a",
+    b: "b",
+    c: "ch",
+    d: "D",
+    e: "e",
+    f: "v",
+    g: "gh",
+    h: "H",
+    i: "I",
+    j: "j",
+    k: "q",
+    l: "l",
+    m: "m",
+    n: "n",
+    o: "o",
+    p: "p",
+    q: "Q",
+    r: "r",
+    s: "S",
+    t: "t",
+    u: "u",
+    v: "v",
+    w: "w",
+    x: "Q",
+    y: "y",
+    z: "S",
+    "'": "'"
+  };
   const PIQAD_TOKENS = Object.keys(PIQAD_MAP).sort((a, b) => b.length - a.length);
 
   function parseKlingonWord(word) {
@@ -2345,6 +2374,18 @@ Safehouse jItaH ret taHchugh, pure bIchoHpa' useful yItaH.`
     return tokens;
   }
 
+  function latinWordToPiqadFallback(word) {
+    let out = "";
+    for (const ch of String(word)) {
+      const mapped = PIQAD_FALLBACK_MAP[ch.toLowerCase()];
+      if (!mapped) {
+        return word;
+      }
+      out += PIQAD_MAP[mapped];
+    }
+    return out;
+  }
+
   function tlhToPiqad(value) {
     return String(value).split(/([A-Za-z']+)/g).map((part) => {
       if (!part || !/[A-Za-z']/.test(part)) {
@@ -2352,7 +2393,7 @@ Safehouse jItaH ret taHchugh, pure bIchoHpa' useful yItaH.`
       }
       const parsed = parseKlingonWord(part);
       if (!parsed) {
-        return part;
+        return latinWordToPiqadFallback(part);
       }
       return parsed.map((token) => PIQAD_MAP[token]).join("");
     }).join("");
@@ -2362,7 +2403,10 @@ Safehouse jItaH ret taHchugh, pure bIchoHpa' useful yItaH.`
     if (currentLanguage() !== "tlh") {
       return String(value);
     }
-    return String(value).split(/(\{\w+\})/g).map((part) => (/^\{\w+\}$/.test(part) ? part : tlhToPiqad(part))).join("");
+    return String(value)
+      .split(/(\{\w+\}|\/[A-Za-z0-9._\-\/]+|[A-Za-z][A-Za-z0-9+.-]*:\/\/[^\s\n]+|[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,})/g)
+      .map((part) => (/^(\{\w+\}|\/[A-Za-z0-9._\-\/]+|[A-Za-z][A-Za-z0-9+.-]*:\/\/[^\s\n]+|[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,})$/.test(part) ? part : tlhToPiqad(part)))
+      .join("");
   }
 
   function applyLanguageMode() {
