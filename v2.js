@@ -158,7 +158,7 @@
       "operator: vault_maintenance\n" +
       "access key: p59_relay_7734\n\n" +
       "SY04 note: We opened Safehouse as a bar because people only breathe when they sit.\n" +
-      "SY09 note: Masaya requested cold chai and silence. C3 table remains reserved.\n" +
+      "SY09 note: Masaya requested the highball spec and silence. C3 table remains reserved.\n" +
       "SY12 note: second lock became mandatory after corridor breach.\n" +
       "SY26 note: archive handoff approved to current staff.\n"
     );
@@ -257,25 +257,25 @@
         "DUSTLINE HIGHBALL      12\n" +
         "NARROW ESCAPE          14\n" +
         "VAULT NEGRONI          13\n" +
-        "MASAYA CHAI (cold)     11\n" +
+        "MASAYA HIGHBALL        14\n" +
         "OXIDE SOUR             12\n" +
         "AFTERGRID NO-PROOF      9",
       "/bar/menu/seasonal-board.txt":
         "SEASONAL BOARD\n" +
         "CANAL FOG RICKEY       13\n" +
         "RUST BLOOM SPRITZ      12\n" +
-        "MIDNIGHT BLACK TEA     10",
+        "MIDNIGHT RYE           14",
       "/bar/menu/non-alcoholic.txt":
         "NO-PROOF\n" +
         "Aftergrid No-Proof\n" +
         "Canal Citrus Soda\n" +
         "Dry Juniper Tonic",
       "/bar/menu/masaya-note.txt":
-        "MASAYA CHAI\n" +
-        "Serve cold.\n" +
+        "MASAYA HIGHBALL\n" +
+        "Serve over hard ice.\n" +
         "No garnish.\n" +
-        "Low sugar.\n" +
-        "Do not warm under any condition.",
+        "Low dilution.\n" +
+        "Do not narrate the build.",
 
       "/bar/ops": ["frontdesk-protocol.txt", "quiet-floor-mode.txt"],
       "/bar/ops/frontdesk-protocol.txt":
@@ -332,7 +332,7 @@
       "/secure/operations/daily-operations/debrief-sy26-02-23-masaya.txt": [
         "DEBRIEF SY26-02-23 / MASAYA",
         "Masaya arrived 21:17, sat at C3 without waiting to be guided.",
-        "No menu requested. Ordered Masaya Chai cold.",
+        "No menu requested. Ordered Masaya Highball.",
         "Stayed 28 min. No spoken words to guests. One glance toward the inner lock at 21:31.",
         "Floor noise dropped after his entry and remained low for the rest of service.",
         "Recommendation: keep C3 dark, visible, and free of decorative glass."
@@ -608,7 +608,7 @@
       "/secure/personnel/external-contacts/c3-protocol.txt": [
         "C3 PROTOCOL",
         "Keep one path to C3 clear from frontdesk at all times.",
-        "Serve cold chai without garnish if requested and do not narrate the build.",
+        "Serve Masaya Highball over hard ice without garnish and do not narrate the build.",
         "If he leaves a glass unfinished, no one comments on the amount left.",
         "If he asks who closed last night, answer with the role, not the name."
       ].join("\n"),
@@ -631,7 +631,7 @@
         "We stepped out at dawn under ash haze.",
         "No map matched reality and the old street names survived only in half-burned delivery tags.",
         "The first room with an intact lock took in twelve people before noon.",
-        "By night the room was already serving boiled tea because structure travels faster when it comes in cups."
+        "By night the room was already pouring rough highballs because structure travels faster when it comes in glasses."
       ].join("\n"),
       "/secure/archive/emergence-records/emergence-log-sy00-day11.md": [
         "EMERGENCE LOG / SY00 DAY 11",
@@ -644,7 +644,7 @@
       "/secure/archive/incident-ledgers": ["masaya-visit-ledger-sy04-sy10.log", "clock-drift-incident-sy17.md"],
       "/secure/archive/incident-ledgers/masaya-visit-ledger-sy04-sy10.log": [
         "MASAYA VISIT LEDGER SY04-SY10",
-        "SY04-02-09 in 21:14 / out 22:03 / hot tea build only",
+        "SY04-02-09 in 21:14 / out 22:03 / highball build only",
         "SY05-01-11 in 22:08 / out 23:22 / asked: same hand on bar?",
         "SY09-12-02 in 22:10 / out 23:14 / no spoken words",
         "SY10-11-17 in 21:26 / out 22:55 / final confirmed entry"
@@ -735,7 +735,7 @@
         "MASAYA NOTES",
         "He never threatened directly. He changed the room by arriving.",
         "Table C3 stays reserved in low light.",
-        "Masaya Chai was stabilized from his specs: cold, no garnish, no ceremony.",
+        "Masaya Highball was stabilized from his specs: hard ice, no garnish, no ceremony.",
         "When he looks at the inner lock I cannot tell whether he is remembering it or measuring it."
       ].join("\n"),
 
@@ -814,7 +814,7 @@
         "To the first dead we carried out ourselves,",
         "",
         "I never learned your name because everyone was too busy pretending names would make it harder.",
-        "You died three chairs from the bar while someone kept asking whether the tea was still hot.",
+        "You died three chairs from the bar while someone kept asking whether their drink was still on the ticket.",
         "I remember thinking the room had failed before I understood rooms cannot fail, only people inside them.",
         "We cleaned the floor before sunrise and opened on time.",
         "That decision became the shape of the rest of my life."
@@ -943,7 +943,7 @@
       "/var/log": ["service.log", "security.log"],
       "/var/log/service.log":
         "[SY26-02-23 21:17] C3 occupied\n" +
-        "[SY26-02-23 21:19] masaya chai sent cold\n" +
+        "[SY26-02-23 21:19] masaya highball sent\n" +
         "[SY26-02-23 21:44] floor pressure stable",
       "/var/log/security.log":
         "[SY26-02-23 22:55] door cycle normal\n" +
@@ -2187,7 +2187,7 @@
     brandSub.textContent = "COCKTAIL BAR // POST-SURFACE DISTRICT";
     const brandNow = document.createElement("div");
     brandNow.className = "mobile-brand-now";
-    brandNow.textContent = "Now Serving: Masaya Chai (cold)";
+    brandNow.textContent = "Now Serving: Masaya Highball";
     brand.appendChild(brandName);
     brand.appendChild(brandSub);
     brand.appendChild(brandNow);
