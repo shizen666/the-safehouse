@@ -29,6 +29,8 @@ body {
   background: var(--bg);
   color: var(--fg);
   overflow: hidden;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 body {
@@ -245,6 +247,7 @@ body {
   gap: 12px;
   isolation: isolate;
   overflow: hidden;
+  min-height: 0;
 }
 
 .mobile-shell::before {
@@ -294,6 +297,12 @@ body {
   border-radius: 10px;
   background: rgba(2, 12, 6, 0.72);
   padding: 9px 11px;
+  line-height: 1.35;
+}
+
+.mobile-status > span {
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 .mobile-brand {
@@ -310,6 +319,7 @@ body {
   letter-spacing: 0.14em;
   color: var(--fg-bright);
   text-transform: uppercase;
+  line-height: 1.2;
 }
 
 .mobile-brand-sub {
@@ -319,6 +329,7 @@ body {
   color: var(--dim);
   text-align: center;
   text-transform: uppercase;
+  line-height: 1.35;
 }
 
 .mobile-brand-now {
@@ -329,6 +340,7 @@ body {
   font-size: 0.79em;
   color: rgba(185, 255, 208, 0.92);
   letter-spacing: 0.08em;
+  line-height: 1.35;
 }
 
 .mobile-launchpad {
@@ -343,6 +355,7 @@ body {
   align-content: start;
   scrollbar-gutter: stable;
   -webkit-overflow-scrolling: touch;
+  min-height: 0;
 }
 
 .mobile-launchpad-title {
@@ -421,6 +434,7 @@ body {
   text-transform: uppercase;
   line-height: 1.25;
   color: rgba(185, 255, 208, 0.94);
+  overflow-wrap: anywhere;
 }
 
 .mobile-dock {
@@ -468,6 +482,9 @@ body {
   letter-spacing: 0.14em;
   text-transform: uppercase;
   min-width: 0;
+  line-height: 1.25;
+  white-space: normal;
+  overflow-wrap: anywhere;
 }
 
 .mobile-panel-close {
@@ -488,6 +505,16 @@ body {
   font-size: clamp(0.98em, 2vw, 1.06em);
   scrollbar-gutter: stable;
   -webkit-overflow-scrolling: touch;
+}
+
+.mobile-panel-content .v2-document-content,
+.mobile-panel-content .v2-location-notes,
+.mobile-panel-content .v2-fs-view,
+.mobile-panel-content .v2-decrypt-selected,
+.mobile-panel-content .v2-decrypt-status,
+.mobile-panel-content .v2-fs-entry-label {
+  font-size: 1.02em;
+  line-height: 1.6;
 }
 
 .desktop-shell {
@@ -1717,11 +1744,11 @@ body {
 
 @media (max-width: 900px) {
   #crt-v2 {
-    padding: 10px;
+    padding: 8px;
   }
 
   #v2-app {
-    inset: 10px;
+    inset: 8px;
   }
 
   .v2-fs-toolbar {
@@ -1742,7 +1769,7 @@ body {
 
 @media (max-width: 760px) {
   body {
-    font-size: 17px;
+    font-size: 18px;
   }
 
   .boot-screen,
@@ -1769,70 +1796,72 @@ body {
 
   .mobile-shell {
     max-width: none;
-    padding: 10px;
-    gap: 9px;
+    padding: 8px;
+    gap: 8px;
   }
 
   .mobile-brand {
-    padding: 10px 10px 8px;
+    padding: 11px 10px 10px;
   }
 
   .mobile-brand-name {
-    font-size: 1em;
-    letter-spacing: 0.12em;
-  }
-
-  .mobile-brand-sub {
-    font-size: 0.78em;
+    font-size: 1.1em;
     letter-spacing: 0.1em;
   }
 
+  .mobile-brand-sub {
+    font-size: 0.88em;
+    letter-spacing: 0.06em;
+  }
+
   .mobile-brand-now {
-    font-size: 0.74em;
+    font-size: 0.9em;
   }
 
   .mobile-launchpad {
-    padding: 8px;
+    padding: 9px;
   }
 
   .mobile-section-title {
-    font-size: 0.76em;
+    font-size: 0.86em;
   }
 
   .mobile-grid {
-    gap: 7px;
+    gap: 8px;
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .mobile-app {
-    min-height: 124px;
-    padding: 9px 7px 8px;
+    min-height: 134px;
+    padding: 10px 8px 9px;
   }
 
   .mobile-app-glyph {
-    width: 48px;
-    height: 48px;
+    width: 54px;
+    height: 54px;
   }
 
   .mobile-app-glyph img {
-    width: 28px;
-    height: 28px;
+    width: 32px;
+    height: 32px;
   }
 
   .mobile-app-label {
-    font-size: 0.9em;
+    font-size: 1em;
+    line-height: 1.35;
   }
 
   .mobile-dock {
-    font-size: 0.76em;
+    font-size: 0.86em;
   }
 
   .mobile-panel-content {
-    font-size: 1.02em;
+    font-size: 1.1em;
+    line-height: 1.65;
   }
 
   .v2-decrypt.v2-decrypt-mobile .v2-decrypt-preview {
-    min-height: 210px;
+    min-height: 220px;
   }
 
   .v2-fs-body {
@@ -1854,6 +1883,53 @@ body {
 
   .v2-fs-path {
     min-width: 100%;
+  }
+}
+
+@media (max-width: 430px) {
+  #crt-v2 {
+    padding: 6px;
+  }
+
+  #v2-app {
+    inset: 6px;
+  }
+
+  .mobile-status {
+    font-size: 0.98em;
+    padding: 10px;
+  }
+
+  .mobile-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .mobile-app {
+    min-height: 108px;
+    grid-template-columns: auto 1fr;
+    grid-template-rows: 1fr;
+    align-items: center;
+    gap: 12px;
+    text-align: left;
+  }
+
+  .mobile-app-label {
+    text-align: left;
+    font-size: 1.02em;
+  }
+
+  .mobile-panel-header {
+    padding: 11px 12px;
+  }
+
+  .mobile-panel-title {
+    font-size: 1em;
+    letter-spacing: 0.08em;
+  }
+
+  .mobile-panel-content {
+    padding: 12px 12px calc(18px + env(safe-area-inset-bottom, 0px));
+    font-size: 1.08em;
   }
 }
 
