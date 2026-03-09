@@ -2869,7 +2869,11 @@
         app.glyph + " " + app.label
       );
       if (shellWindow.created) {
-        shellWindow.body.appendChild(buildAppContent(appId, desktopEnv));
+        const content = buildAppContent(appId, desktopEnv);
+        shellWindow.body.appendChild(content);
+        if (content instanceof Element && content.classList.contains("v2-fs")) {
+          shellWindow.body.classList.add("v2-window-body-fs");
+        }
         if (appId === "decryptor") {
           const bounds = windows.getBoundingClientRect();
           setWindowFrame(shellWindow.win, {
