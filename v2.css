@@ -159,6 +159,8 @@ body {
   align-content: center;
   justify-items: center;
   gap: 12px;
+  width: 100%;
+  overflow-x: hidden;
 }
 
 .language-gate-tlh .language-subtitle,
@@ -169,7 +171,8 @@ body {
 
 .language-logo {
   margin: 0;
-  width: min(1280px, 96vw);
+  width: 100%;
+  max-width: 1280px;
   border: 0;
   border-radius: 0;
   background: transparent;
@@ -195,17 +198,26 @@ body {
 }
 
 .language-subtitle {
+  width: 100%;
+  max-width: 100%;
   font-size: 0.88em;
   text-transform: uppercase;
   letter-spacing: 0.16em;
   color: var(--fg-bright);
   text-align: center;
+  overflow-wrap: anywhere;
+  line-height: 1.45;
 }
 
 .language-hint {
+  width: 100%;
+  max-width: 100%;
   font-size: 0.86em;
   color: var(--dim);
   letter-spacing: 0.08em;
+  text-align: center;
+  overflow-wrap: anywhere;
+  line-height: 1.4;
 }
 
 .language-choices {
@@ -1791,8 +1803,20 @@ body {
   }
 
   .language-logo-image {
-    height: clamp(170px, 28vh, 270px);
+    width: 100%;
+    height: auto;
+    max-height: clamp(170px, 28vh, 270px);
     object-position: center center;
+  }
+
+  .language-subtitle {
+    font-size: 0.8em;
+    letter-spacing: 0.08em;
+  }
+
+  .language-hint {
+    font-size: 0.84em;
+    letter-spacing: 0.04em;
   }
 
   .language-choices {

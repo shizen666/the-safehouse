@@ -5508,12 +5508,8 @@ Safehouse jItaH ret taHchugh, pure bIchoHpa' useful yItaH.`
     const brandSub = document.createElement("div");
     brandSub.className = "mobile-brand-sub";
     brandSub.textContent = tr("mobile.brand.sub");
-    const brandNow = document.createElement("div");
-    brandNow.className = "mobile-brand-now";
-    brandNow.textContent = tr("mobile.brand.now");
     brand.appendChild(brandName);
     brand.appendChild(brandSub);
-    brand.appendChild(brandNow);
 
     const launchpad = document.createElement("section");
     launchpad.className = "mobile-launchpad";
