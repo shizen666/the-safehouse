@@ -90,7 +90,6 @@
       "role.staff": "staff-session",
       "role.founder": "founder-session",
       "mobile.brand.sub": "COCKTAIL BAR // POST-SURFACE DISTRICT",
-      "mobile.brand.now": "Now Serving: Masaya Highball",
       "mobile.quick": "Quick Access",
       "mobile.section.public": "Guest Access",
       "mobile.section.system": "System Access",
@@ -241,7 +240,6 @@
       "role.staff": "sessione-staff",
       "role.founder": "sessione-fondatore",
       "mobile.brand.sub": "COCKTAIL BAR // DISTRETTO POST-SUPERFICIE",
-      "mobile.brand.now": "Ora in servizio: Masaya Highball",
       "mobile.quick": "Accesso Rapido",
       "mobile.section.public": "Accesso Ospiti",
       "mobile.section.system": "Accesso Sistema",
@@ -392,7 +390,6 @@
       "role.staff": "スタッフセッション",
       "role.founder": "創設者セッション",
       "mobile.brand.sub": "カクテルバー // 地上後地区",
-      "mobile.brand.now": "現在提供中: Masaya Highball",
       "mobile.quick": "クイックアクセス",
       "mobile.section.public": "ゲストアクセス",
       "mobile.section.system": "システムアクセス",
@@ -546,7 +543,6 @@
     "role.staff": "yaS ghom",
     "role.founder": "chenmoHwI' ghom",
     "mobile.brand.sub": "tach // qabDaq 'elDI' Sep",
-    "mobile.brand.now": "DaH nobta': Masaya Highball",
     "mobile.quick": "nom 'el",
     "mobile.section.public": "meH 'el",
     "mobile.section.system": "jan 'el",
@@ -2265,7 +2261,14 @@ Safehouse jItaH ret taHchugh, pure bIchoHpa' useful yItaH.`
   function loadStoredState() {
     try {
       const storedLanguage = window.localStorage.getItem(STORAGE_KEYS.language);
-      if (storedLanguage && LANGUAGES.some((item) => item.code === storedLanguage)) {
+      const urlLanguage = new URLSearchParams(window.location.search).get("lang");
+      const mobileEntry = window.matchMedia("(max-width: 900px), (pointer: coarse)").matches;
+      const requestedLanguage = urlLanguage || (!mobileEntry ? storedLanguage : "");
+      if (requestedLanguage && LANGUAGES.some((item) => item.code === requestedLanguage)) {
+        appState.language = requestedLanguage;
+      } else if (mobileEntry && storedLanguage === "tlh") {
+        window.localStorage.removeItem(STORAGE_KEYS.language);
+      } else if (storedLanguage && !mobileEntry && LANGUAGES.some((item) => item.code === storedLanguage)) {
         appState.language = storedLanguage;
       }
       // Always start a fresh REC-77 puzzle on new page load.
@@ -4722,6 +4725,10 @@ Safehouse jItaH ret taHchugh, pure bIchoHpa' useful yItaH.`
     const dropZone = document.createElement("div");
     dropZone.className = "v2-repair-dropzone";
 
+    const mobilePicker = document.createElement("div");
+    mobilePicker.className = "v2-repair-mobile-picker";
+    mobilePicker.hidden = true;
+
     function makeDial(label, key, min, max) {
       const row = document.createElement("div");
       row.className = "v2-decrypt-row";
@@ -4849,8 +4856,33 @@ Safehouse jItaH ret taHchugh, pure bIchoHpa' useful yItaH.`
       return true;
     }
 
+    function openMobilePicker() {
+      if (!mobilePicker.childElementCount) {
+        mobilePicker.appendChild(
+          createFilesystemBrowser("/", {
+            rootPath: "/",
+            requestPathAccess: env && env.requestPathAccess ? env.requestPathAccess : null,
+            compactMode: true,
+            onSelectFile: (path) => {
+              const loaded = handlePathDrop(path);
+              if (loaded) {
+                mobilePicker.hidden = true;
+              }
+            }
+          })
+        );
+      }
+      mobilePicker.hidden = false;
+      summary.textContent = tr("decrypt.browserOpened");
+    }
+
     loadSelectedBtn.addEventListener("click", () => {
       repairWorkbench.waitingForSelection = true;
+      if (env && env.isMobile) {
+        repairWorkbench.waitingForSelection = false;
+        openMobilePicker();
+        return;
+      }
       if (env && typeof env.openFileSystem === "function") {
         env.openFileSystem();
         summary.textContent = tr("decrypt.browserOpened");
@@ -4965,6 +4997,9 @@ Safehouse jItaH ret taHchugh, pure bIchoHpa' useful yItaH.`
     wrap.appendChild(summary);
     importRow.appendChild(loadSelectedBtn);
     wrap.appendChild(importRow);
+    if (env && env.isMobile) {
+      wrap.appendChild(mobilePicker);
+    }
     tuning.appendChild(selectedInfo);
     if (!(env && env.isMobile)) {
       tuning.appendChild(dropZone);
@@ -5258,6 +5293,9 @@ Safehouse jItaH ret taHchugh, pure bIchoHpa' useful yItaH.`
             return;
           }
           setSelectedFilePath(entry.full);
+          if (options && typeof options.onSelectFile === "function") {
+            options.onSelectFile(entry.full);
+          }
           if (options && typeof options.onOpenFile === "function") {
             options.onOpenFile(entry.full);
             hint.textContent = tr("fs.openedNewWindow");
